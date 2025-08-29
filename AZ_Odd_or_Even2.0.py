@@ -43,11 +43,18 @@ def draw_game():
     #draw background and button
     root.fill(BLACK) #I set the background color. In the future, I’ll add an image—but that’s only for version 3.0. For now, we’re still on version 2.0.
     pergunta = font_medium.render(f"O número {number} é Ímpar ou Par?", True, WHITE)
-    root.blit(pergunta, (300, 500))
+    root.blit(pergunta, (WIDTH // 2 - pergunta.get_width() // 2, 50))#To draw, we need the surface (the window or the background of things—this is everywhere in this program and in all others that exist).
+#We already created the surface with the root (up there). The ".blit" draws another surface on top of whichever one we choose—in this case, "root". That’s where we place the phrase stored in the variable "pergunta". Now comes the interesting part:
+#root.blit(pergunta, (WIDTH // 2 - pergunta.get_width() // 2, 50)) — inside the parentheses "(pergunta, (WIDTH // 2 - pergunta.get_width() // 2, 50))", the first part defines what goes inside: the content (pergunta)...
+#...and the position of that pergunta (WIDTH // 2 - pergunta.get_width() // 2, 50) is the second part. We could write "(pergunta, (50, 50))" — that would place it 50 pixels down and 50 pixels across, meaning we can position it...
+#...wherever we want. But we can use "WIDTH // 2" — that grabs the width of "root" (whatever it may be) and places the pergunta in the middle. However, there’s a problem: the size of the text...
+#...would make it not appear centered since it takes up space. So we use "- pergunta.get_width() // 2" — that gets (.get) the width (_width) of pergunta (the "()" after width refers to pergunta) and subtracts it
+#from the root’s width, placing it in the center. The ", 50" is the height… that’s it. We could’ve done the same thing for height, but it wasn’t necessary in this case.
+#From here on, it’s the same stuff I’ve already explained.If you want, I can help you turn this into clean bilingual comments for your code — makes it easier to share or document for others. Want me to format it that way?
     result_text = font_large.render(message, True, GREEN if "POWER" in message else RED)
-    root.blit(result_text, (300, 400))
-    odd_button = pg.Rect(1000, 70, 150, 50)
-    even_button = pg.Rect(200, 70, 150, 50)
+    root.blit(result_text, (WIDTH // 2 - result_text.get_width() // 2, 120))
+    odd_button = pg.Rect(WIDTH * 0.25 - 75, HEIGHT * 0.60, 150, 50)
+    even_button = pg.Rect(WIDTH * 0.75 - 75, HEIGHT * 0.60, 150, 50)
     pg.draw.rect(root, GREEN, odd_button)
     pg.draw.rect(root, GREEN, even_button)
     odd_label = font_small.render("Impar (X)", True, BLACK)
@@ -58,6 +65,7 @@ def draw_game():
     return odd_button, even_button
 #loop
 while running:
+    WIDTH, HEIGHT = root.get_size()
     #draw_game()
     odd_btn, even_btn = draw_game()
     for event in pg.event.get():
