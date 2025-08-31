@@ -31,14 +31,14 @@ running = True
 #random Number Generator
 number=rd.randint(1, 99)
 #Function to update the message after the response
-message = "Where is your motivation?"
+message = "Where Is Your Motivation?"
 def reset_message():
     global message
     message = ""
 #function that refreshes the random number after user input
 def update_number():
     global number
-    number = rd.randint(1, 99)
+    number
 def draw_game():
     #draw background and button
     root.fill(BLACK) #I set the background color. In the future, I’ll add an image—but that’s only for version 3.0. For now, we’re still on version 2.0.
@@ -63,6 +63,11 @@ def draw_game():
     root.blit(even_label, even_button.move(25, 10))
     pg.display.flip()
     return odd_button, even_button
+def check(AZ):
+    global number, message
+    response = (number % 2 == 0 and AZ == "Even") or (number % 2 != 0 and AZ == "Odd")
+    message = "YOU HAVE POWER!" if response else "You need more Energy..."
+    pg.time.set_timer(pg.USEREVENT + 1, 800)
 #loop
 while running:
     WIDTH, HEIGHT = root.get_size()
@@ -74,7 +79,9 @@ while running:
         elif event.type == pg.MOUSEBUTTONDOWN:
             x, y = event.pos
             if odd_btn.collidepoint((x, y)):
-                running = False
+                check("Odd")
             if even_btn.collidepoint((x, y)):
-                running = False
+                check("Even")
+    pg.display.flip()
+    clock.tick(60)
 pg.quit()
