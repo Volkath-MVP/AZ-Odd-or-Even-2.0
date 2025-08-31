@@ -63,11 +63,16 @@ def draw_game():
     root.blit(even_label, even_button.move(25, 10))
     pg.display.flip()
     return odd_button, even_button
+#Odd or Even function
 def check(AZ):
     global number, message
     response = (number % 2 == 0 and AZ == "Even") or (number % 2 != 0 and AZ == "Odd")
     message = "YOU HAVE POWER!" if response else "You need more Energy..."
     pg.time.set_timer(pg.USEREVENT + 1, 800)
+#reset message function
+def reset_message():
+    global message
+    message = ""
 #loop
 while running:
     WIDTH, HEIGHT = root.get_size()
@@ -82,6 +87,10 @@ while running:
                 check("Odd")
             if even_btn.collidepoint((x, y)):
                 check("Even")
+        elif event.type == pg.USEREVENT + 1:
+            message = ""
+            update_number()
+            pg.time.set_timer(pg.USEREVENT + 1, 0)
     pg.display.flip()
     clock.tick(60)
 pg.quit()
