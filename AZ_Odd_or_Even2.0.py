@@ -38,7 +38,8 @@ def reset_message():
 #function that refreshes the random number after user input
 def update_number():
     global number
-    number
+    number=rd.randint(1, 99)
+#Function to draw all game interfaces
 def draw_game():
     #draw background and button
     root.fill(BLACK) #I set the background color. In the future, I’ll add an image—but that’s only for version 3.0. For now, we’re still on version 2.0.
@@ -74,12 +75,12 @@ def reset_message():
     global message
     message = ""
 #loop
-while running:
+while running:#It starts active by default, since we set it to "True", which makes it run without being explicitly called. Ideal for things that should run continuously. "while" = as long as "running" is True
     WIDTH, HEIGHT = root.get_size()
-    #draw_game()
     odd_btn, even_btn = draw_game()
-    for event in pg.event.get():
-        if event.type == pg.QUIT:
+    for event in pg.event.get():#"for event in pg.event.get()""for" = makes it so that for each thing inside "event", which are the events that happen"in" inside "pg.event", Pygame events".get()"
+#to read or search inside pg.event. Pygame stores all user interactions in a list, and pg.event.get() searches for one of those already listed events—in this case, "event"
+        if event.type == pg.QUIT:#Here it's to exit the window, so we change running from True to False. if = "event.type" some event from Pygame"==" is equal to"pg.QUIT" which makes the program close
             running = False
         elif event.type == pg.MOUSEBUTTONDOWN:
             x, y = event.pos
@@ -87,10 +88,13 @@ while running:
                 check("Odd")
             if even_btn.collidepoint((x, y)):
                 check("Even")
+        #Message and random number update
         elif event.type == pg.USEREVENT + 1:
             message = ""
             update_number()
-            pg.time.set_timer(pg.USEREVENT + 1, 0)
-    pg.display.flip()
-    clock.tick(60)
-pg.quit()
+            pg.time.set_timer(pg.USEREVENT + 1, 0)#Cancels this timer until the next correct answer
+    pg.display.flip()#When we draw text, buttons, shapes… everything gets placed onto an “invisible screen” (buffer). The flip() flips that screen and displays it to the player—in other words, it renders everything.
+    #That’s why we use pg.display.flip() at the end, to show the entire game to the player. 
+    #This is part of Pygame—it’s how the library is structured, and it varies a lot depending on which one you’re using. Tkinter, for example, has a completely different structure.
+    clock.tick(60)#Makes the game run at 60fps. We can place a variable inside the parentheses and use something to change it, creating a configuration.
+pg.quit()#End of the code that only runs when "running" is set to False
