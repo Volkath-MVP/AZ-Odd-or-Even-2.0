@@ -1,4 +1,5 @@
 #all imports
+#Pygame has features focused on games and also its own graphical interface (I even had to remove Tkinter because of it), and random was just used to create the random number generation system
 import pygame as pg
 import random as rd
 #init pygame and display
@@ -27,18 +28,9 @@ BRANCO = (255, 255, 255)
 VERMELHO = (255, 0, 0)
 GREEN = (0, 255, 0)
 BLACK = (0, 0, 0)
+GRAY = (80, 80, 80)
 running = True
-#random Number Generator
-number=rd.randint(1, 99)
-#Function to update the message after the response
-message = "Where Is Your Motivation?"
-def reset_message():
-    global message
-    message = ""
-#function that refreshes the random number after user input
-def update_number():
-    global number
-    number=rd.randint(1, 99)
+#Just ignore this...
 #       ⢸⠢⡀                        ⡠⡆
 #       ⢸ ⣈⠢⡀                  ⡠⠊  ⡇
 #       ⢸ ⣿⣷⣌⠢⠖⠊⠉⠉⠉⠉⠒⠢⠤  ⠊⣠⣾⡇ ⡇
@@ -75,8 +67,36 @@ def draw_game():
     even_label = font_small.render("Par (B)", True, BLACK)
     root.blit(odd_label, odd_button.move(25, 10))
     root.blit(even_label, even_button.move(25, 10))
-    pg.display.flip()
+    menu_btn = font_small.render("MENU", True, WHITE)
+    root.blit(menu_btn, (10, 10))
     return odd_button, even_button
+#Menu variable
+menu_width, menu_height, menu_open= 300, 500, False
+def draw_menu():
+    overlay = pg.Surface((WIDTH, HEIGHT))#Creates a surface with the size (WIDTH, HEIGHT), in this case the same size as the initial screen. From this point on, "overlay" is equal to a surface of size (WIDTH, HEIGHT)
+    overlay.set_alpha(200)
+    overlay.fill((BLACK))
+    root.blit(overlay, (0, 0))
+    menu_box = pg.Rect(WIDTH // 2 - menu_width // 2, HEIGHT // 2 - menu_height // 2, menu_width, menu_height)
+    pg.draw.rect(root, GRAY, menu_box)
+    menu_text = font_medium.render("Menu", True, WHITE)
+    root.blit(menu_text, (menu_box.centerx - menu_text.get_width() // 2, menu_box.top + 20))
+    full_btn = pg.Rect(menu_box.centerx - 100, menu_box.centery - 110, 200, 40)
+    pg.draw.rect(root, WHITE, full_btn)
+    full_label = font_small.render("Fullscreen", True, BLACK)
+    root.blit(full_label, (full_btn.centerx - full_label.get_width() // 2, full_btn.top + 10))
+    return full_btn
+#random Number Generator
+number=rd.randint(1, 99)
+#Function to update the message after the response
+message = "Where Is Your Motivation?"
+def reset_message():
+    global message
+    message = ""
+#function that refreshes the random number after user input
+def update_number():
+    global number
+    number=rd.randint(1, 99)
 #Odd or Even function
 def check(AZ):
     global number, message
@@ -91,6 +111,7 @@ def reset_message():
 while running:#It starts active by default, since we set it to "True", which makes it run without being explicitly called. Ideal for things that should run continuously. "while" = as long as "running" is True
     WIDTH, HEIGHT = root.get_size()
     odd_btn, even_btn = draw_game()
+    menu_box = draw_game()
     for event in pg.event.get():#"for event in pg.event.get()""for" = makes it so that for each thing inside "event", which are the events that happen"in" inside "pg.event", Pygame events".get()"
 #to read or search inside pg.event. Pygame stores all user interactions in a list, and pg.event.get() searches for one of those already listed events—in this case, "event"
         if event.type == pg.QUIT:#Here it's to exit the window, so we change running from True to False. if = "event.type" some event from Pygame"==" is equal to"pg.QUIT" which makes the program close
@@ -101,6 +122,8 @@ while running:#It starts active by default, since we set it to "True", which mak
                 check("Odd")
             if even_btn.collidepoint((x, y)):
                 check("Even")
+            if menu_box.collidepoint((x, y)):
+                menu_open = not menu_open
         #Message and random number update
         elif event.type == pg.USEREVENT + 1:
             message = ""
