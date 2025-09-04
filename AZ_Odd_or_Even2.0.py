@@ -21,6 +21,9 @@ font_large = pg.font.SysFont("Arial", 50)
 #variables
 font_small = pg.font.SysFont("Arial", 18)
 odd_button = pg.Rect(500 * 0.25 - 75, 300 * 0.60, 150, 50)
+#
+menu_open = False
+F = False
 #Colors
 WHITE = (255, 255, 255)
 RED = (255, 0, 0)
@@ -110,20 +113,26 @@ def reset_message():
 #loop
 while running:#It starts active by default, since we set it to "True", which makes it run without being explicitly called. Ideal for things that should run continuously. "while" = as long as "running" is True
     WIDTH, HEIGHT = root.get_size()
-    odd_btn, even_btn = draw_game()
-    menu_box = draw_game()
+    odd_btn, even_btn = draw_game() if not menu_open else (None, None)
+    if menu_open:
+        fullscreen_btn = draw_menu()
     for event in pg.event.get():#"for event in pg.event.get()""for" = makes it so that for each thing inside "event", which are the events that happen"in" inside "pg.event", Pygame events".get()"
-#to read or search inside pg.event. Pygame stores all user interactions in a list, and pg.event.get() searches for one of those already listed events—in this case, "event"
+     #to read or search inside pg.event. Pygame stores all user interactions in a list, and pg.event.get() searches for one of those already listed events—in this case, "event"
         if event.type == pg.QUIT:#Here it's to exit the window, so we change running from True to False. if = "event.type" some event from Pygame"==" is equal to"pg.QUIT" which makes the program close
             running = False
-        elif event.type == pg.MOUSEBUTTONDOWN:
+        elif event.type == pg.MOUSEBUTTONDOWN and not menu_open:
             x, y = event.pos
             if odd_btn.collidepoint((x, y)):
                 check("Odd")
-            if even_btn.collidepoint((x, y)):
+            elif even_btn.collidepoint((x, y)):
                 check("Even")
-            if menu_box.collidepoint((x, y)):
-                menu_open = not menu_open
+        elif event.type == pg.MOUSEBUTTONDOWN and menu_open:
+            if fullscreen_btn.collidepoint((x, y)):
+                F = not F
+                if F:
+                    pg.display.set_mode((0, 0), pg.FULLSCREEN)
+                else:
+                    pg.display.set_mode((WIDTH, HEIGHT), pg.RESIZABLE)
         #Message and random number update
         elif event.type == pg.USEREVENT + 1:
             message = ""
