@@ -70,9 +70,11 @@ def draw_game():
     even_label = font_small.render("Par (B)", True, BLACK)
     root.blit(odd_label, odd_button.move(25, 10))
     root.blit(even_label, even_button.move(25, 10))
-    menu_btn = font_small.render("MENU", True, WHITE)
-    root.blit(menu_btn, (10, 10))
-    return odd_button, even_button
+    menu_btn = pg.Rect(WIDTH * 0.01 - 20, HEIGHT * 0.01, 80, 40)
+    pg.draw.rect(root, GRAY, menu_btn)
+    menu_btn_label = font_small.render("MENU", True, WHITE)
+    root.blit(menu_btn_label, (10, 10))
+    return odd_button, even_button, menu_btn
 #Menu variable
 menu_width, menu_height, menu_open= 300, 500, False
 def draw_menu():
@@ -113,7 +115,7 @@ def reset_message():
 #loop
 while running:#It starts active by default, since we set it to "True", which makes it run without being explicitly called. Ideal for things that should run continuously. "while" = as long as "running" is True
     WIDTH, HEIGHT = root.get_size()
-    odd_btn, even_btn = draw_game() if not menu_open else (None, None)
+    odd_btn, even_btn, menu_btn = draw_game() if not menu_open else (None, None, None)
     if menu_open:
         fullscreen_btn = draw_menu()
     for event in pg.event.get():#"for event in pg.event.get()""for" = makes it so that for each thing inside "event", which are the events that happen"in" inside "pg.event", Pygame events".get()"
