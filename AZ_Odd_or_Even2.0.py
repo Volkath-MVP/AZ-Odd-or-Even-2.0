@@ -128,6 +128,10 @@ while running:#It starts active by default, since we set it to "True", which mak
                 check("Odd")
             elif even_btn.collidepoint((x, y)):
                 check("Even")
+        elif event.type == pg.MOUSEBUTTONDOWN and not menu_open:
+            x, y = event.pos
+            if menu_btn.collidepoint((x, y)):
+                menu_open = True
         elif event.type == pg.MOUSEBUTTONDOWN and menu_open:
             if fullscreen_btn.collidepoint((x, y)):
                 F = not F
