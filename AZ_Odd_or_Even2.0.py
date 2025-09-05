@@ -79,18 +79,25 @@ def draw_game():
 menu_width, menu_height, menu_open= 300, 500, False
 def draw_menu():
     overlay = pg.Surface((WIDTH, HEIGHT))#Creates a surface with the size (WIDTH, HEIGHT), in this case the same size as the initial screen. From this point on, "overlay" is equal to a surface of size (WIDTH, HEIGHT)
+    #Background
     overlay.set_alpha(200)
     overlay.fill((BLACK))
     root.blit(overlay, (0, 0))
+    #menu background
     menu_box = pg.Rect(WIDTH // 2 - menu_width // 2, HEIGHT // 2 - menu_height // 2, menu_width, menu_height)
     pg.draw.rect(root, GRAY, menu_box)
     menu_text = font_medium.render("Menu", True, WHITE)
     root.blit(menu_text, (menu_box.centerx - menu_text.get_width() // 2, menu_box.top + 20))
-    full_btn = pg.Rect(menu_box.centerx - 100, menu_box.centery - 110, 200, 40)
+    #Menu buttons
+    full_btn = pg.Rect(menu_box.centerx - 100, menu_box.centery - 120, 200, 40)
     pg.draw.rect(root, WHITE, full_btn)
     full_label = font_small.render("Fullscreen", True, BLACK)
     root.blit(full_label, (full_btn.centerx - full_label.get_width() // 2, full_btn.top + 10))
-    return full_btn
+    close_btn = pg.Rect(menu_box.centerx - 100, menu_box.centery - 185, 200, 40)
+    pg.draw.rect(root, RED, close_btn)
+    close_label = font_small.render("Fechar Menu", True, WHITE)
+    root.blit(close_label, (close_btn.centerx - close_label.get_width() // 2, close_btn.top + 10))
+    return full_btn, close_btn
 #random Number Generator
 number=rd.randint(1, 99)
 #Function to update the message after the response
@@ -117,28 +124,33 @@ while running:#It starts active by default, since we set it to "True", which mak
     WIDTH, HEIGHT = root.get_size()
     odd_btn, even_btn, menu_btn = draw_game() if not menu_open else (None, None, None)
     if menu_open:
-        fullscreen_btn = draw_menu()
+        fullscreen_btn, close_btn = draw_menu()
     for event in pg.event.get():#"for event in pg.event.get()""for" = makes it so that for each thing inside "event", which are the events that happen"in" inside "pg.event", Pygame events".get()"
      #to read or search inside pg.event. Pygame stores all user interactions in a list, and pg.event.get() searches for one of those already listed events—in this case, "event"
         if event.type == pg.QUIT:#Here it's to exit the window, so we change running from True to False. if = "event.type" some event from Pygame"==" is equal to"pg.QUIT" which makes the program close
             running = False
+        #Odd and Even buttons
         elif event.type == pg.MOUSEBUTTONDOWN and not menu_open:
             x, y = event.pos
             if odd_btn.collidepoint((x, y)):
                 check("Odd")
             elif even_btn.collidepoint((x, y)):
                 check("Even")
-        elif event.type == pg.MOUSEBUTTONDOWN and not menu_open:
-            x, y = event.pos
+            #Menu botton
             if menu_btn.collidepoint((x, y)):
                 menu_open = True
+        #Menu collision
         elif event.type == pg.MOUSEBUTTONDOWN and menu_open:
+            x, y = event.pos
             if fullscreen_btn.collidepoint((x, y)):
                 F = not F
                 if F:
                     pg.display.set_mode((0, 0), pg.FULLSCREEN)
                 else:
                     pg.display.set_mode((WIDTH, HEIGHT), pg.RESIZABLE)
+            #Close Menu
+            elif close_btn.collidepoint((x, y)):
+                menu_open = False
         #Message and random number update
         elif event.type == pg.USEREVENT + 1:
             message = ""
