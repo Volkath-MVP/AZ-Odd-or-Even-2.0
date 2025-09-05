@@ -21,9 +21,9 @@ font_large = pg.font.SysFont("Arial", 50)
 #variables
 font_small = pg.font.SysFont("Arial", 18)
 odd_button = pg.Rect(500 * 0.25 - 75, 300 * 0.60, 150, 50)
-#
+#Menu variable
 menu_open = False
-F = False
+F = False #Yeah, this is necessary. For fullscreen mode ...this is strange
 #Colors
 WHITE = (255, 255, 255)
 RED = (255, 0, 0)
@@ -33,6 +33,8 @@ GREEN = (0, 255, 0)
 BLACK = (0, 0, 0)
 GRAY = (80, 80, 80)
 running = True
+#score variable
+score = 0
 #Just ignore this...
 #       ⢸⠢⡀                        ⡠⡆
 #       ⢸ ⣈⠢⡀                  ⡠⠊  ⡇
@@ -62,6 +64,10 @@ def draw_game():
 #From here on, it’s the same stuff I’ve already explained.If you want, I can help you turn this into clean bilingual comments for your code — makes it easier to share or document for others. Want me to format it that way?
     result_text = font_large.render(message, True, GREEN if "POWER" in message else RED)
     root.blit(result_text, (WIDTH // 2 - result_text.get_width() // 2, 120))
+    #score
+    ponto = font_medium.render(f"Pontos: {score}", True, WHITE)
+    root.blit(ponto, (WIDTH * 0.90 - ponto.get_width() // 2, HEIGHT * 0.20))
+    #Odd and Even buttons
     odd_button = pg.Rect(WIDTH * 0.25 - 75, HEIGHT * 0.60, 150, 50)
     even_button = pg.Rect(WIDTH * 0.75 - 75, HEIGHT * 0.60, 150, 50)
     pg.draw.rect(root, GREEN, odd_button)
@@ -70,6 +76,7 @@ def draw_game():
     even_label = font_small.render("Par (B)", True, BLACK)
     root.blit(odd_label, odd_button.move(25, 10))
     root.blit(even_label, even_button.move(25, 10))
+    #Open menu
     menu_btn = pg.Rect(WIDTH * 0.01 - 20, HEIGHT * 0.01, 80, 40)
     pg.draw.rect(root, GRAY, menu_btn)
     menu_btn_label = font_small.render("MENU", True, WHITE)
@@ -115,10 +122,18 @@ def check(AZ):
     response = (number % 2 == 0 and AZ == "Even") or (number % 2 != 0 and AZ == "Odd")
     message = "YOU HAVE POWER!" if response else "You need more Energy..."
     pg.time.set_timer(pg.USEREVENT + 1, 800)
+    V(response)
 #reset message function
 def reset_message():
     global message
     message = ""
+#Score function. Starting with the negative situations first... I don’t know, it just feels like it makes more sense :/
+def V(response):
+    global score
+    if response:
+        score += 500
+    else:
+        score -= 800
 #loop
 while running:#It starts active by default, since we set it to "True", which makes it run without being explicitly called. Ideal for things that should run continuously. "while" = as long as "running" is True
     WIDTH, HEIGHT = root.get_size()
