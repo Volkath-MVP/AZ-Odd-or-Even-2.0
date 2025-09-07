@@ -116,6 +116,8 @@ def reset_message():
 def decrease_score():
     global score
     score -= 50
+    if score < 0:
+        score = 0
     if score > 1000:
         score -= 50
     pg.time.set_timer(pg.USEREVENT + 2, 1000)
