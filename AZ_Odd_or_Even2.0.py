@@ -65,7 +65,7 @@ def draw_game():
     result_text = font_large.render(message, True, GREEN if "POWER" in message else RED)
     root.blit(result_text, (WIDTH // 2 - result_text.get_width() // 2, 120))
     #score
-    ponto = font_medium.render(f"Pontos: {score}", True, WHITE)
+    ponto = font_medium.render(f"{score}", True, WHITE)
     root.blit(ponto, (WIDTH * 0.90 - ponto.get_width() // 2, HEIGHT * 0.20))
     #Odd and Even buttons
     odd_button = pg.Rect(WIDTH * 0.25 - 75, HEIGHT * 0.60, 150, 50)
@@ -112,6 +112,14 @@ message = "Where Is Your Motivation?"
 def reset_message():
     global message
     message = ""
+#Function to handle the score—it always decreases by the normal amount, and as you increase your rank, new deductions are added, with more and more amounts being subtracted from your score.
+def decrease_score():
+    global score
+    score -= 50
+    if score > 1000:
+        score -= 50
+    pg.time.set_timer(pg.USEREVENT + 2, 1000)
+pg.time.set_timer(pg.USEREVENT + 2, 1000)#Yes, this's necessary, lol
 #function that refreshes the random number after user input
 def update_number():
     global number
@@ -167,10 +175,13 @@ while running:#It starts active by default, since we set it to "True", which mak
             elif close_btn.collidepoint((x, y)):
                 menu_open = False
         #Message and random number update
-        elif event.type == pg.USEREVENT + 1:
+        if event.type == pg.USEREVENT + 1:
             message = ""
             update_number()
             pg.time.set_timer(pg.USEREVENT + 1, 0)#Cancels this timer until the next correct answer
+        #Insert the decreasing score into the main loop
+        if event.type == pg.USEREVENT + 2:
+            decrease_score()
     pg.display.flip()#When we draw text, buttons, shapes… everything gets placed onto an “invisible screen” (buffer). The flip() flips that screen and displays it to the player—in other words, it renders everything.
     #That’s why we use pg.display.flip() at the end, to show the entire game to the player. 
     #This is part of Pygame—it’s how the library is structured, and it varies a lot depending on which one you’re using. Tkinter, for example, has a completely different structure.
