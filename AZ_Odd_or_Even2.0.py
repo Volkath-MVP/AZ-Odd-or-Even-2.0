@@ -116,10 +116,10 @@ def reset_message():
 def decrease_score():
     global score
     score -= 50
-    if score < 0:
-        score = 0
     if score > 1000:
         score -= 50
+    if score < 0:
+        score = 0
     pg.time.set_timer(pg.USEREVENT + 2, 1000)
 pg.time.set_timer(pg.USEREVENT + 2, 1000)#Yes, this's necessary, lol
 #function that refreshes the random number after user input
@@ -144,6 +144,8 @@ def V(response):
         score += 500
     else:
         score -= 800
+    if score < 0:
+        score = 0
 #loop
 while running:#It starts active by default, since we set it to "True", which makes it run without being explicitly called. Ideal for things that should run continuously. "while" = as long as "running" is True
     WIDTH, HEIGHT = root.get_size()
