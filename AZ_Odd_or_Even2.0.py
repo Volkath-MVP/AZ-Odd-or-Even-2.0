@@ -24,6 +24,15 @@ odd_button = pg.Rect(500 * 0.25 - 75, 300 * 0.60, 150, 50)
 #Menu variable
 menu_open = False
 F = False #Yeah, this is necessary. For fullscreen mode ...this is strange
+#variable rank
+ScoreDrainedRankB = 50
+ScoreDrainedRankS = 50
+ScoreDrainedRankSSS = 100
+RankB=4200
+RankS= 7600
+RankSSS=11600
+#drain speed
+Drain = 800
 #Colors
 WHITE = (255, 255, 255)
 RED = (255, 0, 0)
@@ -116,12 +125,16 @@ def reset_message():
 def decrease_score():
     global score
     score -= 50
-    if score > 1000:
-        score -= 50
+    if score > RankB:
+        score -= ScoreDrainedRankB
+    elif score > RankS:
+        score -= ScoreDrainedRankS
+    elif score > RankSSS:
+        score -= ScoreDrainedRankSSS
     if score < 0:
         score = 0
-    pg.time.set_timer(pg.USEREVENT + 2, 1000)
-pg.time.set_timer(pg.USEREVENT + 2, 1000)#Yes, this's necessary, lol
+    pg.time.set_timer(pg.USEREVENT + 2, Drain)
+pg.time.set_timer(pg.USEREVENT + 2, Drain)#Yes, this's necessary, lol
 #function that refreshes the random number after user input
 def update_number():
     global number
@@ -131,7 +144,7 @@ def check(AZ):
     global number, message
     response = (number % 2 == 0 and AZ == "Even") or (number % 2 != 0 and AZ == "Odd")
     message = "YOU HAVE POWER!" if response else "You need more Energy..."
-    pg.time.set_timer(pg.USEREVENT + 1, 800)
+    pg.time.set_timer(pg.USEREVENT + 1, Drain)
     V(response)
 #reset message function
 def reset_message():
