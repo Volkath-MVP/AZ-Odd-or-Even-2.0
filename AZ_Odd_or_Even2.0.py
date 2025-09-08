@@ -25,12 +25,8 @@ odd_button = pg.Rect(500 * 0.25 - 75, 300 * 0.60, 150, 50)
 menu_open = False
 F = False #Yeah, this is necessary. For fullscreen mode ...this is strange
 #variable rank
-ScoreDrainedRankB = 50
-ScoreDrainedRankS = 50
-ScoreDrainedRankSSS = 100
-RankB=4200
-RankS= 7600
-RankSSS=11600
+Score_Drain = [50,50,100]
+Rank = [4200,7600,11600]
 #drain speed
 Drain = 800
 #Colors
@@ -115,7 +111,7 @@ def draw_menu():
     root.blit(close_label, (close_btn.centerx - close_label.get_width() // 2, close_btn.top + 10))
     return full_btn, close_btn
 #random Number Generator
-number=rd.randint(1, 99)
+number=rd.randint(1, 100)
 #Function to update the message after the response
 message = "Where Is Your Motivation?"
 def reset_message():
@@ -125,12 +121,12 @@ def reset_message():
 def decrease_score():
     global score
     score -= 50
-    if score > RankB:
-        score -= ScoreDrainedRankB
-    elif score > RankS:
-        score -= ScoreDrainedRankS
-    elif score > RankSSS:
-        score -= ScoreDrainedRankSSS
+    if score > Rank[0]:
+        score -= Score_Drain[0]
+    elif score > Rank[1]:
+        score -= Score_Drain[1]
+    elif score > Rank[2]:
+        score -= Score_Drain[2]
     if score < 0:
         score = 0
     pg.time.set_timer(pg.USEREVENT + 2, Drain)
@@ -138,7 +134,7 @@ pg.time.set_timer(pg.USEREVENT + 2, Drain)#Yes, this's necessary, lol
 #function that refreshes the random number after user input
 def update_number():
     global number
-    number=rd.randint(1, 99)
+    number=rd.randint(1, 100)
 #Odd or Even function
 def check(AZ):
     global number, message
