@@ -170,10 +170,26 @@ while running:#It starts active by default, since we set it to "True", which mak
         if event.type == pg.QUIT:#Here it's to exit the window, so we change running from True to False. if = "event.type" some event from Pygame"==" is equal to"pg.QUIT" which makes the program close
             running = False
         #Odd and Even buttons
+        #Odd and Even keyboard
+        elif event.type == pg.KEYDOWN:
+            #Esc opens the menu
+            if event.key == pg.K_ESCAPE:#From this point on, it’s all syntax, so it’s more about researching and positioning these things
+                menu_open = not menu_open
+            #If the menu isn’t open, then the buttons, mouse, and eventually a controller will work
+            if not menu_open:
+                #Odd
+                if event.key == pg.K_a:
+                    check("Odd")
+                #Even
+                elif event.key == pg.K_d:
+                    check("Even")
+        #Odd and Even mouse
         elif event.type == pg.MOUSEBUTTONDOWN and not menu_open:
             x, y = event.pos
+            #Odd
             if odd_btn.collidepoint((x, y)):
                 check("Odd")
+            #Even
             elif even_btn.collidepoint((x, y)):
                 check("Even")
             #Menu botton
