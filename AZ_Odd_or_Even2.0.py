@@ -2,16 +2,20 @@
 #Pygame has features focused on games and also its own graphical interface (I even had to remove Tkinter because of it), and random was just used to create the random number generation system
 import pygame as pg
 import random as rd
+#This's SOOOO boring...
 #init pygame and display
 pg.init()
+#initialize display
 pg.display.init()
+#initialize joystick
+pg.joystick.init()
+#initialize font
+pg.font.init()
 #window width and height
 Init_Width, Init_Height = 1280, 720
 #defining window properties
 root = pg.display.set_mode((Init_Width, Init_Height), pg.RESIZABLE)
 pg.display.set_caption("AZ Odd or Even 2.0")
-#initialize font
-pg.font.init()
 #FPS control
 clock = pg.time.Clock()
 #Font sizes to be used in the game
@@ -155,8 +159,13 @@ def V(response):
         score -= 800
     if score < 0:
         score = 0
+def Joystick_init():
+    if pg.joystick.get_count() > 0:
+        joystick = pg.joystick.Joystick(0)
+        joystick.init()
 #loop
 while running:#It starts active by default, since we set it to "True", which makes it run without being explicitly called. Ideal for things that should run continuously. "while" = as long as "running" is True
+    Joystick_init()
     WIDTH, HEIGHT = root.get_size()
     odd_btn, even_btn, menu_btn = draw_game() if not menu_open else (None, None, None)
     if menu_open:
