@@ -182,16 +182,16 @@ while running:#It starts active by default, since we set it to "True", which mak
         #Odd and Even mouse
         elif event.type == pg.MOUSEBUTTONDOWN and not menu_open:
             x, y = event.pos
+            #Menu botton
+            if menu_btn.collidepoint((x, y)):
+                menu_open = True
             #Odd
             if odd_btn.collidepoint((x, y)):
                 check("Odd")
             #Even
             elif even_btn.collidepoint((x, y)):
                 check("Even")
-            #Menu botton
-            if menu_btn.collidepoint((x, y)):
-                menu_open = True
-        #Menu collision
+        #Menu mouse collision
         elif event.type == pg.MOUSEBUTTONDOWN and menu_open:
             x, y = event.pos
             if fullscreen_btn.collidepoint((x, y)):
@@ -201,15 +201,23 @@ while running:#It starts active by default, since we set it to "True", which mak
                 else:
                     pg.display.set_mode((WIDTH, HEIGHT), pg.RESIZABLE)
             #Close Menu
-            elif close_btn.collidepoint((x, y)):
+            if close_btn.collidepoint((x, y)):
                 menu_open = False
+        if event.type == pg.JOYBUTTONDOWN:
+            if event.button == 7:
+                menu_open = not menu_open
+        if event.type == pg.JOYBUTTONDOWN and not menu_open:
+            if event.button == 2:
+                check("Odd")
+            elif event.button == 1:
+                check("Even")
         #Message and random number update
-        if event.type == pg.USEREVENT + 1:
+        elif event.type == pg.USEREVENT + 1:
             message = ""
             update_number()
             pg.time.set_timer(pg.USEREVENT + 1, 0)#Cancels this timer until the next correct answer
         #Insert the decreasing score into the main loop
-        if event.type == pg.USEREVENT + 2:
+        elif event.type == pg.USEREVENT + 2:
             decrease_score()
     pg.display.flip()#When we draw text, buttons, shapes… everything gets placed onto an “invisible screen” (buffer). The flip() flips that screen and displays it to the player—in other words, it renders everything.
     #That’s why we use pg.display.flip() at the end, to show the entire game to the player. 
