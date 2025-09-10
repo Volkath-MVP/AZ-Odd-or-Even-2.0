@@ -159,19 +159,24 @@ def V(response):
         score -= 800
     if score < 0:
         score = 0
-def Joystick_init():
+def Joystick_Def():
     if pg.joystick.get_count() > 0:
         joystick = pg.joystick.Joystick(0)
         joystick.init()
+        print(f"Controle detectado: {joystick.get_name()}")
 #loop
 while running:#It starts active by default, since we set it to "True", which makes it run without being explicitly called. Ideal for things that should run continuously. "while" = as long as "running" is True
-    Joystick_init()
     WIDTH, HEIGHT = root.get_size()
     odd_btn, even_btn, menu_btn = draw_game() if not menu_open else (None, None, None)
     if menu_open:
         fullscreen_btn, close_btn = draw_menu()
     for event in pg.event.get():#"for event in pg.event.get()""for" = makes it so that for each thing inside "event", which are the events that happen"in" inside "pg.event", Pygame events".get()"
      #to read or search inside pg.event. Pygame stores all user interactions in a list, and pg.event.get() searches for one of those already listed events—in this case, "event"
+        print(event)
+        if event.type == pg.JOYDEVICEADDED:
+            joystick = pg.joystick.Joystick(event.device_index)
+            joystick.init()
+            print(f"Controle inicializado: {joystick.get_name()}")
         if event.type == pg.QUIT:#Here it's to exit the window, so we change running from True to False. if = "event.type" some event from Pygame"==" is equal to"pg.QUIT" which makes the program close
             running = False
         #Odd and Even buttons
@@ -215,11 +220,14 @@ while running:#It starts active by default, since we set it to "True", which mak
         if event.type == pg.JOYBUTTONDOWN:
             if event.button == 7:
                 menu_open = not menu_open
+                print(f"Botão pressionado: {event.button}")
         if event.type == pg.JOYBUTTONDOWN and not menu_open:
             if event.button == 2:
                 check("Odd")
+                print(f"Botão pressionado: {event.button}")
             elif event.button == 1:
                 check("Even")
+                print(f"Botão pressionado: {event.button}")
         #Message and random number update
         elif event.type == pg.USEREVENT + 1:
             message = ""
