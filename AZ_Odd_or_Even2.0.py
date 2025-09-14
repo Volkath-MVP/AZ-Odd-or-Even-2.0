@@ -1,7 +1,8 @@
 #all imports
 #Pygame has features focused on games and also its own graphical interface (I even had to remove Tkinter because of it), and random was just used to create the random number generation system
 import pygame as pg
-import random as rd
+import random as rd #random events
+import threading as tdh #xbox and ps controlers
 #This's SOOOO boring...
 #init pygame and display
 pg.init()
@@ -164,6 +165,8 @@ def Joystick_Def():
         joystick = pg.joystick.Joystick(0)
         joystick.init()
         print(f"Controle detectado: {joystick.get_name()}")
+thread_controle = tdh.Thread(target=Joystick_Def, daemon=True)
+thread_controle.start()
 #loop
 while running:#It starts active by default, since we set it to "True", which makes it run without being explicitly called. Ideal for things that should run continuously. "while" = as long as "running" is True
     WIDTH, HEIGHT = root.get_size()
