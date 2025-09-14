@@ -20,28 +20,24 @@ pg.display.set_caption("AZ Odd or Even 2.0")
 #FPS control
 clock = pg.time.Clock()
 #Font sizes to be used in the game
-font_small = pg.font.SysFont("Arial", 18)
-font_medium = pg.font.SysFont("Arial", 30)
-font_large = pg.font.SysFont("Arial", 50)
+font_sizes = [18, 30, 50]
+font_small = pg.font.SysFont("Arial", font_sizes[0])
+font_medium = pg.font.SysFont("Arial", font_sizes[1])
+font_large = pg.font.SysFont("Arial", font_sizes[2])
 #variables
-font_small = pg.font.SysFont("Arial", 18)
 odd_button = pg.Rect(500 * 0.25 - 75, 300 * 0.60, 150, 50)
 #Menu variable
 menu_open = False
 F = False #Yeah, this is necessary. For fullscreen mode ...this is strange
 #variable rank
-Score_Drain = [50,50,100]
+Score_Drain = [50,100]
 Rank = [4200,7600,11600]
 #drain speed
 Drain = 800
+Drain_time = 800
 #Colors
-WHITE = (255, 255, 255)
-RED = (255, 0, 0)
-BRANCO = (255, 255, 255)
-VERMELHO = (255, 0, 0)
-GREEN = (0, 255, 0)
-BLACK = (0, 0, 0)
-GRAY = (80, 80, 80)
+COLORS = [(80, 80, 80), (0, 255, 0), (255, 0, 0), (0, 0, 0), (255, 255, 255)]
+GRAY, GREEN, RED, BLACK, WHITE= COLORS[0], COLORS[1], COLORS[2], COLORS[3], COLORS[4]
 running = True
 #score variable
 score = 0
@@ -129,13 +125,13 @@ def decrease_score():
     if score > Rank[0]:
         score -= Score_Drain[0]
     elif score > Rank[1]:
-        score -= Score_Drain[1]
+        score -= Score_Drain[0]
     elif score > Rank[2]:
         score -= Score_Drain[2]
     if score < 0:
         score = 0
-    pg.time.set_timer(pg.USEREVENT + 2, Drain)
-pg.time.set_timer(pg.USEREVENT + 2, Drain)#Yes, this's necessary, lol
+    pg.time.set_timer(pg.USEREVENT + 2, Drain_time)
+pg.time.set_timer(pg.USEREVENT + 2, Drain_time)#Yes, this's necessary, lol
 #function that refreshes the random number after user input
 def update_number():
     global number
@@ -145,7 +141,7 @@ def check(AZ):
     global number, message
     response = (number % 2 == 0 and AZ == "Even") or (number % 2 != 0 and AZ == "Odd")
     message = "YOU HAVE POWER!" if response else "You need more Energy..."
-    pg.time.set_timer(pg.USEREVENT + 1, Drain)
+    pg.time.set_timer(pg.USEREVENT + 1, Drain_time)
     V(response)
 #reset message function
 def reset_message():
@@ -157,14 +153,13 @@ def V(response):
     if response:
         score += 500
     else:
-        score -= 800
+        score -= Drain
     if score < 0:
         score = 0
 def Joystick_Def():
     if pg.joystick.get_count() > 0:
         joystick = pg.joystick.Joystick(0)
         joystick.init()
-        print(f"Controle detectado: {joystick.get_name()}")
 thread_controle = tdh.Thread(target=Joystick_Def, daemon=True)
 thread_controle.start()
 #loop
@@ -175,11 +170,9 @@ while running:#It starts active by default, since we set it to "True", which mak
         fullscreen_btn, close_btn = draw_menu()
     for event in pg.event.get():#"for event in pg.event.get()""for" = makes it so that for each thing inside "event", which are the events that happen"in" inside "pg.event", Pygame events".get()"
      #to read or search inside pg.event. Pygame stores all user interactions in a list, and pg.event.get() searches for one of those already listed events—in this case, "event"
-        print(event)
         if event.type == pg.JOYDEVICEADDED:
             joystick = pg.joystick.Joystick(event.device_index)
             joystick.init()
-            print(f"Controle inicializado: {joystick.get_name()}")
         if event.type == pg.QUIT:#Here it's to exit the window, so we change running from True to False. if = "event.type" some event from Pygame"==" is equal to"pg.QUIT" which makes the program close
             running = False
         #Odd and Even buttons
@@ -223,14 +216,11 @@ while running:#It starts active by default, since we set it to "True", which mak
         if event.type == pg.JOYBUTTONDOWN:
             if event.button == 7:
                 menu_open = not menu_open
-                print(f"Botão pressionado: {event.button}")
         if event.type == pg.JOYBUTTONDOWN and not menu_open:
             if event.button == 2:
                 check("Odd")
-                print(f"Botão pressionado: {event.button}")
             elif event.button == 1:
                 check("Even")
-                print(f"Botão pressionado: {event.button}")
         #Message and random number update
         elif event.type == pg.USEREVENT + 1:
             message = ""
