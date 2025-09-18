@@ -30,14 +30,28 @@ odd_button = pg.Rect(500 * 0.25 - 75, 300 * 0.60, 150, 50)
 menu_open = False
 F = False #Yeah, this is necessary. For fullscreen mode ...this is strange
 #variable rank
-Score_Drain = [50,100]
-Rank = [4200,7600,11600]
+ScoreIfMissing = 800
+ScoreDrainedNormal =100
+ScoreDrainedRankB = 50
+ScoreDrainedRankS = 50
+ScoreDrainedRankSSS = 100
+RankD = 1200
+RankC= 2700
+RankB=4200
+RankA = 5900
+RankS= 7600
+RankSS=9600
+RankSSS=11600
 #drain speed
-Drain = 800
 Drain_time = 800
 #Colors
-COLORS = [(80, 80, 80), (0, 255, 0), (255, 0, 0), (0, 0, 0), (255, 255, 255)]
-GRAY, GREEN, RED, BLACK, WHITE= COLORS[0], COLORS[1], COLORS[2], COLORS[3], COLORS[4]
+WHITE = (255, 255, 255)
+RED = (255, 0, 0)
+BRANCO = (255, 255, 255)
+VERMELHO = (255, 0, 0)
+GREEN = (0, 255, 0)
+BLACK = (0, 0, 0)
+GRAY = (80, 80, 80)
 running = True
 #score variable
 score = 0
@@ -121,13 +135,13 @@ def reset_message():
 #Function to handle the score—it always decreases by the normal amount, and as you increase your rank, new deductions are added, with more and more amounts being subtracted from your score.
 def decrease_score():
     global score
-    score -= 50
-    if score > Rank[0]:
-        score -= Score_Drain[0]
-    elif score > Rank[1]:
-        score -= Score_Drain[0]
-    elif score > Rank[2]:
-        score -= Score_Drain[2]
+    score -= ScoreDrainedNormal
+    if score > RankSSS:
+        score -= ScoreDrainedRankSSS
+    elif score > RankS:
+        score -= ScoreDrainedRankS
+    elif score > RankSSS:
+        score -= ScoreDrainedRankSSS
     if score < 0:
         score = 0
     pg.time.set_timer(pg.USEREVENT + 2, Drain_time)
@@ -153,7 +167,7 @@ def V(response):
     if response:
         score += 500
     else:
-        score -= Drain
+        score -= ScoreIfMissing
     if score < 0:
         score = 0
 def Joystick_Def():
