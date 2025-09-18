@@ -96,6 +96,9 @@ def draw_game():
     even_label = font_small.render("Par (B)", True, BLACK)
     root.blit(odd_label, odd_button.move(25, 10))
     root.blit(even_label, even_button.move(25, 10))
+    #Rank message
+    rank_view = font_medium.render(f"{rank_text}", True, WHITE)
+    root.blit(rank_view, (WIDTH * 0.90 - rank_view.get_width() // 2, HEIGHT * 0.14))
     #Open menu
     menu_btn = pg.Rect(WIDTH * 0.01 - 20, HEIGHT * 0.01, 80, 40)
     pg.draw.rect(root, GRAY, menu_btn)
@@ -157,6 +160,7 @@ def check(AZ):
     message = "YOU HAVE POWER!" if response else "You need more Energy..."
     pg.time.set_timer(pg.USEREVENT + 1, Drain_time)
     V(response)
+    update_rank()
 #reset message function
 def reset_message():
     global message
@@ -170,6 +174,26 @@ def V(response):
         score -= ScoreIfMissing
     if score < 0:
         score = 0
+#Função para atualizar rank
+rank_text = ""
+def update_rank():
+    global score, rank_text
+    if score >= RankSSS:
+        rank_text = "SSS"
+    elif score >= RankSS:
+        rank_text = "SS"
+    elif score >= RankS:
+        rank_text = "S"
+    elif score >= RankA:
+        rank_text = "A"
+    elif score>= RankB:
+        rank_text = "B"
+    elif score>= RankC:
+        rank_text = "C"
+    elif score>=RankD:
+        rank_text = "D"
+    else:
+        rank_text = ""
 def Joystick_Def():
     if pg.joystick.get_count() > 0:
         joystick = pg.joystick.Joystick(0)
@@ -240,6 +264,10 @@ while running:#It starts active by default, since we set it to "True", which mak
             message = ""
             update_number()
             pg.time.set_timer(pg.USEREVENT + 1, 0)#Cancels this timer until the next correct answer
+        elif event.type == pg.USEREVENT + 1:
+            rank_text = ""
+            update_rank()
+            pg.time.set_timer(pg.USEREVENT + 1, 0)
         #Insert the decreasing score into the main loop
         elif event.type == pg.USEREVENT + 2:
             decrease_score()
