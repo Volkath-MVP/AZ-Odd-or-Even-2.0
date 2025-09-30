@@ -60,6 +60,7 @@ GRAY = (80, 80, 80)
 running = True
 #score variable
 score = 0
+
 #Just ignore this...
 #       ⢸⠢⡀                        ⡠⡆
 #       ⢸ ⣈⠢⡀                  ⡠⠊  ⡇
@@ -209,6 +210,23 @@ def update_rank():
         rank_text = "D"
     else:
         rank_text = ""
+#Devil Trigger variable
+devil_trigger = 700
+DTactive = False
+def Active_Devil_trigger(response):
+    global devil_trigger
+    if devil_trigger >= 700 and response:
+        devil_trigger += 0
+    elif response and not DTactive:
+        devilTrigger = min(devilTrigger + 50, 700)
+def Drain_devil_trigger():
+    global devil_trigger, DTactive
+    if DTactive:
+        devil_trigger -= 50
+        if devil_trigger <= 0:
+            devil_trigger = 0
+            DTactive = False
+    pg.time.set_timer(pg.USEREVENT + 3, 500)
 def Joystick_Def():
     if pg.joystick.get_count() > 0:
         joystick = pg.joystick.Joystick(0)
@@ -286,6 +304,8 @@ while running:#It starts active by default, since we set it to "True", which mak
         #Insert the decreasing score into the main loop
         elif event.type == pg.USEREVENT + 2:
             decrease_score()
+        elif event.type == pg.USEREVENT + 3:
+            Drain_devil_trigger()
     pg.display.flip()#When we draw text, buttons, shapes… everything gets placed onto an “invisible screen” (buffer). The flip() flips that screen and displays it to the player—in other words, it renders everything.
     #That’s why we use pg.display.flip() at the end, to show the entire game to the player. 
     #This is part of Pygame—it’s how the library is structured, and it varies a lot depending on which one you’re using. Tkinter, for example, has a completely different structure.
