@@ -31,17 +31,22 @@ menu_open = False
 F = False #Yeah, this is necessary. For fullscreen mode ...this is strange
 #variable rank
 ScoreIfMissing = 800
-ScoreDrainedNormal =100
+ScoreDrainedNormal = 40
+ScoreDrainedRankC = 40
 ScoreDrainedRankB = 50
-ScoreDrainedRankS = 50
-ScoreDrainedRankSSS = 100
+ScoreDrainedRankA = 65
+ScoreDrainedRankS = 75
+ScoreDrainedRankSS = 90
+ScoreDrainedRankSSS = 135
+ScoreDrainedRankAZ = 150
 RankD = 1200
-RankC= 2700
-RankB=4200
-RankA = 5900
-RankS= 7600
-RankSS=9600
-RankSSS=11600
+RankC = 3200
+RankB = 5800
+RankA = 8800
+RankS = 11200
+RankSS = 14200
+RankSSS = 17200
+RankAZ = 20000
 #drain speed
 Drain_time = 800
 #Colors
@@ -139,12 +144,20 @@ def reset_message():
 def decrease_score():
     global score
     score -= ScoreDrainedNormal
-    if score > RankSSS:
-        score -= ScoreDrainedRankSSS
+    if score > RankC:
+        score -= ScoreDrainedRankC
+    elif score > RankB:
+        score -= ScoreDrainedRankB
+    elif score > RankA:
+        score -= ScoreDrainedRankA
     elif score > RankS:
         score -= ScoreDrainedRankS
+    elif score > RankSS:
+        score -= ScoreDrainedRankSS
     elif score > RankSSS:
         score -= ScoreDrainedRankSSS
+    elif score > RankAZ:
+        score -= ScoreDrainedRankAZ
     if score < 0:
         score = 0
     pg.time.set_timer(pg.USEREVENT + 2, Drain_time)
@@ -178,6 +191,8 @@ def V(response):
 rank_text = ""
 def update_rank():
     global score, rank_text
+    if score >= RankAZ:
+        rank_text = "AZheaven"
     if score >= RankSSS:
         rank_text = "SSS"
     elif score >= RankSS:
