@@ -57,6 +57,7 @@ VERMELHO = (255, 0, 0)
 GREEN = (0, 255, 0)
 BLACK = (0, 0, 0)
 GRAY = (80, 80, 80)
+PURPLE = (255, 0, 255)
 running = True
 #score variable
 score = 0
@@ -102,6 +103,9 @@ def draw_game():
     even_label = font_small.render("Par (B)", True, BLACK)
     root.blit(odd_label, odd_button.move(25, 10))
     root.blit(even_label, even_button.move(25, 10))
+    #Devil Trigger bar
+    DT = pg.Rect(WIDTH * 0.30 - 75, HEIGHT * 0.90, devil_trigger, 50)
+    pg.draw.rect(root, PURPLE, DT)
     #Rank message
     rank_view = font_medium.render(f"{rank_text}", True, WHITE)
     root.blit(rank_view, (WIDTH * 0.90 - rank_view.get_width() // 2, HEIGHT * 0.14))
