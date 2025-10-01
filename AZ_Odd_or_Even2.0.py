@@ -114,7 +114,7 @@ def draw_game():
     pg.draw.rect(root, GRAY, menu_btn)
     menu_btn_label = font_small.render("MENU", True, WHITE)
     root.blit(menu_btn_label, (10, 10))
-    return odd_button, even_button, menu_btn
+    return odd_button, even_button, menu_btn, DT
 #Menu variable
 menu_width, menu_height, menu_open= 300, 500, False
 def draw_menu():
@@ -176,9 +176,10 @@ def check(AZ):
     global number, message
     response = (number % 2 == 0 and AZ == "Even") or (number % 2 != 0 and AZ == "Odd")
     message = "YOU HAVE POWER!" if response else "You need more Energy..."
-    pg.time.set_timer(pg.USEREVENT + 1, Drain_time)
+    Active_Devil_trigger(response)
     V(response)
     update_rank()
+    pg.time.set_timer(pg.USEREVENT + 1, Drain_time)
 #reset message function
 def reset_message():
     global message
@@ -215,22 +216,24 @@ def update_rank():
     else:
         rank_text = ""
 #Devil Trigger variable
-devil_trigger = 700
+devil_trigger = 0
 DTactive = False
 def Active_Devil_trigger(response):
     global devil_trigger
     if devil_trigger >= 700 and response:
         devil_trigger += 0
+        devil_trigger = 700
     elif response and not DTactive:
-        devilTrigger = min(devilTrigger + 50, 700)
+        devil_trigger += 50
 def Drain_devil_trigger():
     global devil_trigger, DTactive
     if DTactive:
-        devil_trigger -= 50
+        devil_trigger -= 20
         if devil_trigger <= 0:
             devil_trigger = 0
             DTactive = False
     pg.time.set_timer(pg.USEREVENT + 3, 500)
+pg.time.set_timer(pg.USEREVENT + 3, 500)
 def Joystick_Def():
     if pg.joystick.get_count() > 0:
         joystick = pg.joystick.Joystick(0)
@@ -240,7 +243,7 @@ thread_controle.start()
 #loop
 while running:#It starts active by default, since we set it to "True", which makes it run without being explicitly called. Ideal for things that should run continuously. "while" = as long as "running" is True
     WIDTH, HEIGHT = root.get_size()
-    odd_btn, even_btn, menu_btn = draw_game() if not menu_open else (None, None, None)
+    odd_btn, even_btn, menu_btn, DT = draw_game() if not menu_open else (None, None, None, None)
     if menu_open:
         fullscreen_btn, close_btn = draw_menu()
     for event in pg.event.get():#"for event in pg.event.get()""for" = makes it so that for each thing inside "event", which are the events that happen"in" inside "pg.event", Pygame events".get()"
