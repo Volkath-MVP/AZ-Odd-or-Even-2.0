@@ -104,8 +104,13 @@ def draw_game():
     root.blit(odd_label, odd_button.move(25, 10))
     root.blit(even_label, even_button.move(25, 10))
     #Devil Trigger bar
+    Min_DT_Bar_X = WIDTH * 0.30 - 75 + 700 * 0.2857
+    Min_DT_Bar_Y_Start = HEIGHT * 0.90
+    Min_DT_Bar_Y_End = HEIGHT * 0.90 + 40
     DT = pg.Rect(WIDTH * 0.30 - 75, HEIGHT * 0.90, devil_trigger, 50)
     pg.draw.rect(root, PURPLE, DT)
+    Bar_DT_limit = pg.draw.rect(root, GRAY, pg.Rect(WIDTH * 0.30 - 75, HEIGHT * 0.90, 700, 50), 10)
+    Bar_DT_Min = pg.draw.line(root, GRAY, (Min_DT_Bar_X, Min_DT_Bar_Y_Start), (Min_DT_Bar_X, Min_DT_Bar_Y_End), 10)
     #Rank message
     rank_view = font_medium.render(f"{rank_text}", True, WHITE)
     root.blit(rank_view, (WIDTH * 0.90 - rank_view.get_width() // 2, HEIGHT * 0.14))
@@ -114,7 +119,7 @@ def draw_game():
     pg.draw.rect(root, GRAY, menu_btn)
     menu_btn_label = font_small.render("MENU", True, WHITE)
     root.blit(menu_btn_label, (10, 10))
-    return odd_button, even_button, menu_btn, DT
+    return odd_button, even_button, menu_btn, DT, Bar_DT_limit, Bar_DT_Min
 #Menu variable
 menu_width, menu_height, menu_open= 300, 500, False
 def draw_menu():
@@ -243,7 +248,7 @@ thread_controle.start()
 #loop
 while running:#It starts active by default, since we set it to "True", which makes it run without being explicitly called. Ideal for things that should run continuously. "while" = as long as "running" is True
     WIDTH, HEIGHT = root.get_size()
-    odd_btn, even_btn, menu_btn, DT = draw_game() if not menu_open else (None, None, None, None)
+    odd_btn, even_btn, menu_btn, DT, Bar_DT_limit, Bar_DT_Min = draw_game() if not menu_open else (None, None, None, None, None, None)
     if menu_open:
         fullscreen_btn, close_btn = draw_menu()
     for event in pg.event.get():#"for event in pg.event.get()""for" = makes it so that for each thing inside "event", which are the events that happen"in" inside "pg.event", Pygame events".get()"
