@@ -48,7 +48,7 @@ RankSS = 14200
 RankSSS = 17200
 RankAZ = 20000
 #drain speed
-Drain_time = 600
+Drain_time = 500
 #Devil Trigger variable
 devil_trigger = 0
 DTactive = False
@@ -227,24 +227,20 @@ def update_rank():
         rank_text = ""
 def Points_Devil_trigger(response):
     global devil_trigger
-    if devil_trigger >= 700 and response and DTactive:
+    if devil_trigger >= 700 and response and not DTactive or devil_trigger >= 700 and response and DTactive:
         devil_trigger += 0
         devil_trigger = 700
     elif response and not DTactive:
-        devil_trigger += 50
+        devil_trigger += 20
 def Drain_devil_trigger():
     global devil_trigger, DTactive
     if DTactive:
-        devil_trigger -= 20
+        devil_trigger -= 50
         if devil_trigger <= 0:
             devil_trigger = 0
             DTactive = False
     pg.time.set_timer(pg.USEREVENT + 3, Drain_time)
 pg.time.set_timer(pg.USEREVENT + 3, Drain_time)
-def Active_Devil_Trigger():
-    global DTactive, devil_trigger
-    if devil_trigger >= 200:
-        DTactive = True
 def Joystick_Def():
     if pg.joystick.get_count() > 0:
         joystick = pg.joystick.Joystick(0)
@@ -278,8 +274,10 @@ while running:#It starts active by default, since we set it to "True", which mak
                 #Even
                 elif event.key == pg.K_d:
                     check("Even")
-                elif event.key == pg.K_SPACE:
-                    Active_Devil_Trigger()
+                elif event.key == pg.K_SPACE and devil_trigger >= 200 and not DTactive:
+                    DTactive = True
+                elif event.key == pg.K_SPACE and DTactive:
+                    DTactive = False
         #Odd and Even mouse
         elif event.type == pg.MOUSEBUTTONDOWN and not menu_open:
             x, y = event.pos
