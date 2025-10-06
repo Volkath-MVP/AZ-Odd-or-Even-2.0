@@ -32,8 +32,8 @@ F = False #Yeah, this is necessary. For fullscreen mode ...this is strange
 #variable rank
 ScoreIfMissing = 800
 ScoreDrainedNormal = 40
-ScoreDrainedRankC = 40
-ScoreDrainedRankB = 50
+ScoreDrainedRankC = 45
+ScoreDrainedRankB = 53
 ScoreDrainedRankA = 65
 ScoreDrainedRankS = 75
 ScoreDrainedRankSS = 90
@@ -48,7 +48,10 @@ RankSS = 14200
 RankSSS = 17200
 RankAZ = 20000
 #drain speed
-Drain_time = 800
+Drain_time = 600
+#Devil Trigger variable
+devil_trigger = 0
+DTactive = False
 #Colors
 WHITE = (255, 255, 255)
 RED = (255, 0, 0)
@@ -156,17 +159,17 @@ def decrease_score():
     score -= ScoreDrainedNormal
     if score > RankC:
         score -= ScoreDrainedRankC
-    elif score > RankB:
+    elif score >= RankB:
         score -= ScoreDrainedRankB
-    elif score > RankA:
+    elif score >= RankA:
         score -= ScoreDrainedRankA
-    elif score > RankS:
+    elif score >= RankS:
         score -= ScoreDrainedRankS
-    elif score > RankSS:
+    elif score >= RankSS:
         score -= ScoreDrainedRankSS
-    elif score > RankSSS:
+    elif score >= RankSSS:
         score -= ScoreDrainedRankSSS
-    elif score > RankAZ:
+    elif score >= RankAZ:
         score -= ScoreDrainedRankAZ
     if score < 0:
         score = 0
@@ -204,7 +207,7 @@ def update_rank():
     global score, rank_text
     if score >= RankAZ:
         rank_text = "AZheaven"
-    if score >= RankSSS:
+    elif score >= RankSSS:
         rank_text = "SSS"
     elif score >= RankSS:
         rank_text = "SS"
@@ -220,9 +223,6 @@ def update_rank():
         rank_text = "D"
     else:
         rank_text = ""
-#Devil Trigger variable
-devil_trigger = 0
-DTactive = False
 def Active_Devil_trigger(response):
     global devil_trigger
     if devil_trigger >= 700 and response:
@@ -237,8 +237,8 @@ def Drain_devil_trigger():
         if devil_trigger <= 0:
             devil_trigger = 0
             DTactive = False
-    pg.time.set_timer(pg.USEREVENT + 3, 500)
-pg.time.set_timer(pg.USEREVENT + 3, 500)
+    pg.time.set_timer(pg.USEREVENT + 3, Drain_time)
+pg.time.set_timer(pg.USEREVENT + 3, Drain_time)
 def Joystick_Def():
     if pg.joystick.get_count() > 0:
         joystick = pg.joystick.Joystick(0)
@@ -272,6 +272,8 @@ while running:#It starts active by default, since we set it to "True", which mak
                 #Even
                 elif event.key == pg.K_d:
                     check("Even")
+                elif event.key == pg.K_SPACE:
+                    DTactive = True
         #Odd and Even mouse
         elif event.type == pg.MOUSEBUTTONDOWN and not menu_open:
             x, y = event.pos
