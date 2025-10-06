@@ -184,7 +184,7 @@ def check(AZ):
     global number, message
     response = (number % 2 == 0 and AZ == "Even") or (number % 2 != 0 and AZ == "Odd")
     message = "YOU HAVE POWER!" if response else "You need more Energy..."
-    Active_Devil_trigger(response)
+    Points_Devil_trigger(response)
     V(response)
     update_rank()
     pg.time.set_timer(pg.USEREVENT + 1, Drain_time)
@@ -195,7 +195,9 @@ def reset_message():
 #Score function. Starting with the negative situations first... I don’t know, it just feels like it makes more sense :/
 def V(response):
     global score
-    if response:
+    if response and DTactive:
+        score += 700
+    elif response and not DTactive:
         score += 500
     else:
         score -= ScoreIfMissing
@@ -223,9 +225,9 @@ def update_rank():
         rank_text = "D"
     else:
         rank_text = ""
-def Active_Devil_trigger(response):
+def Points_Devil_trigger(response):
     global devil_trigger
-    if devil_trigger >= 700 and response:
+    if devil_trigger >= 700 and response and DTactive:
         devil_trigger += 0
         devil_trigger = 700
     elif response and not DTactive:
@@ -239,6 +241,10 @@ def Drain_devil_trigger():
             DTactive = False
     pg.time.set_timer(pg.USEREVENT + 3, Drain_time)
 pg.time.set_timer(pg.USEREVENT + 3, Drain_time)
+def Active_Devil_Trigger():
+    global DTactive, devil_trigger
+    if devil_trigger >= 200:
+        DTactive = True
 def Joystick_Def():
     if pg.joystick.get_count() > 0:
         joystick = pg.joystick.Joystick(0)
@@ -273,7 +279,7 @@ while running:#It starts active by default, since we set it to "True", which mak
                 elif event.key == pg.K_d:
                     check("Even")
                 elif event.key == pg.K_SPACE:
-                    DTactive = True
+                    Active_Devil_Trigger()
         #Odd and Even mouse
         elif event.type == pg.MOUSEBUTTONDOWN and not menu_open:
             x, y = event.pos
