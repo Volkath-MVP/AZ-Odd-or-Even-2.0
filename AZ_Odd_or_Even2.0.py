@@ -19,9 +19,9 @@ Init_Width, Init_Height = 1280, 720
 img_path = os.path.join("Backgrounds", "dante_4k.jpg")
 #Musics
 music_path = os.path.join("Musics", "Devil_May_Cry 5_Subhuman_[EPIC METAL COVER]_(Little V).mp3")
-#pg.mixer.init()
-#pg.mixer.music.load(music_path)
-#pg.mixer.music.play(-1)
+pg.mixer.init()
+pg.mixer.music.load(music_path)
+pg.mixer.music.play(-1)
 #defining window properties
 root = pg.display.set_mode((Init_Width, Init_Height), pg.RESIZABLE)
 pg.display.set_caption("AZ Odd or Even 2.0")
