@@ -3,6 +3,7 @@
 import pygame as pg
 import random as rd #random events
 import threading as tdh #xbox and ps controlers
+import os
 #This's SOOOO boring...
 #init pygame and display
 pg.init()
@@ -14,11 +15,22 @@ pg.joystick.init()
 pg.font.init()
 #window width and height
 Init_Width, Init_Height = 1280, 720
+#Backgrounds
+img_path = os.path.join("Backgrounds", "dante_4k.jpg")
+#Musics
+music_path = os.path.join("Musics", "Devil_May_Cry 5_Subhuman_[EPIC METAL COVER]_(Little V).mp3")
+#pg.mixer.init()
+#pg.mixer.music.load(music_path)
+#pg.mixer.music.play(-1)
 #defining window properties
 root = pg.display.set_mode((Init_Width, Init_Height), pg.RESIZABLE)
 pg.display.set_caption("AZ Odd or Even 2.0")
 #FPS control
 clock = pg.time.Clock()
+#random Number Generator
+number=rd.randint(1, 100)
+#Function to update the message after the response
+message = "Where Is Your Motivation?"
 #Font sizes to be used in the game
 font_sizes = [18, 30, 50]
 font_small = pg.font.SysFont("Arial", font_sizes[0])
@@ -32,13 +44,13 @@ F = False #Yeah, this is necessary. For fullscreen mode ...this is strange
 #variable rank
 ScoreIfMissing = 800
 ScoreDrainedNormal = 40
-ScoreDrainedRankC = 45
-ScoreDrainedRankB = 53
-ScoreDrainedRankA = 65
-ScoreDrainedRankS = 75
-ScoreDrainedRankSS = 90
-ScoreDrainedRankSSS = 135
-ScoreDrainedRankAZ = 150
+ScoreDrainedRankC = 50
+ScoreDrainedRankB = 60
+ScoreDrainedRankA = 70
+ScoreDrainedRankS = 80
+ScoreDrainedRankSS = 100
+ScoreDrainedRankSSS = 160
+ScoreDrainedRankAZ = 200
 RankD = 1200
 RankC = 3200
 RankB = 5800
@@ -48,7 +60,7 @@ RankSS = 14200
 RankSSS = 17200
 RankAZ = 20000
 #drain speed
-Drain_time = 500
+Drain_time = 300
 #Devil Trigger variable
 devil_trigger = 0
 DTactive = False
@@ -64,7 +76,9 @@ PURPLE = (255, 0, 255)
 running = True
 #score variable
 score = 0
-
+rank_text = ""
+#Menu variable
+menu_width, menu_height, menu_open= 300, 500, False
 #Just ignore this...
 #       ⢸⠢⡀                        ⡠⡆
 #       ⢸ ⣈⠢⡀                  ⡠⠊  ⡇
@@ -79,12 +93,18 @@ score = 0
 #         ⢀⡈⠙⢅    ⠉⢹⣿⣿⣷⣿⣷⣿⣿⣿⣇⡀⢀⠜⡔⠁
 #         ⢸⣿⡦  ⠑⠒⢾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡟⠁⣔⠕⢊⠆
 #         ⠈⠙⠿⣦⣤⣤⣾⣿⣿⡿⠁    ⠑⢌⡻⣿⣿⣦⠤⠔⠁
-#Function to draw all game interfaces
+#Function to draw all game interfaces 
 def draw_game():
     #draw background and button
     root.fill(BLACK) #I set the background color. In the future, I’ll add an image—but that’s only for version 3.0. For now, we’re still on version 2.0.
-    pergunta = font_medium.render(f"O número {number} é Ímpar ou Par?", True, WHITE)
-    root.blit(pergunta, (WIDTH // 2 - pergunta.get_width() // 2, 50))#To draw, we need the surface (the window or the background of things—this is everywhere in this program and in all others that exist).
+    background = pg.image.load(img_path)
+    background = pg.transform.scale(background, (WIDTH, HEIGHT))
+    root.blit(background, (0, 0))
+    #Label, question background, and overall background
+    pergunta_label = font_medium.render(f"O número {number} é Ímpar ou Par?", True, RED)
+    result_text = font_large.render(message, True, GREEN if "POWER" in message else RED)
+    root.blit(result_text, (WIDTH // 2 - result_text.get_width() // 2, 120))
+    root.blit(pergunta_label, (WIDTH // 2 - pergunta_label.get_width() // 2, 50))#To draw, we need the surface (the window or the background of things—this is everywhere in this program and in all others that exist).
 #We already created the surface with the root (up there). The ".blit" draws another surface on top of whichever one we choose—in this case, "root". That’s where we place the phrase stored in the variable "pergunta". Now comes the interesting part:
 #root.blit(pergunta, (WIDTH // 2 - pergunta.get_width() // 2, 50)) — inside the parentheses "(pergunta, (WIDTH // 2 - pergunta.get_width() // 2, 50))", the first part defines what goes inside: the content (pergunta)...
 #...and the position of that pergunta (WIDTH // 2 - pergunta.get_width() // 2, 50) is the second part. We could write "(pergunta, (50, 50))" — that would place it 50 pixels down and 50 pixels across, meaning we can position it...
@@ -92,18 +112,25 @@ def draw_game():
 #...would make it not appear centered since it takes up space. So we use "- pergunta.get_width() // 2" — that gets (.get) the width (_width) of pergunta (the "()" after width refers to pergunta) and subtracts it
 #from the root’s width, placing it in the center. The ", 50" is the height… that’s it. We could’ve done the same thing for height, but it wasn’t necessary in this case.
 #From here on, it’s the same stuff I’ve already explained.If you want, I can help you turn this into clean bilingual comments for your code — makes it easier to share or document for others. Want me to format it that way?
-    result_text = font_large.render(message, True, GREEN if "POWER" in message else RED)
-    root.blit(result_text, (WIDTH // 2 - result_text.get_width() // 2, 120))
+    pergunta_x = WIDTH // 2 - pergunta_label.get_width() // 2
+    pergunta_y = 50
+    pergunta_background = pg.Rect(pergunta_x -10, pergunta_y -5, pergunta_label.get_width() + 20, pergunta_label.get_height() + 10)
+    pg.draw.rect(root, BLACK, pergunta_background)
+    root.blit(pergunta_label, (pergunta_x, pergunta_y))
     #score
     ponto = font_medium.render(f"{score}", True, WHITE)
     root.blit(ponto, (WIDTH * 0.90 - ponto.get_width() // 2, HEIGHT * 0.20))
     #Odd and Even buttons
-    odd_button = pg.Rect(WIDTH * 0.25 - 75, HEIGHT * 0.60, 150, 50)
-    even_button = pg.Rect(WIDTH * 0.75 - 75, HEIGHT * 0.60, 150, 50)
-    pg.draw.rect(root, GREEN, odd_button)
-    pg.draw.rect(root, GREEN, even_button)
-    odd_label = font_small.render("Impar (X)", True, BLACK)
-    even_label = font_small.render("Par (B)", True, BLACK)
+    odd_x = WIDTH // 3 - HEIGHT // 6
+    odd_y = HEIGHT // 1.7
+    odd_button = pg.Rect(odd_x, odd_y, 130, 50)
+    even_x = WIDTH // 1.3 - HEIGHT // 6
+    even_y = HEIGHT // 1.7
+    even_button = pg.Rect(even_x, even_y, 130, 50)
+    pg.draw.rect(root, RED, odd_button)
+    pg.draw.rect(root, RED, even_button)
+    odd_label = font_small.render("Impar (X)", True, WHITE)
+    even_label = font_small.render("Par (B)", True, WHITE)
     root.blit(odd_label, odd_button.move(25, 10))
     root.blit(even_label, even_button.move(25, 10))
     #Devil Trigger bar
@@ -123,8 +150,6 @@ def draw_game():
     menu_btn_label = font_small.render("MENU", True, WHITE)
     root.blit(menu_btn_label, (10, 10))
     return odd_button, even_button, menu_btn, DT, Bar_DT_limit, Bar_DT_Min
-#Menu variable
-menu_width, menu_height, menu_open= 300, 500, False
 def draw_menu():
     overlay = pg.Surface((WIDTH, HEIGHT))#Creates a surface with the size (WIDTH, HEIGHT), in this case the same size as the initial screen. From this point on, "overlay" is equal to a surface of size (WIDTH, HEIGHT)
     #Background
@@ -146,10 +171,6 @@ def draw_menu():
     close_label = font_small.render("Fechar Menu", True, WHITE)
     root.blit(close_label, (close_btn.centerx - close_label.get_width() // 2, close_btn.top + 10))
     return full_btn, close_btn
-#random Number Generator
-number=rd.randint(1, 100)
-#Function to update the message after the response
-message = "Where Is Your Motivation?"
 def reset_message():
     global message
     message = ""
@@ -196,19 +217,18 @@ def reset_message():
 def V(response):
     global score
     if response and DTactive:
-        score += 700
+        score += 800
     elif response and not DTactive:
         score += 500
     else:
         score -= ScoreIfMissing
     if score < 0:
         score = 0
-#Função para atualizar rank
-rank_text = ""
+#Function to update rank
 def update_rank():
     global score, rank_text
     if score >= RankAZ:
-        rank_text = "AZheaven"
+        rank_text = "AZHEAVEN"
     elif score >= RankSSS:
         rank_text = "SSS"
     elif score >= RankSS:
@@ -235,7 +255,7 @@ def Points_Devil_trigger(response):
 def Drain_devil_trigger():
     global devil_trigger, DTactive
     if DTactive:
-        devil_trigger -= 50
+        devil_trigger -= 40
         if devil_trigger <= 0:
             devil_trigger = 0
             DTactive = False
@@ -250,7 +270,9 @@ thread_controle.start()
 #loop
 while running:#It starts active by default, since we set it to "True", which makes it run without being explicitly called. Ideal for things that should run continuously. "while" = as long as "running" is True
     WIDTH, HEIGHT = root.get_size()
+    update_rank()
     odd_btn, even_btn, menu_btn, DT, Bar_DT_limit, Bar_DT_Min = draw_game() if not menu_open else (None, None, None, None, None, None)
+    #print(event)
     if menu_open:
         fullscreen_btn, close_btn = draw_menu()
     for event in pg.event.get():#"for event in pg.event.get()""for" = makes it so that for each thing inside "event", which are the events that happen"in" inside "pg.event", Pygame events".get()"
@@ -258,6 +280,7 @@ while running:#It starts active by default, since we set it to "True", which mak
         if event.type == pg.JOYDEVICEADDED:
             joystick = pg.joystick.Joystick(event.device_index)
             joystick.init()
+            print(joystick)
         if event.type == pg.QUIT:#Here it's to exit the window, so we change running from True to False. if = "event.type" some event from Pygame"==" is equal to"pg.QUIT" which makes the program close
             running = False
         #Odd and Even buttons
@@ -315,10 +338,6 @@ while running:#It starts active by default, since we set it to "True", which mak
             message = ""
             update_number()
             pg.time.set_timer(pg.USEREVENT + 1, 0)#Cancels this timer until the next correct answer
-        elif event.type == pg.USEREVENT + 1:
-            rank_text = ""
-            update_rank()
-            pg.time.set_timer(pg.USEREVENT + 1, 0)
         #Insert the decreasing score into the main loop
         elif event.type == pg.USEREVENT + 2:
             decrease_score()
