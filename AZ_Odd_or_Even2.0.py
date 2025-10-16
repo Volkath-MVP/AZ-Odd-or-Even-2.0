@@ -18,10 +18,10 @@ Init_Width, Init_Height = 1280, 720
 #Backgrounds
 img_path = os.path.join("Backgrounds", "dante_4k.jpg")
 #Musics
-music_path = os.path.join("Musics", "Devil_May_Cry 5_Subhuman_[EPIC METAL COVER]_(Little V).mp3")
-pg.mixer.init()
-pg.mixer.music.load(music_path)
-pg.mixer.music.play(-1)
+#music_path = os.path.join("Musics", "Devil_May_Cry 5_Subhuman_[EPIC METAL COVER]_(Little V).mp3")
+#pg.mixer.init()
+#pg.mixer.music.load(music_path)
+#pg.mixer.music.play(-1)
 #defining window properties
 root = pg.display.set_mode((Init_Width, Init_Height), pg.RESIZABLE)
 pg.display.set_caption("AZ Odd or Even 2.0")
@@ -32,15 +32,18 @@ number=rd.randint(1, 100)
 #Function to update the message after the response
 message = "Where Is Your Motivation?"
 #Font sizes to be used in the game
-font_sizes = [18, 30, 50]
+font_sizes = [18, 30, 50, 70]
 font_small = pg.font.SysFont("Arial", font_sizes[0])
 font_medium = pg.font.SysFont("Arial", font_sizes[1])
 font_large = pg.font.SysFont("Arial", font_sizes[2])
+font_very_large = pg.font.SysFont("Arial", font_sizes[3])
 #variables
 odd_button = pg.Rect(500 * 0.25 - 75, 300 * 0.60, 150, 50)
 #Menu variable
 menu_open = False
 F = False #Yeah, this is necessary. For fullscreen mode ...this is strange
+menu_width, menu_height, menu_open= 300, 500, False
+game_state = "main_menu"
 #variable rank
 ScoreIfMissing = 800
 ScoreDrainedNormal = 40
@@ -77,8 +80,6 @@ running = True
 #score variable
 score = 0
 rank_text = ""
-#Menu variable
-menu_width, menu_height, menu_open= 300, 500, False
 #Just ignore this...
 #       ⢸⠢⡀                        ⡠⡆
 #       ⢸ ⣈⠢⡀                  ⡠⠊  ⡇
@@ -96,7 +97,7 @@ menu_width, menu_height, menu_open= 300, 500, False
 #Function to draw all game interfaces 
 def draw_game():
     #draw background and button
-    root.fill(BLACK) #I set the background color. In the future, I’ll add an image—but that’s only for version 3.0. For now, we’re still on version 2.0.
+    #root.fill(BLACK) #I set the background color. In the future, I’ll add an image—but that’s only for version 3.0. For now, we’re still on version 2.0.
     background = pg.image.load(img_path)
     background = pg.transform.scale(background, (WIDTH, HEIGHT))
     root.blit(background, (0, 0))
@@ -150,6 +151,19 @@ def draw_game():
     menu_btn_label = font_small.render("MENU", True, WHITE)
     root.blit(menu_btn_label, (10, 10))
     return odd_button, even_button, menu_btn, DT, Bar_DT_limit, Bar_DT_Min
+def draw_main_menu():
+    root.fill(BLACK)
+    title_position_X = WIDTH * 0.36
+    title_height_position_Y = HEIGHT * 0.10
+    title = font_very_large.render("AZ Odd or Even", True, RED)
+    root.blit(title, (title_position_X, title_height_position_Y))
+    main_menu_box_width = 400
+    main_menu_box_height = 500
+    main_menu_box_position_X = WIDTH * 0.36
+    main_menu_box_position_Y = HEIGHT * 0.25
+    main_menu_box = pg.Rect(main_menu_box_position_X, main_menu_box_position_Y, main_menu_box_width, main_menu_box_height)
+    pg.draw.rect(root, GRAY, main_menu_box)
+    theme_button = None
 def draw_menu():
     overlay = pg.Surface((WIDTH, HEIGHT))#Creates a surface with the size (WIDTH, HEIGHT), in this case the same size as the initial screen. From this point on, "overlay" is equal to a surface of size (WIDTH, HEIGHT)
     #Background
@@ -267,13 +281,24 @@ def Joystick_Def():
         joystick.init()
 thread_controle = tdh.Thread(target=Joystick_Def, daemon=True)
 thread_controle.start()
+#def game_drawings():
+#    if game_state == "game_start":
+#        odd_btn, even_btn, menu_btn, DT, Bar_DT_limit, Bar_DT_Min = draw_game()
+#    elif game_state == "game_menu": 
+#        (None, None, None, None, None, None)
 #loop
 while running:#It starts active by default, since we set it to "True", which makes it run without being explicitly called. Ideal for things that should run continuously. "while" = as long as "running" is True
     WIDTH, HEIGHT = root.get_size()
     update_rank()
-    odd_btn, even_btn, menu_btn, DT, Bar_DT_limit, Bar_DT_Min = draw_game() if not menu_open else (None, None, None, None, None, None)
+    #game_drawings()
+    if game_state == "main_menu":
+        draw_main_menu()
+    elif game_state == "game_start":
+       odd_btn, even_btn, menu_btn, DT, Bar_DT_limit, Bar_DT_Min = draw_game()
+    elif game_state == "game_menu": 
+        (None, None, None, None, None, None)
     #print(event)
-    if menu_open:
+    if game_state == "game_menu":
         fullscreen_btn, close_btn = draw_menu()
     for event in pg.event.get():#"for event in pg.event.get()""for" = makes it so that for each thing inside "event", which are the events that happen"in" inside "pg.event", Pygame events".get()"
      #to read or search inside pg.event. Pygame stores all user interactions in a list, and pg.event.get() searches for one of those already listed events—in this case, "event"
@@ -288,9 +313,9 @@ while running:#It starts active by default, since we set it to "True", which mak
         elif event.type == pg.KEYDOWN:
             #Esc opens the menu
             if event.key == pg.K_ESCAPE:#From this point on, it’s all syntax, so it’s more about researching and positioning these things
-                menu_open = not menu_open
+                game_state = "game_menu"
             #If the menu isn’t open, then the buttons, mouse, and eventually a controller will work
-            if not menu_open:
+            if game_state == "game_start":
                 #Odd
                 if event.key == pg.K_a:
                     check("Odd")
