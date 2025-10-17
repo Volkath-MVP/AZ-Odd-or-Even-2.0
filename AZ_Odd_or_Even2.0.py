@@ -14,7 +14,7 @@ pg.joystick.init()
 #initialize font
 pg.font.init()
 #window width and height
-Init_Width, Init_Height = 1280, 720
+Init_Width, Init_Height = 1000, 800
 #Backgrounds
 img_path = os.path.join("Backgrounds", "dante_4k.jpg")
 #Musics
@@ -153,17 +153,42 @@ def draw_game():
     return odd_button, even_button, menu_btn, DT, Bar_DT_limit, Bar_DT_Min
 def draw_main_menu():
     root.fill(BLACK)
-    title_position_X = WIDTH * 0.36
-    title_height_position_Y = HEIGHT * 0.10
-    title = font_very_large.render("AZ Odd or Even", True, RED)
-    root.blit(title, (title_position_X, title_height_position_Y))
-    main_menu_box_width = 400
-    main_menu_box_height = 500
-    main_menu_box_position_X = WIDTH * 0.36
-    main_menu_box_position_Y = HEIGHT * 0.25
-    main_menu_box = pg.Rect(main_menu_box_position_X, main_menu_box_position_Y, main_menu_box_width, main_menu_box_height)
-    pg.draw.rect(root, GRAY, main_menu_box)
-    theme_button = None
+    #Title
+    title_label = font_very_large.render("AZ Odd or Even", True, RED)
+    #Title position
+    title_assistant_position_X = WIDTH // 2
+    title_height_assistant_position_Y = HEIGHT * 0.1
+    title_position_X = title_assistant_position_X - title_label.get_width() // 2
+    title_height_position_Y = title_height_assistant_position_Y - title_label.get_height() // 2
+    #Title draw
+    root.blit(title_label, (title_position_X, title_height_position_Y))
+    #Theme
+    theme_label = font_medium.render("Temas", True, WHITE)
+    #Theme position
+    theme_position_assistant_X = WIDTH // 2
+    theme_position_assistant_Y = HEIGHT * 0.4
+    theme_button_position_X = theme_position_assistant_X - theme_label.get_width() // 2
+    theme_button_position_Y = theme_position_assistant_Y - theme_label.get_height() // 2
+    #Theme draw
+    root.blit(theme_label, (theme_button_position_X, theme_button_position_Y))
+    #Configuration
+    configuration_label = font_medium.render("Configurações", True, WHITE)
+    #Configuration position
+    configuration_position_assistant_X = WIDTH // 2
+    configuration_position_assistant_Y = HEIGHT * 0.5
+    configuration_button_position_X = configuration_position_assistant_X - configuration_label.get_width() // 2
+    configuration_button_position_Y = configuration_position_assistant_Y - configuration_label.get_height() // 2
+    #Configuration draw
+    root.blit(configuration_label, (configuration_button_position_X, configuration_button_position_Y))
+    #Exit
+    exit_label = font_medium.render("Sair", True, WHITE)
+    #Exit position
+    exit_position_assistant_X = WIDTH // 2
+    exit_position_assistant_Y = HEIGHT * 0.6
+    exit_button_position_X = exit_position_assistant_X - exit_label.get_width() // 2
+    exit_button_position_Y = exit_position_assistant_Y - exit_label.get_height() // 2
+    #Exit draw
+    root.blit(exit_label, (exit_button_position_X, exit_button_position_Y))
 def draw_menu():
     overlay = pg.Surface((WIDTH, HEIGHT))#Creates a surface with the size (WIDTH, HEIGHT), in this case the same size as the initial screen. From this point on, "overlay" is equal to a surface of size (WIDTH, HEIGHT)
     #Background
@@ -281,7 +306,7 @@ def Joystick_Def():
         joystick.init()
 thread_controle = tdh.Thread(target=Joystick_Def, daemon=True)
 thread_controle.start()
-#def game_drawings():
+# def game_drawings():
 #    if game_state == "game_start":
 #        odd_btn, even_btn, menu_btn, DT, Bar_DT_limit, Bar_DT_Min = draw_game()
 #    elif game_state == "game_menu": 
