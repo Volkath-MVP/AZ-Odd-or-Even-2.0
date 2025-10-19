@@ -32,13 +32,10 @@ number=rd.randint(1, 100)
 #Function to update the message after the response
 message = "Where Is Your Motivation?"
 #Font sizes to be used in the game
-font_sizes = [18, 30, 50, 70]
-font_small = pg.font.SysFont("Arial", font_sizes[0])
-font_medium = pg.font.SysFont("Arial", font_sizes[1])
-font_large = pg.font.SysFont("Arial", font_sizes[2])
-font_very_large = pg.font.SysFont("Arial", font_sizes[3])
-#variables
-odd_button = pg.Rect(500 * 0.25 - 75, 300 * 0.60, 150, 50)
+font_small = pg.font.SysFont("Arial", 18)
+font_medium = pg.font.SysFont("Arial", 30)
+font_large = pg.font.SysFont("Arial", 50)
+font_very_large = pg.font.SysFont("Arial", 70)
 #Menu variable
 menu_open = False
 F = False #Yeah, this is necessary. For fullscreen mode ...this is strange
@@ -146,11 +143,11 @@ def draw_game():
     rank_view = font_medium.render(f"{rank_text}", True, WHITE)
     root.blit(rank_view, (WIDTH * 0.90 - rank_view.get_width() // 2, HEIGHT * 0.14))
     #Open menu
-    menu_btn = pg.Rect(WIDTH * 0.01 - 20, HEIGHT * 0.01, 80, 40)
-    pg.draw.rect(root, GRAY, menu_btn)
-    menu_btn_label = font_small.render("MENU", True, WHITE)
-    root.blit(menu_btn_label, (10, 10))
-    return odd_button, even_button, menu_btn, DT, Bar_DT_limit, Bar_DT_Min
+    menu_button = pg.Rect(WIDTH * 0.01 - 20, HEIGHT * 0.01, 80, 40)
+    pg.draw.rect(root, GRAY, menu_button)
+    menu_button_label = font_small.render("MENU", True, WHITE)
+    root.blit(menu_button_label, (10, 10))
+    return odd_button, even_button, menu_button, DT, Bar_DT_limit, Bar_DT_Min
 def draw_main_menu():
     root.fill(BLACK)
     #Title
@@ -169,6 +166,7 @@ def draw_main_menu():
     theme_position_assistant_Y = HEIGHT * 0.4
     theme_button_position_X = theme_position_assistant_X - theme_label.get_width() // 2
     theme_button_position_Y = theme_position_assistant_Y - theme_label.get_height() // 2
+    theme_button = pg.Rect(theme_position_assistant_X, theme_position_assistant_Y, theme_button_position_X, theme_button_position_Y)
     #Theme draw
     root.blit(theme_label, (theme_button_position_X, theme_button_position_Y))
     #Configuration
@@ -178,6 +176,7 @@ def draw_main_menu():
     configuration_position_assistant_Y = HEIGHT * 0.5
     configuration_button_position_X = configuration_position_assistant_X - configuration_label.get_width() // 2
     configuration_button_position_Y = configuration_position_assistant_Y - configuration_label.get_height() // 2
+    configuration_button = pg.Rect(configuration_position_assistant_X, configuration_position_assistant_Y, configuration_button_position_X, configuration_button_position_Y)
     #Configuration draw
     root.blit(configuration_label, (configuration_button_position_X, configuration_button_position_Y))
     #Exit
@@ -187,8 +186,10 @@ def draw_main_menu():
     exit_position_assistant_Y = HEIGHT * 0.6
     exit_button_position_X = exit_position_assistant_X - exit_label.get_width() // 2
     exit_button_position_Y = exit_position_assistant_Y - exit_label.get_height() // 2
+    exit_button= pg.Rect(exit_position_assistant_X, exit_position_assistant_Y, exit_button_position_X, exit_button_position_Y)
     #Exit draw
     root.blit(exit_label, (exit_button_position_X, exit_button_position_Y))
+    return theme_button, configuration_button, exit_button
 def draw_menu():
     overlay = pg.Surface((WIDTH, HEIGHT))#Creates a surface with the size (WIDTH, HEIGHT), in this case the same size as the initial screen. From this point on, "overlay" is equal to a surface of size (WIDTH, HEIGHT)
     #Background
@@ -201,15 +202,15 @@ def draw_menu():
     menu_text = font_medium.render("Menu", True, WHITE)
     root.blit(menu_text, (menu_box.centerx - menu_text.get_width() // 2, menu_box.top + 20))
     #Menu buttons
-    full_btn = pg.Rect(menu_box.centerx - 100, menu_box.centery - 120, 200, 40)
-    pg.draw.rect(root, WHITE, full_btn)
+    full_button = pg.Rect(menu_box.centerx - 100, menu_box.centery - 120, 200, 40)
+    pg.draw.rect(root, WHITE, full_button)
     full_label = font_small.render("Fullscreen", True, BLACK)
-    root.blit(full_label, (full_btn.centerx - full_label.get_width() // 2, full_btn.top + 10))
-    close_btn = pg.Rect(menu_box.centerx - 100, menu_box.centery - 185, 200, 40)
-    pg.draw.rect(root, RED, close_btn)
+    root.blit(full_label, (full_button.centerx - full_label.get_width() // 2, full_button.top + 10))
+    close_button = pg.Rect(menu_box.centerx - 100, menu_box.centery - 185, 200, 40)
+    pg.draw.rect(root, RED, close_button)
     close_label = font_small.render("Fechar Menu", True, WHITE)
-    root.blit(close_label, (close_btn.centerx - close_label.get_width() // 2, close_btn.top + 10))
-    return full_btn, close_btn
+    root.blit(close_label, (close_button.centerx - close_label.get_width() // 2, close_button.top + 10))
+    return full_button, close_button
 def reset_message():
     global message
     message = ""
@@ -306,39 +307,37 @@ def Joystick_Def():
         joystick.init()
 thread_controle = tdh.Thread(target=Joystick_Def, daemon=True)
 thread_controle.start()
-# def game_drawings():
-#    if game_state == "game_start":
-#        odd_btn, even_btn, menu_btn, DT, Bar_DT_limit, Bar_DT_Min = draw_game()
-#    elif game_state == "game_menu": 
-#        (None, None, None, None, None, None)
+def game_drawings_events(game_state):
+    if game_state == "main_menu":
+       draw_main_menu()
+       return None, None, None, None, None, None, None, None
+    elif game_state == "game_start":
+        return draw_game() + (None, None)
+    elif game_state == "game_menu": 
+        return None, None, None, None, None, None, draw_menu()
 #loop
 while running:#It starts active by default, since we set it to "True", which makes it run without being explicitly called. Ideal for things that should run continuously. "while" = as long as "running" is True
     WIDTH, HEIGHT = root.get_size()
     update_rank()
     #game_drawings()
-    if game_state == "main_menu":
-        draw_main_menu()
-    elif game_state == "game_start":
-       odd_btn, even_btn, menu_btn, DT, Bar_DT_limit, Bar_DT_Min = draw_game()
-    elif game_state == "game_menu": 
-        (None, None, None, None, None, None)
+    odd_button, even_button, menu_button, DT, Bar_DT_limit, Bar_DT_Min, close_button, fullscreen_button = game_drawings_events(game_state) or (None, ) * 8
     #print(event)
-    if game_state == "game_menu":
-        fullscreen_btn, close_btn = draw_menu()
     for event in pg.event.get():#"for event in pg.event.get()""for" = makes it so that for each thing inside "event", which are the events that happen"in" inside "pg.event", Pygame events".get()"
      #to read or search inside pg.event. Pygame stores all user interactions in a list, and pg.event.get() searches for one of those already listed events—in this case, "event"
         if event.type == pg.JOYDEVICEADDED:
             joystick = pg.joystick.Joystick(event.device_index)
             joystick.init()
-            print(joystick)
+            print(joystick.get_name)
         if event.type == pg.QUIT:#Here it's to exit the window, so we change running from True to False. if = "event.type" some event from Pygame"==" is equal to"pg.QUIT" which makes the program close
             running = False
         #Odd and Even buttons
         #Odd and Even keyboard
         elif event.type == pg.KEYDOWN:
             #Esc opens the menu
-            if event.key == pg.K_ESCAPE:#From this point on, it’s all syntax, so it’s more about researching and positioning these things
+            if event.key == pg.K_ESCAPE and not menu_open and game_state == "game_start":#From this point on, it’s all syntax, so it’s more about researching and positioning these things
                 game_state = "game_menu"
+            elif event.key == pg.K_ESCAPE and menu_open:
+                game_state = "game_start"
             #If the menu isn’t open, then the buttons, mouse, and eventually a controller will work
             if game_state == "game_start":
                 #Odd
@@ -355,25 +354,25 @@ while running:#It starts active by default, since we set it to "True", which mak
         elif event.type == pg.MOUSEBUTTONDOWN and not menu_open:
             x, y = event.pos
             #Menu botton
-            if menu_btn.collidepoint((x, y)):
+            if menu_button and menu_button.collidepoint((x, y)):
                 menu_open = True
             #Odd
-            if odd_btn.collidepoint((x, y)):
+            if odd_button and odd_button.collidepoint((x, y)):
                 check("Odd")
             #Even
-            elif even_btn.collidepoint((x, y)):
+            elif even_button and even_button.collidepoint((x, y)):
                 check("Even")
         #Menu mouse collision
         elif event.type == pg.MOUSEBUTTONDOWN and menu_open:
             x, y = event.pos
-            if fullscreen_btn.collidepoint((x, y)):
+            if fullscreen_button.collidepoint((x, y)):
                 F = not F
                 if F:
                     pg.display.set_mode((0, 0), pg.FULLSCREEN)
                 else:
                     pg.display.set_mode((WIDTH, HEIGHT), pg.RESIZABLE)
             #Close Menu
-            if close_btn.collidepoint((x, y)):
+            if close_button and close_button.collidepoint((x, y)):
                 menu_open = False
         if event.type == pg.JOYBUTTONDOWN:
             if event.button == 7:
