@@ -147,7 +147,7 @@ def draw_game():
     pg.draw.rect(root, GRAY, menu_button)
     menu_button_label = font_small.render("MENU", True, WHITE)
     root.blit(menu_button_label, (10, 10))
-    return odd_button, even_button, menu_button, DT, Bar_DT_limit, Bar_DT_Min
+    return menu_button, odd_button, even_button, DT, Bar_DT_limit, Bar_DT_Min
 def draw_main_menu():
     root.fill(BLACK)
     #Title
@@ -350,6 +350,7 @@ while running:#It starts active by default, since we set it to "True", which mak
                 menu_open = True
             elif event.key == pg.K_ESCAPE and menu_open and game_state == "game_menu":
                 game_state = "game_start"
+                menu_open = False
             #If the menu isn’t open, then the buttons, mouse, and eventually a controller will work
             if game_state == "game_start":
                 #Odd
@@ -367,9 +368,10 @@ while running:#It starts active by default, since we set it to "True", which mak
             x, y = event.pos
             #Menu botton
             if menu_button and menu_button.collidepoint((x, y)):
+                game_state = "game_menu"
                 menu_open = True
             #Odd
-            if odd_button and odd_button.collidepoint((x, y)):
+            elif odd_button and odd_button.collidepoint((x, y)):
                 check("Odd")
             #Even
             elif even_button and even_button.collidepoint((x, y)):
@@ -377,7 +379,7 @@ while running:#It starts active by default, since we set it to "True", which mak
         #Menu mouse collision
         elif event.type == pg.MOUSEBUTTONDOWN and menu_open:
             x, y = event.pos
-            if fullscreen_button.collidepoint((x, y)):
+            if fullscreen_button and fullscreen_button.collidepoint((x, y)):
                 F = not F
                 if F:
                     pg.display.set_mode((0, 0), pg.FULLSCREEN)
@@ -386,6 +388,7 @@ while running:#It starts active by default, since we set it to "True", which mak
             #Close Menu
             if close_button and close_button.collidepoint((x, y)):
                 menu_open = False
+                game_state= "game_start"
         if event.type == pg.JOYBUTTONDOWN:
             if event.button == 7:
                 menu_open = not menu_open
