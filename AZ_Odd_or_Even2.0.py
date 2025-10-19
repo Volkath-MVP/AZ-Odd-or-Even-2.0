@@ -345,7 +345,7 @@ while running:#It starts active by default, since we set it to "True", which mak
         #Odd and Even keyboard
         elif event.type == pg.KEYDOWN:
             #Esc opens the menu
-            if event.key == pg.K_ESCAPE and not menu_open:#From this point on, it’s all syntax, so it’s more about researching and positioning these things
+            if event.key == pg.K_ESCAPE and not menu_open and game_state == "game_start":#From this point on, it’s all syntax, so it’s more about researching and positioning these things
                 game_state = "game_menu"
                 menu_open = True
             elif event.key == pg.K_ESCAPE and menu_open and game_state == "game_menu":
@@ -367,7 +367,7 @@ while running:#It starts active by default, since we set it to "True", which mak
         elif event.type == pg.MOUSEBUTTONDOWN and not menu_open:
             x, y = event.pos
             #Menu botton
-            if menu_button and menu_button.collidepoint((x, y)):
+            if menu_button and menu_button.collidepoint((x, y)) and game_state == "game_start":
                 game_state = "game_menu"
                 menu_open = True
             #Odd
@@ -386,7 +386,7 @@ while running:#It starts active by default, since we set it to "True", which mak
                 else:
                     pg.display.set_mode((WIDTH, HEIGHT), pg.RESIZABLE)
             #Close Menu
-            if close_button and close_button.collidepoint((x, y)):
+            if close_button and close_button.collidepoint((x, y)) and game_state == "game_menu":
                 menu_open = False
                 game_state= "game_start"
         if event.type == pg.JOYBUTTONDOWN:
