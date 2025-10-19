@@ -91,7 +91,67 @@ rank_text = ""
 #         ⢀⡈⠙⢅    ⠉⢹⣿⣿⣷⣿⣷⣿⣿⣿⣇⡀⢀⠜⡔⠁
 #         ⢸⣿⡦  ⠑⠒⢾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡟⠁⣔⠕⢊⠆
 #         ⠈⠙⠿⣦⣤⣤⣾⣿⣿⡿⠁    ⠑⢌⡻⣿⣿⣦⠤⠔⠁
-#Function to draw all game interfaces 
+#Main menu draw event
+def draw_main_menu():
+    root.fill(BLACK)
+    #Title
+    title_label = font_very_large.render("AZ Odd or Even", True, RED)
+    #Title position
+    title_assistant_position_X = WIDTH // 2
+    title_height_assistant_position_Y = HEIGHT * 0.1
+    title_position_X = title_assistant_position_X - title_label.get_width() // 2
+    title_height_position_Y = title_height_assistant_position_Y - title_label.get_height() // 2
+    #Title draw
+    root.blit(title_label, (title_position_X, title_height_position_Y))
+    #Theme
+    theme_label = font_medium.render("Temas", True, WHITE)
+    #Theme position
+    theme_position_assistant_X = WIDTH // 2
+    theme_position_assistant_Y = HEIGHT * 0.4
+    theme_button_position_X = theme_position_assistant_X - theme_label.get_width() // 2
+    theme_button_position_Y = theme_position_assistant_Y - theme_label.get_height() // 2
+    theme_button = pg.Rect(theme_button_position_X, theme_button_position_Y, theme_label.get_width(), theme_label.get_height())
+    pg.draw.rect(root, GRAY, theme_button)
+    #Theme draw
+    root.blit(theme_label, (theme_button_position_X, theme_button_position_Y))
+    #Configuration
+    configuration_label = font_medium.render("Configurações", True, WHITE)
+    #Configuration position
+    configuration_position_assistant_X = WIDTH // 2
+    configuration_position_assistant_Y = HEIGHT * 0.5
+    configuration_button_position_X = configuration_position_assistant_X - configuration_label.get_width() // 2
+    configuration_button_position_Y = configuration_position_assistant_Y - configuration_label.get_height() // 2
+    configuration_button = pg.Rect(configuration_button_position_X, configuration_button_position_Y, configuration_label.get_width(), configuration_label.get_height())
+    pg.draw.rect(root, GRAY, configuration_button)
+    #Configuration draw
+    root.blit(configuration_label, (configuration_button_position_X, configuration_button_position_Y))
+    #Exit
+    exit_label = font_medium.render("Sair", True, WHITE)
+    #Exit position
+    exit_position_assistant_X = WIDTH // 2
+    exit_position_assistant_Y = HEIGHT * 0.6
+    exit_button_position_X = exit_position_assistant_X - exit_label.get_width() // 2
+    exit_button_position_Y = exit_position_assistant_Y - exit_label.get_height() // 2
+    exit_button= pg.Rect(exit_button_position_X, exit_button_position_Y, exit_label.get_width(), exit_label.get_height())
+    pg.draw.rect(root, GRAY, exit_button)
+    #Exit draw
+    root.blit(exit_label, (exit_button_position_X, exit_button_position_Y))
+    return theme_button, configuration_button, exit_button
+#draw themes
+def draw_game_themes():
+    root.fill(BLACK)
+    #Title
+    title_label = font_very_large.render("Temas", True, GRAY)
+    #Title position
+    title_assistant_position_X = WIDTH // 2
+    title_height_assistant_position_Y = HEIGHT * 0.1
+    title_position_X = title_assistant_position_X - title_label.get_width() // 2
+    title_height_position_Y = title_height_assistant_position_Y - title_label.get_height() // 2
+    #Title draw
+    root.blit(title_label, (title_position_X, title_height_position_Y))
+    #Dante Theme
+    
+#Function to draw all game interfaces
 def draw_game():
     #draw background and button
     #root.fill(BLACK) #I set the background color. In the future, I’ll add an image—but that’s only for version 3.0. For now, we’re still on version 2.0.
@@ -148,48 +208,6 @@ def draw_game():
     menu_button_label = font_small.render("MENU", True, WHITE)
     root.blit(menu_button_label, (10, 10))
     return menu_button, odd_button, even_button, DT, Bar_DT_limit, Bar_DT_Min
-def draw_main_menu():
-    root.fill(BLACK)
-    #Title
-    title_label = font_very_large.render("AZ Odd or Even", True, RED)
-    #Title position
-    title_assistant_position_X = WIDTH // 2
-    title_height_assistant_position_Y = HEIGHT * 0.1
-    title_position_X = title_assistant_position_X - title_label.get_width() // 2
-    title_height_position_Y = title_height_assistant_position_Y - title_label.get_height() // 2
-    #Title draw
-    root.blit(title_label, (title_position_X, title_height_position_Y))
-    #Theme
-    theme_label = font_medium.render("Temas", True, WHITE)
-    #Theme position
-    theme_position_assistant_X = WIDTH // 2
-    theme_position_assistant_Y = HEIGHT * 0.4
-    theme_button_position_X = theme_position_assistant_X - theme_label.get_width() // 2
-    theme_button_position_Y = theme_position_assistant_Y - theme_label.get_height() // 2
-    theme_button = pg.Rect(theme_position_assistant_X, theme_position_assistant_Y, theme_button_position_X, theme_button_position_Y)
-    #Theme draw
-    root.blit(theme_label, (theme_button_position_X, theme_button_position_Y))
-    #Configuration
-    configuration_label = font_medium.render("Configurações", True, WHITE)
-    #Configuration position
-    configuration_position_assistant_X = WIDTH // 2
-    configuration_position_assistant_Y = HEIGHT * 0.5
-    configuration_button_position_X = configuration_position_assistant_X - configuration_label.get_width() // 2
-    configuration_button_position_Y = configuration_position_assistant_Y - configuration_label.get_height() // 2
-    configuration_button = pg.Rect(configuration_position_assistant_X, configuration_position_assistant_Y, configuration_button_position_X, configuration_button_position_Y)
-    #Configuration draw
-    root.blit(configuration_label, (configuration_button_position_X, configuration_button_position_Y))
-    #Exit
-    exit_label = font_medium.render("Sair", True, WHITE)
-    #Exit position
-    exit_position_assistant_X = WIDTH // 2
-    exit_position_assistant_Y = HEIGHT * 0.6
-    exit_button_position_X = exit_position_assistant_X - exit_label.get_width() // 2
-    exit_button_position_Y = exit_position_assistant_Y - exit_label.get_height() // 2
-    exit_button= pg.Rect(exit_position_assistant_X, exit_position_assistant_Y, exit_button_position_X, exit_button_position_Y)
-    #Exit draw
-    root.blit(exit_label, (exit_button_position_X, exit_button_position_Y))
-    return theme_button, configuration_button, exit_button
 def draw_menu():
     overlay = pg.Surface((WIDTH, HEIGHT))#Creates a surface with the size (WIDTH, HEIGHT), in this case the same size as the initial screen. From this point on, "overlay" is equal to a surface of size (WIDTH, HEIGHT)
     #Background
@@ -310,6 +328,8 @@ thread_controle.start()
 def game_drawings_events(game_state):
     if game_state == "main_menu":
         return draw_main_menu()
+    elif game_state == "game_themes":
+        return draw_game_themes()
     elif game_state == "game_start":
         return draw_game()
     elif game_state == "game_menu":
@@ -321,6 +341,7 @@ while running:#It starts active by default, since we set it to "True", which mak
     #game_drawings()
     #print(game_state)
     #print(menu_open)
+    #print(event)
     theme_button = configuration_button = exit_button = None
     menu_button = odd_button = even_button = DT = Bar_DT_limit = Bar_DT_Min = None
     fullscreen_button = close_button = None
@@ -332,7 +353,6 @@ while running:#It starts active by default, since we set it to "True", which mak
             menu_button, odd_button, even_button, DT, Bar_DT_limit, Bar_DT_Min = result
         elif game_state == "game_menu":
             fullscreen_button, close_button = result
-    #print(event)
     for event in pg.event.get():#"for event in pg.event.get()""for" = makes it so that for each thing inside "event", which are the events that happen"in" inside "pg.event", Pygame events".get()"
      #to read or search inside pg.event. Pygame stores all user interactions in a list, and pg.event.get() searches for one of those already listed events—in this case, "event"
         if event.type == pg.JOYDEVICEADDED:
@@ -341,8 +361,9 @@ while running:#It starts active by default, since we set it to "True", which mak
             print(joystick.get_name)
         if event.type == pg.QUIT:#Here it's to exit the window, so we change running from True to False. if = "event.type" some event from Pygame"==" is equal to"pg.QUIT" which makes the program close
             running = False
-        #Odd and Even buttons
-        #Odd and Even keyboard
+        #All keyboard events
+        #main menu keyboard
+        #Menu keyboard
         elif event.type == pg.KEYDOWN:
             #Esc opens the menu
             if event.key == pg.K_ESCAPE and not menu_open and game_state == "game_start":#From this point on, it’s all syntax, so it’s more about researching and positioning these things
@@ -352,6 +373,7 @@ while running:#It starts active by default, since we set it to "True", which mak
                 game_state = "game_start"
                 menu_open = False
             #If the menu isn’t open, then the buttons, mouse, and eventually a controller will work
+            #Odd and Even keyboard
             if game_state == "game_start":
                 #Odd
                 if event.key == pg.K_a:
@@ -359,10 +381,33 @@ while running:#It starts active by default, since we set it to "True", which mak
                 #Even
                 elif event.key == pg.K_d:
                     check("Even")
-                elif event.key == pg.K_SPACE and devil_trigger >= 200 and not DTactive:
+                elif event.key == pg.K_SPACE and devil_trigger >= 200 and not DTactive and game_state == "game_start":
                     DTactive = True
-                elif event.key == pg.K_SPACE and DTactive:
+                elif event.key == pg.K_SPACE and DTactive and game_state == "game_start":
                     DTactive = False
+        #All mouse events
+        #main menu mouse
+        elif event.type == pg.MOUSEBUTTONDOWN and game_state == "main_menu":
+            x, y = event.pos
+            if theme_button and theme_button.collidepoint((x, y)):
+                game_state = "game_themes"
+            elif configuration_button and configuration_button.collidepoint((x, y)):
+                game_state = "game_config"
+            elif exit_button and exit_button.collidepoint((x, y)):
+                running = False
+        #Menu mouse
+        elif event.type == pg.MOUSEBUTTONDOWN and menu_open and game_state == "game_menu":
+            x, y = event.pos
+            if fullscreen_button and fullscreen_button.collidepoint((x, y)):
+                F = not F
+                if F:
+                    pg.display.set_mode((0, 0), pg.FULLSCREEN)
+                else:
+                    pg.display.set_mode((WIDTH, HEIGHT), pg.RESIZABLE)
+            #Close Menu
+            if close_button and close_button.collidepoint((x, y)) and game_state == "game_menu":
+                game_state= "game_start"
+                menu_open = False
         #Odd and Even mouse
         elif event.type == pg.MOUSEBUTTONDOWN and not menu_open:
             x, y = event.pos
@@ -376,23 +421,18 @@ while running:#It starts active by default, since we set it to "True", which mak
             #Even
             elif even_button and even_button.collidepoint((x, y)):
                 check("Even")
-        #Menu mouse collision
-        elif event.type == pg.MOUSEBUTTONDOWN and menu_open:
-            x, y = event.pos
-            if fullscreen_button and fullscreen_button.collidepoint((x, y)):
-                F = not F
-                if F:
-                    pg.display.set_mode((0, 0), pg.FULLSCREEN)
-                else:
-                    pg.display.set_mode((WIDTH, HEIGHT), pg.RESIZABLE)
-            #Close Menu
-            if close_button and close_button.collidepoint((x, y)) and game_state == "game_menu":
-                menu_open = False
-                game_state= "game_start"
+        #All Controller events
+        #Menu controller
         if event.type == pg.JOYBUTTONDOWN:
-            if event.button == 7:
-                menu_open = not menu_open
-        if event.type == pg.JOYBUTTONDOWN and not menu_open:
+            if event.button == 7 and not menu_open and game_state == "game_start":
+                game_state = "game_menu"
+                menu_open = True
+            #close menu
+            elif event.button == 7 and menu_open and game_state == "game_menu":
+                game_state = "game_start"
+                menu_open = False
+        #Odd and Even controller
+        if event.type == pg.JOYBUTTONDOWN and not menu_open and game_state == "game_start":
             if event.button == 2:
                 check("Odd")
             elif event.button == 1:
