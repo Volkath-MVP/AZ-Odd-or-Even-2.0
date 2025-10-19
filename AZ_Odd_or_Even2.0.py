@@ -64,15 +64,32 @@ Drain_time = 300
 #Devil Trigger variable
 devil_trigger = 0
 DTactive = False
+#game state variables
+main_menu = "main_menu"
+game_themes = "game_themes"
+game_config = "game_config"
+game_start = "game_start"
+game_menu = "game_menu"
 #Colors
+#shades of gray
 WHITE = (255, 255, 255)
-RED = (255, 0, 0)
-BRANCO = (255, 255, 255)
-VERMELHO = (255, 0, 0)
-GREEN = (0, 255, 0)
-BLACK = (0, 0, 0)
 GRAY = (80, 80, 80)
+BLACK = (0, 0, 0)
+#shades of red
+RED = (255, 0, 0)
+SALMON = (250, 128, 114)
+CRIMSON = (220, 20, 60)
+TOMATO = (255, 99, 71)
+DARK_RED = (139, 0, 0)
+#shades of blue
+LIGHT_BLUE = (173, 216, 230)
+DEEP_SKY_BLUE = (0, 191, 255)
+POWDER_BLUE = (176, 224, 230)
+DARK_BLUE = (0, 0, 139)
+#shades of purple
 PURPLE = (255, 0, 255)
+#shades of green
+GREEN = (0, 255, 0)
 running = True
 #score variable
 score = 0
@@ -132,7 +149,7 @@ def draw_main_menu():
     exit_position_assistant_Y = HEIGHT * 0.6
     exit_button_position_X = exit_position_assistant_X - exit_label.get_width() // 2
     exit_button_position_Y = exit_position_assistant_Y - exit_label.get_height() // 2
-    exit_button= pg.Rect(exit_button_position_X, exit_button_position_Y, exit_label.get_width(), exit_label.get_height())
+    exit_button = pg.Rect(exit_button_position_X, exit_button_position_Y, exit_label.get_width(), exit_label.get_height())
     pg.draw.rect(root, GRAY, exit_button)
     #Exit draw
     root.blit(exit_label, (exit_button_position_X, exit_button_position_Y))
@@ -144,13 +161,68 @@ def draw_game_themes():
     title_label = font_very_large.render("Temas", True, GRAY)
     #Title position
     title_assistant_position_X = WIDTH // 2
-    title_height_assistant_position_Y = HEIGHT * 0.1
+    title_assistant_position_Y = HEIGHT * 0.1
     title_position_X = title_assistant_position_X - title_label.get_width() // 2
-    title_height_position_Y = title_height_assistant_position_Y - title_label.get_height() // 2
+    title_height_position_Y = title_assistant_position_Y - title_label.get_height() // 2
     #Title draw
     root.blit(title_label, (title_position_X, title_height_position_Y))
+    #Back
+    back_label = font_medium.render("Back", True, WHITE)
+    #Back position
+    back_assistant_position_X = WIDTH * 0.1
+    back_assistant_position_Y = HEIGHT * 0.1
+    back_button_position_X = back_assistant_position_X - back_label.get_width() // 2
+    back_button_position_Y = back_assistant_position_Y - back_label.get_height() // 2
+    back_button = pg.Rect(back_button_position_X, back_button_position_Y, back_label.get_width(), back_label.get_height())
+    pg.draw.rect(root, GRAY, back_button)
+    #Back draw
+    root.blit(back_label, (back_button_position_X, back_button_position_Y))
     #Dante Theme
-    
+    dante_theme_label = font_medium.render("Dante", True, CRIMSON)
+    #Dante theme position
+    dante_assistant_position_X = WIDTH * 0.15
+    dante_assistant_position_Y = HEIGHT * 0.3
+    dante_button_position_X = dante_assistant_position_X
+    dante_button_position_Y = dante_assistant_position_Y
+    dante_button = pg.Rect(dante_button_position_X, dante_button_position_Y, dante_theme_label.get_width(), dante_theme_label.get_height())
+    pg.draw.rect(root, SALMON, dante_button)
+    #Draw Dante theme button
+    root.blit(dante_theme_label, (dante_button_position_X, dante_button_position_Y))
+    #DMC Dante
+    #DMCDante Theme
+    DMC_dante_theme_label = font_medium.render("DMC Dante", True, RED)
+    #Dante theme position
+    DMC_dante_assistant_position_X = WIDTH * 0.15
+    DMC_dante_assistant_position_Y = HEIGHT * 0.4
+    DMC_dante_button_position_X = DMC_dante_assistant_position_X
+    DMC_dante_button_position_Y = DMC_dante_assistant_position_Y
+    DMC_dante_button = pg.Rect(DMC_dante_button_position_X, DMC_dante_button_position_Y, DMC_dante_theme_label.get_width(), DMC_dante_theme_label.get_height())
+    pg.draw.rect(root, DARK_RED, DMC_dante_button)
+    #Draw Dante theme button
+    root.blit(DMC_dante_theme_label, (DMC_dante_button_position_X, DMC_dante_button_position_Y))
+    #Vergil Theme
+    vergil_theme_label =font_medium.render("Vergil", True, DEEP_SKY_BLUE)
+    #Vergil theme position
+    vergil_assistant_position_X = WIDTH * 0.15
+    vergil_assistant_position_Y = HEIGHT * 0.5
+    vergil_button_position_X = vergil_assistant_position_X
+    vergil_button_position_Y = vergil_assistant_position_Y
+    vergil_button = pg.Rect(vergil_button_position_X, vergil_button_position_Y, vergil_theme_label.get_width(), vergil_theme_label.get_height())
+    pg.draw.rect(root, POWDER_BLUE, vergil_button)
+    #Draw Vergil theme button
+    root.blit(vergil_theme_label, (vergil_button_position_X, vergil_button_position_Y))
+    #DMC3 Vergil Theme
+    DMC3_vergil_theme_label =font_medium.render("DMC3 Vergil", True, DEEP_SKY_BLUE)
+    #DMC3 Vergil theme position
+    DMC3_vergil_assistant_position_X = WIDTH * 0.15
+    DMC3_vergil_assistant_position_Y = HEIGHT * 0.6
+    DMC3_vergil_button_position_X = DMC3_vergil_assistant_position_X
+    DMC3_vergil_button_position_Y = DMC3_vergil_assistant_position_Y
+    DMC3_vergil_button = pg.Rect(DMC3_vergil_button_position_X, DMC3_vergil_button_position_Y, DMC3_vergil_theme_label.get_width(), DMC3_vergil_theme_label.get_height())
+    pg.draw.rect(root, DARK_BLUE, DMC3_vergil_button)
+    #Draw DMC3 Vergil theme button
+    root.blit(DMC3_vergil_theme_label, (DMC3_vergil_button_position_X, DMC3_vergil_button_position_Y))
+    return back_button
 #Function to draw all game interfaces
 def draw_game():
     #draw background and button
@@ -326,13 +398,13 @@ def Joystick_Def():
 thread_controle = tdh.Thread(target=Joystick_Def, daemon=True)
 thread_controle.start()
 def game_drawings_events(game_state):
-    if game_state == "main_menu":
+    if game_state == main_menu:
         return draw_main_menu()
-    elif game_state == "game_themes":
+    elif game_state == game_themes:
         return draw_game_themes()
-    elif game_state == "game_start":
+    elif game_state == game_start:
         return draw_game()
-    elif game_state == "game_menu":
+    elif game_state == game_menu:
         return draw_menu()
 #loop
 while running:#It starts active by default, since we set it to "True", which makes it run without being explicitly called. Ideal for things that should run continuously. "while" = as long as "running" is True
@@ -343,15 +415,18 @@ while running:#It starts active by default, since we set it to "True", which mak
     #print(menu_open)
     #print(event)
     theme_button = configuration_button = exit_button = None
+    back_button = None
     menu_button = odd_button = even_button = DT = Bar_DT_limit = Bar_DT_Min = None
     fullscreen_button = close_button = None
     result = game_drawings_events(game_state)
     if result:
-        if game_state == "main_menu":
+        if game_state == main_menu:
             theme_button, configuration_button, exit_button = result
-        elif game_state == "game_start":
+        elif game_state == game_themes:
+            back_button = result
+        elif game_state == game_start:
             menu_button, odd_button, even_button, DT, Bar_DT_limit, Bar_DT_Min = result
-        elif game_state == "game_menu":
+        elif game_state == game_menu:
             fullscreen_button, close_button = result
     for event in pg.event.get():#"for event in pg.event.get()""for" = makes it so that for each thing inside "event", which are the events that happen"in" inside "pg.event", Pygame events".get()"
      #to read or search inside pg.event. Pygame stores all user interactions in a list, and pg.event.get() searches for one of those already listed events—in this case, "event"
@@ -366,37 +441,41 @@ while running:#It starts active by default, since we set it to "True", which mak
         #Menu keyboard
         elif event.type == pg.KEYDOWN:
             #Esc opens the menu
-            if event.key == pg.K_ESCAPE and not menu_open and game_state == "game_start":#From this point on, it’s all syntax, so it’s more about researching and positioning these things
-                game_state = "game_menu"
+            if event.key == pg.K_ESCAPE and not menu_open and game_state == game_start:#From this point on, it’s all syntax, so it’s more about researching and positioning these things
+                game_state = game_menu
                 menu_open = True
-            elif event.key == pg.K_ESCAPE and menu_open and game_state == "game_menu":
-                game_state = "game_start"
+            elif event.key == pg.K_ESCAPE and menu_open and game_state == game_menu:
+                game_state = game_start
                 menu_open = False
             #If the menu isn’t open, then the buttons, mouse, and eventually a controller will work
             #Odd and Even keyboard
-            if game_state == "game_start":
+            if game_state == game_start:
                 #Odd
                 if event.key == pg.K_a:
                     check("Odd")
                 #Even
                 elif event.key == pg.K_d:
                     check("Even")
-                elif event.key == pg.K_SPACE and devil_trigger >= 200 and not DTactive and game_state == "game_start":
+                elif event.key == pg.K_SPACE and devil_trigger >= 200 and not DTactive and game_state == game_start:
                     DTactive = True
-                elif event.key == pg.K_SPACE and DTactive and game_state == "game_start":
+                elif event.key == pg.K_SPACE and DTactive and game_state == game_start:
                     DTactive = False
         #All mouse events
         #main menu mouse
-        elif event.type == pg.MOUSEBUTTONDOWN and game_state == "main_menu":
+        elif event.type == pg.MOUSEBUTTONDOWN and game_state == main_menu:
             x, y = event.pos
             if theme_button and theme_button.collidepoint((x, y)):
-                game_state = "game_themes"
+                game_state = game_themes
             elif configuration_button and configuration_button.collidepoint((x, y)):
-                game_state = "game_config"
+                game_state = game_config
             elif exit_button and exit_button.collidepoint((x, y)):
                 running = False
+        elif event.type == pg.MOUSEBUTTONDOWN and game_state == game_themes:
+            x, y = event.pos
+            if back_button and back_button.collidepoint((x, y)):
+                game_state = main_menu
         #Menu mouse
-        elif event.type == pg.MOUSEBUTTONDOWN and menu_open and game_state == "game_menu":
+        elif event.type == pg.MOUSEBUTTONDOWN and menu_open and game_state == game_menu:
             x, y = event.pos
             if fullscreen_button and fullscreen_button.collidepoint((x, y)):
                 F = not F
@@ -405,15 +484,15 @@ while running:#It starts active by default, since we set it to "True", which mak
                 else:
                     pg.display.set_mode((WIDTH, HEIGHT), pg.RESIZABLE)
             #Close Menu
-            if close_button and close_button.collidepoint((x, y)) and game_state == "game_menu":
-                game_state= "game_start"
+            if close_button and close_button.collidepoint((x, y)) and game_state == game_menu:
+                game_state= game_start
                 menu_open = False
         #Odd and Even mouse
         elif event.type == pg.MOUSEBUTTONDOWN and not menu_open:
             x, y = event.pos
             #Menu botton
-            if menu_button and menu_button.collidepoint((x, y)) and game_state == "game_start":
-                game_state = "game_menu"
+            if menu_button and menu_button.collidepoint((x, y)) and game_state == game_start:
+                game_state = game_menu
                 menu_open = True
             #Odd
             elif odd_button and odd_button.collidepoint((x, y)):
@@ -424,15 +503,15 @@ while running:#It starts active by default, since we set it to "True", which mak
         #All Controller events
         #Menu controller
         if event.type == pg.JOYBUTTONDOWN:
-            if event.button == 7 and not menu_open and game_state == "game_start":
-                game_state = "game_menu"
+            if event.button == 7 and not menu_open and game_state == game_start:
+                game_state = game_menu
                 menu_open = True
             #close menu
-            elif event.button == 7 and menu_open and game_state == "game_menu":
-                game_state = "game_start"
+            elif event.button == 7 and menu_open and game_state == game_menu:
+                game_state = game_start
                 menu_open = False
         #Odd and Even controller
-        if event.type == pg.JOYBUTTONDOWN and not menu_open and game_state == "game_start":
+        if event.type == pg.JOYBUTTONDOWN and not menu_open and game_state == game_start:
             if event.button == 2:
                 check("Odd")
             elif event.button == 1:
