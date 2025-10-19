@@ -309,18 +309,29 @@ thread_controle = tdh.Thread(target=Joystick_Def, daemon=True)
 thread_controle.start()
 def game_drawings_events(game_state):
     if game_state == "main_menu":
-       draw_main_menu()
-       return None, None, None, None, None, None, None, None
+        return draw_main_menu()
     elif game_state == "game_start":
-        return draw_game() + (None, None)
-    elif game_state == "game_menu": 
-        return None, None, None, None, None, None, draw_menu()
+        return draw_game()
+    elif game_state == "game_menu":
+        return draw_menu()
 #loop
 while running:#It starts active by default, since we set it to "True", which makes it run without being explicitly called. Ideal for things that should run continuously. "while" = as long as "running" is True
     WIDTH, HEIGHT = root.get_size()
     update_rank()
     #game_drawings()
-    odd_button, even_button, menu_button, DT, Bar_DT_limit, Bar_DT_Min, close_button, fullscreen_button = game_drawings_events(game_state) or (None, ) * 8
+    #print(game_state)
+    #print(menu_open)
+    theme_button = configuration_button = exit_button = None
+    menu_button = odd_button = even_button = DT = Bar_DT_limit = Bar_DT_Min = None
+    fullscreen_button = close_button = None
+    result = game_drawings_events(game_state)
+    if result:
+        if game_state == "main_menu":
+            theme_button, configuration_button, exit_button = result
+        elif game_state == "game_start":
+            menu_button, odd_button, even_button, DT, Bar_DT_limit, Bar_DT_Min = result
+        elif game_state == "game_menu":
+            fullscreen_button, close_button = result
     #print(event)
     for event in pg.event.get():#"for event in pg.event.get()""for" = makes it so that for each thing inside "event", which are the events that happen"in" inside "pg.event", Pygame events".get()"
      #to read or search inside pg.event. Pygame stores all user interactions in a list, and pg.event.get() searches for one of those already listed events—in this case, "event"
@@ -334,9 +345,10 @@ while running:#It starts active by default, since we set it to "True", which mak
         #Odd and Even keyboard
         elif event.type == pg.KEYDOWN:
             #Esc opens the menu
-            if event.key == pg.K_ESCAPE and not menu_open and game_state == "game_start":#From this point on, it’s all syntax, so it’s more about researching and positioning these things
+            if event.key == pg.K_ESCAPE and not menu_open:#From this point on, it’s all syntax, so it’s more about researching and positioning these things
                 game_state = "game_menu"
-            elif event.key == pg.K_ESCAPE and menu_open:
+                menu_open = True
+            elif event.key == pg.K_ESCAPE and menu_open and game_state == "game_menu":
                 game_state = "game_start"
             #If the menu isn’t open, then the buttons, mouse, and eventually a controller will work
             if game_state == "game_start":
