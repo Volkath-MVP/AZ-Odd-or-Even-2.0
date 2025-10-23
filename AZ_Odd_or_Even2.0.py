@@ -7,6 +7,9 @@ import os
 #This's SOOOO boring...
 #init pygame and display
 pg.init()
+pg.mixer.init()
+pg.mixer.music.set_volume(0.5)
+current_music_path = None
 #initialize display
 pg.display.init()
 #initialize joystick
@@ -15,13 +18,6 @@ pg.joystick.init()
 pg.font.init()
 #window width and height
 Init_Width, Init_Height = 1000, 800
-#Backgrounds
-img_path = os.path.join("Backgrounds", "dante_4k.jpg")
-#Musics
-#music_path = os.path.join("Musics", "Devil_May_Cry 5_Subhuman_[EPIC METAL COVER]_(Little V).mp3")
-#pg.mixer.init()
-#pg.mixer.music.load(music_path)
-#pg.mixer.music.play(-1)
 #defining window properties
 root = pg.display.set_mode((Init_Width, Init_Height), pg.RESIZABLE)
 pg.display.set_caption("AZ Odd or Even 2.0")
@@ -220,16 +216,101 @@ def draw_game_themes():
     DMC3_vergil_button_position_Y = DMC3_vergil_assistant_position_Y
     DMC3_vergil_button = pg.Rect(DMC3_vergil_button_position_X, DMC3_vergil_button_position_Y, DMC3_vergil_theme_label.get_width(), DMC3_vergil_theme_label.get_height())
     pg.draw.rect(root, DARK_BLUE, DMC3_vergil_button)
-    #Draw DMC3 Vergil theme button
+    #Draw DMC3 Dante theme button
     root.blit(DMC3_vergil_theme_label, (DMC3_vergil_button_position_X, DMC3_vergil_button_position_Y))
-    return back_button
-#Function to draw all game interfaces
+    #DMC3 Dante Theme
+    DMC3_dante_theme_label =font_medium.render("DMC3 Dante", True, DEEP_SKY_BLUE)
+    #DMC3 Dante theme position
+    DMC3_dante_assistant_position_X = WIDTH * 0.15
+    DMC3_dante_assistant_position_Y = HEIGHT * 0.7
+    DMC3_dante_button_position_X = DMC3_dante_assistant_position_X
+    DMC3_dante_button_position_Y = DMC3_dante_assistant_position_Y
+    DMC3_dante_button = pg.Rect(DMC3_dante_button_position_X, DMC3_dante_button_position_Y, DMC3_dante_theme_label.get_width(), DMC3_dante_theme_label.get_height())
+    pg.draw.rect(root, DARK_BLUE, DMC3_dante_button)
+    #Draw V theme button
+    root.blit(DMC3_dante_theme_label, (DMC3_dante_button_position_X, DMC3_dante_button_position_Y))
+    #Draw V theme button
+    #V Theme
+    v_theme_label =font_medium.render("V", True, DEEP_SKY_BLUE)
+    #V theme position
+    v_assistant_position_X = WIDTH * 0.15
+    v_assistant_position_Y = HEIGHT * 0.8
+    v_button_position_X = v_assistant_position_X
+    v_button_position_Y = v_assistant_position_Y
+    v_button = pg.Rect(v_button_position_X, v_button_position_Y, v_theme_label.get_width(), v_theme_label.get_height())
+    pg.draw.rect(root, DARK_BLUE, v_button)
+    #Draw V theme button
+    root.blit(v_theme_label, (v_button_position_X, v_button_position_Y))
+    return back_button, dante_button, DMC_dante_button, vergil_button, DMC3_vergil_button, DMC3_dante_button, v_button
+Theme = {
+    "Theme0": "Dante", 
+    "Theme1": "DMC_Dante", 
+    "Theme2": "Vergil", 
+    "Theme3": "DMC3_Vergil",
+    "Theme4": "DMC3_Dante",
+    "Theme5": "V"}
+selected_theme = ""
+def background_theme(selected_theme):
+    if selected_theme == "":
+        return None, None
+    elif selected_theme == "Dante":
+        #background
+        img_path = os.path.join("Backgrounds", "dante_4k.jpg")
+        theme_select = img_path
+        #Musics
+        music_path = os.path.join("Musics", "Devil_May_Cry 5_Subhuman_[EPIC METAL COVER]_(Little V).mp3")
+        return theme_select, music_path
+    elif selected_theme == "DMC_Dante":
+        #background
+        img_path = os.path.join("Backgrounds", "Dante_DMC_Devil_May_Cry.jpg")
+        theme_select = img_path
+        #Musics
+        music_path = os.path.join("Musics", "sent-to-destroy-dmc-devil-may-cry.mp3")
+        return theme_select, music_path
+    elif selected_theme == "Vergil":
+        #background
+        img_path = os.path.join("Backgrounds", "vergil_DMC5.png")
+        theme_select = img_path
+        #Musics
+        music_path = os.path.join("Musics", "")
+        return theme_select, music_path
+    elif selected_theme == "DMC3_Vergil":
+        #background
+        img_path = os.path.join("Backgrounds", "Vergil_DMC3")
+        theme_select = img_path
+        #Musics
+        music_path = os.path.join("Musics", "")
+        return theme_select, music_path
+    elif selected_theme == "DMC3_Dante":
+        #background
+        img_path = os.path.join("Backgrounds", "Dante_DMC3.jpg")
+        theme_select = img_path
+        #Musics
+        music_path = os.path.join("Musics", "Devil May Cry 3 - Devils Never Cry [EPIC METAL COVER] (Little V)(MP3_128K).mp3")
+        return theme_select, music_path
+    elif selected_theme == "V":
+        #background
+        img_path = os.path.join("Backgrounds", "V.jpg")
+        theme_select = img_path
+        #Musics
+        music_path = os.path.join("Musics", "Devil May Cry 5 - Crimson Cloud [EPIC METAL COVER] (Little V)(MP3_128K).mp3")
+        return theme_select, music_path
 def draw_game():
-    #draw background and button
+    global current_music_path
+    #draw background and button 
     #root.fill(BLACK) #I set the background color. In the future, I’ll add an image—but that’s only for version 3.0. For now, we’re still on version 2.0.
-    background = pg.image.load(img_path)
-    background = pg.transform.scale(background, (WIDTH, HEIGHT))
-    root.blit(background, (0, 0))
+    theme_select, music_path = background_theme(selected_theme)
+    if theme_select:
+        background = pg.image.load(theme_select)
+        background = pg.transform.scale(background, (WIDTH, HEIGHT))
+        root.blit(background, (0, 0))
+    if music_path and music_path != current_music_path and game_state == game_start:
+        try:
+            pg.mixer.music.load(music_path)
+            pg.mixer.music.play(-1)
+            current_music_path = music_path
+        except Exception:
+            current_music_path = None
     #Label, question background, and overall background
     pergunta_label = font_medium.render(f"O número {number} é Ímpar ou Par?", True, RED)
     result_text = font_large.render(message, True, GREEN if "POWER" in message else RED)
@@ -286,21 +367,36 @@ def draw_menu():
     overlay.set_alpha(200)
     overlay.fill((BLACK))
     root.blit(overlay, (0, 0))
-    #menu background
+    #menu box label
+    menu_label = font_medium.render("Menu", True, WHITE)
+    #menu box position
     menu_box = pg.Rect(WIDTH // 2 - menu_width // 2, HEIGHT // 2 - menu_height // 2, menu_width, menu_height)
     pg.draw.rect(root, GRAY, menu_box)
-    menu_text = font_medium.render("Menu", True, WHITE)
-    root.blit(menu_text, (menu_box.centerx - menu_text.get_width() // 2, menu_box.top + 20))
+    #menu box draw
+    root.blit(menu_label, (menu_box.centerx - menu_label.get_width() // 2, menu_box.top + 20))
     #Menu buttons
+    #Back menu
+    menu_back_label = font_small.render("Back", True, BLACK)
+    #Back position
+    menu_back_button = pg.Rect(menu_box.centerx - 100, menu_box.centery - 55, 200, 40)
+    pg.draw.rect(root, WHITE, menu_back_button)
+    #Back draw
+    root.blit(menu_back_label, (menu_back_button.centerx - menu_back_label.get_width() // 2, menu_back_button.top + 10))
+    #Fullscreen label
+    full_label = font_small.render("Fullscreen", True, BLACK)
+    #Fullscreen btn position
     full_button = pg.Rect(menu_box.centerx - 100, menu_box.centery - 120, 200, 40)
     pg.draw.rect(root, WHITE, full_button)
-    full_label = font_small.render("Fullscreen", True, BLACK)
+    #Fullscreen draw
     root.blit(full_label, (full_button.centerx - full_label.get_width() // 2, full_button.top + 10))
+    #Close button label
+    close_label = font_small.render("Fechar Menu", True, WHITE)
+    #Close button position
     close_button = pg.Rect(menu_box.centerx - 100, menu_box.centery - 185, 200, 40)
     pg.draw.rect(root, RED, close_button)
-    close_label = font_small.render("Fechar Menu", True, WHITE)
+    #Close button draw
     root.blit(close_label, (close_button.centerx - close_label.get_width() // 2, close_button.top + 10))
-    return full_button, close_button
+    return full_button, close_button, menu_back_button
 def reset_message():
     global message
     message = ""
@@ -333,6 +429,8 @@ def update_number():
 #Odd or Even function
 def check(AZ):
     global number, message
+    if game_state != game_start:
+        return
     response = (number % 2 == 0 and AZ == "Even") or (number % 2 != 0 and AZ == "Odd")
     message = "YOU HAVE POWER!" if response else "You need more Energy..."
     Points_Devil_trigger(response)
@@ -406,6 +504,8 @@ def game_drawings_events(game_state):
         return draw_game()
     elif game_state == game_menu:
         return draw_menu()
+    else:
+        return None
 #loop
 while running:#It starts active by default, since we set it to "True", which makes it run without being explicitly called. Ideal for things that should run continuously. "while" = as long as "running" is True
     WIDTH, HEIGHT = root.get_size()
@@ -415,19 +515,22 @@ while running:#It starts active by default, since we set it to "True", which mak
     #print(menu_open)
     #print(event)
     theme_button = configuration_button = exit_button = None
-    back_button = None
+    back_button = dante_button = DMC_dante_button = vergil_button = DMC3_vergil_button = DMC3_dante_button = v_button = None
     menu_button = odd_button = even_button = DT = Bar_DT_limit = Bar_DT_Min = None
-    fullscreen_button = close_button = None
+    full_button = close_button = menu_back_button = None
     result = game_drawings_events(game_state)
+    #print(pg.mixer.get_init())
     if result:
         if game_state == main_menu:
             theme_button, configuration_button, exit_button = result
         elif game_state == game_themes:
-            back_button = result
+            back_button, dante_button, DMC_dante_button, vergil_button, DMC3_vergil_button, DMC3_dante_button, v_button = result
+            devil_trigger = 0
+            score = 0
         elif game_state == game_start:
             menu_button, odd_button, even_button, DT, Bar_DT_limit, Bar_DT_Min = result
         elif game_state == game_menu:
-            fullscreen_button, close_button = result
+            full_button, close_button, menu_back_button = result
     for event in pg.event.get():#"for event in pg.event.get()""for" = makes it so that for each thing inside "event", which are the events that happen"in" inside "pg.event", Pygame events".get()"
      #to read or search inside pg.event. Pygame stores all user interactions in a list, and pg.event.get() searches for one of those already listed events—in this case, "event"
         if event.type == pg.JOYDEVICEADDED:
@@ -440,6 +543,7 @@ while running:#It starts active by default, since we set it to "True", which mak
         #main menu keyboard
         #Menu keyboard
         elif event.type == pg.KEYDOWN:
+            print(event.key == pg.K_ESCAPE)
             #Esc opens the menu
             if event.key == pg.K_ESCAPE and not menu_open and game_state == game_start:#From this point on, it’s all syntax, so it’s more about researching and positioning these things
                 game_state = game_menu
@@ -474,10 +578,28 @@ while running:#It starts active by default, since we set it to "True", which mak
             x, y = event.pos
             if back_button and back_button.collidepoint((x, y)):
                 game_state = main_menu
+            elif dante_button and dante_button.collidepoint((x, y)):
+                selected_theme = Theme.get("Theme0")
+                game_state = game_start
+            elif DMC_dante_button and DMC_dante_button.collidepoint((x, y)):
+                selected_theme = Theme.get("Theme1")
+                game_state = game_start
+            elif vergil_button and vergil_button.collidepoint((x, y)):
+                selected_theme = Theme.get("Theme2")
+                game_state = game_start
+            elif DMC3_vergil_button and DMC3_vergil_button.collidepoint((x, y)):
+                selected_theme = Theme.get("Theme3")
+                game_state = game_start
+            elif DMC3_dante_button and DMC3_dante_button.collidepoint((x, y)):
+                selected_theme = Theme.get("Theme4")
+                game_state = game_start
+            elif v_button and v_button.collidepoint((x, y)):
+                selected_theme = Theme.get("Theme5")
+                game_state = game_start
         #Menu mouse
         elif event.type == pg.MOUSEBUTTONDOWN and menu_open and game_state == game_menu:
             x, y = event.pos
-            if fullscreen_button and fullscreen_button.collidepoint((x, y)):
+            if full_button and full_button.collidepoint((x, y)):
                 F = not F
                 if F:
                     pg.display.set_mode((0, 0), pg.FULLSCREEN)
@@ -487,6 +609,10 @@ while running:#It starts active by default, since we set it to "True", which mak
             if close_button and close_button.collidepoint((x, y)) and game_state == game_menu:
                 game_state= game_start
                 menu_open = False
+                pg.mixer.music.unpause()
+            elif menu_back_button and menu_back_button.collidepoint((x, y)) and game_state == game_menu:
+                game_state = main_menu
+                pg.mixer.music.fadeout(1000)
         #Odd and Even mouse
         elif event.type == pg.MOUSEBUTTONDOWN and not menu_open:
             x, y = event.pos
@@ -494,6 +620,7 @@ while running:#It starts active by default, since we set it to "True", which mak
             if menu_button and menu_button.collidepoint((x, y)) and game_state == game_start:
                 game_state = game_menu
                 menu_open = True
+                pg.mixer.music.pause()
             #Odd
             elif odd_button and odd_button.collidepoint((x, y)):
                 check("Odd")
