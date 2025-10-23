@@ -506,7 +506,6 @@ def game_drawings_events(game_state):
         return draw_menu()
     else:
         return None
-#loop
 while running:#It starts active by default, since we set it to "True", which makes it run without being explicitly called. Ideal for things that should run continuously. "while" = as long as "running" is True
     WIDTH, HEIGHT = root.get_size()
     update_rank()
@@ -514,11 +513,13 @@ while running:#It starts active by default, since we set it to "True", which mak
     #print(game_state)
     #print(menu_open)
     #print(event)
+    print(menu_open)
     theme_button = configuration_button = exit_button = None
     back_button = dante_button = DMC_dante_button = vergil_button = DMC3_vergil_button = DMC3_dante_button = v_button = None
     menu_button = odd_button = even_button = DT = Bar_DT_limit = Bar_DT_Min = None
     full_button = close_button = menu_back_button = None
     result = game_drawings_events(game_state)
+    #state_confirm(game_state)
     #print(pg.mixer.get_init())
     if result:
         if game_state == main_menu:
@@ -548,7 +549,7 @@ while running:#It starts active by default, since we set it to "True", which mak
             if event.key == pg.K_ESCAPE and not menu_open and game_state == game_start:#From this point on, it’s all syntax, so it’s more about researching and positioning these things
                 game_state = game_menu
                 menu_open = True
-            elif event.key == pg.K_ESCAPE and menu_open and game_state == game_menu:
+            if event.key == pg.K_ESCAPE and menu_open and game_state == game_menu:
                 game_state = game_start
                 menu_open = False
             #If the menu isn’t open, then the buttons, mouse, and eventually a controller will work
@@ -608,10 +609,11 @@ while running:#It starts active by default, since we set it to "True", which mak
             #Close Menu
             if close_button and close_button.collidepoint((x, y)) and game_state == game_menu:
                 game_state= game_start
-                menu_open = False
+                menu_open = F
                 pg.mixer.music.unpause()
             elif menu_back_button and menu_back_button.collidepoint((x, y)) and game_state == game_menu:
                 game_state = main_menu
+                menu_open = F
                 pg.mixer.music.fadeout(1000)
         #Odd and Even mouse
         elif event.type == pg.MOUSEBUTTONDOWN and not menu_open:
