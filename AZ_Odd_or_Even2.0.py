@@ -66,6 +66,23 @@ game_themes = "game_themes"
 game_config = "game_config"
 game_start = "game_start"
 game_menu = "game_menu"
+#game sounds EFX
+sound = ""
+menus_buttons_sounds = "menus_buttons_sounds"
+back_buttons_sounds = "back_buttons_sounds"
+exed_sounds = "exed_sounds"
+max_exed_sounds = "max_exed_sounds"
+RankD_sounds = "RankD_sounds"
+RankC_sounds = "RankC_sounds"
+RankB_sounds = "RankB_sounds"
+RankA_sounds = "RankA_sounds"
+RankS_sounds = "RankS_sounds"
+RankSS_sounds = "RankSS_sounds"
+RankSSS1_sounds = "RankSSS1_sounds"
+RankSSS2_sounds = "RankSSS2_sounds"
+RankAZ_sounds = "RankAZ_sounds"
+#max exed counter
+#max_exed_counter = []
 #Colors
 #shades of gray
 WHITE = (255, 255, 255)
@@ -150,6 +167,84 @@ def draw_main_menu():
     #Exit draw
     root.blit(exit_label, (exit_button_position_X, exit_button_position_Y))
     return theme_button, configuration_button, exit_button
+#Sounds efects
+def sounds_choice(sound):
+    if sound == "":
+        return None, None
+    elif sound == menus_buttons_sounds:
+        #sound
+        sound_path = os.path.join("Sonds_Efects", "menu_button_sound.mp3")
+        sound_select = sound_path
+        return sound_select, sound_path
+    elif sound == back_buttons_sounds:
+        #sound
+        sound_path = os.path.join("Sonds_Efects", "whoosh_efects.mp3")
+        sound_select = sound_path
+        return sound_select, sound_path
+    elif sound == exed_sounds:
+        #sound
+        sound_path = os.path.join("Sonds_Efects", "exed.mp3")
+        sound_select = sound_path
+        return sound_select, sound_path
+    elif sound == max_exed_sounds:
+        #sound
+        sound_path = os.path.join("Sonds_Efects", "max_exed.mp3")
+        sound_select = sound_path
+        return sound_select, sound_path
+    elif sound == RankD_sounds:
+        #sound
+        sound_path = os.path.join("Sonds_Efects", "rank_sounds_D.mp3")
+        sound_select = sound_path
+        return sound_select, sound_path
+    elif sound == RankC_sounds:
+        #sound
+        sound_path = os.path.join("Sonds_Efects", "rank_sounds_C.mp3")
+        sound_select = sound_path
+        return sound_select, sound_path
+    elif sound == RankB_sounds:
+        #sound
+        sound_path = os.path.join("Sonds_Efects", "rank_sound_B.mp3")
+        sound_select = sound_path
+        return sound_select, sound_path
+    elif sound == RankA_sounds:
+        #sound
+        sound_path = os.path.join("Sonds_Efects", "rank_sounds_A.mp3")
+        sound_select = sound_path
+        return sound_select, sound_path
+    elif sound == RankS_sounds:
+        #sound
+        sound_path = os.path.join("Sonds_Efects", "rank_sound_S.mp3")
+        sound_select = sound_path
+        return sound_select, sound_path
+    elif sound == RankSS_sounds:
+        #sound
+        sound_path = os.path.join("Sonds_Efects", "rank_sound_SS.mp3")
+        sound_select = sound_path
+        return sound_select, sound_path
+    elif sound == RankSSS1_sounds:
+        #sound
+        sound_path = os.path.join("Sonds_Efects", "rank_sound_SSS1.mp3")
+        sound_select = sound_path
+        return sound_select, sound_path
+    elif sound == RankSSS2_sounds:
+        #sound
+        sound_path = os.path.join("Sonds_Efects", "rank_sound_SSS2.mp3")
+        sound_select = sound_path
+        return sound_select, sound_path
+    elif sound == RankAZ_sounds:
+        #sound
+        sound_path = os.path.join("Sonds_Efects", "sound_rank_AZ.mp3")
+        sound_select = sound_path
+        return sound_select, sound_path
+def sounds_activated():
+    global current_sound_path
+    sound_path = sounds_choice(sound)
+    if sound_path and sound_path != current_sound_path and game_state == game_start:
+        try:
+            pg.mixer.music.load(sound_path)
+            current_sound_path = sound_path
+        except Exception:
+            current_sound_path = None
 #draw themes
 def draw_game_themes():
     root.fill(BLACK)
