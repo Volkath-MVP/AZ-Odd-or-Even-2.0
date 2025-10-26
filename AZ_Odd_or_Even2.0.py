@@ -47,14 +47,14 @@ ScoreDrainedRankS = 80
 ScoreDrainedRankSS = 100
 ScoreDrainedRankSSS = 160
 ScoreDrainedRankAZ = 200
-RankD = 1200
-RankC = 3200
-RankB = 5800
-RankA = 8800
-RankS = 11200
-RankSS = 14200
-RankSSS = 17200
-RankAZ = 20000
+RankD = 2200
+RankC = 5200
+RankB = 9800
+RankA = 11800
+RankS = 15200
+RankSS = 20200
+RankSSS = 28200
+RankAZ = 35000
 #drain speed
 Drain_time = 300
 #Devil Trigger variable
@@ -279,7 +279,7 @@ def background_theme(selected_theme):
         img_path = os.path.join("Backgrounds", "Vergil_DMC3")
         theme_select = img_path
         #Musics
-        music_path = os.path.join("Musics", "")
+        music_path = os.path.join("Musics", "vergil-battle-2-extended-version.mp3")
         return theme_select, music_path
     elif selected_theme == "DMC3_Dante":
         #background
