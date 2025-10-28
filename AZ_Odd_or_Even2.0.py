@@ -13,6 +13,7 @@ pg.mixer.music.set_volume(0.5)
 current_music_path = None
 current_sound_path = None
 sound_end_event = pg.USEREVENT + 10
+music_end_event = pg.USEREVENT + 10
 #initialize display
 pg.display.init()
 #initialize joystick
@@ -106,8 +107,11 @@ LIGHT_BLUE = (173, 216, 230)
 DEEP_SKY_BLUE = (0, 191, 255)
 POWDER_BLUE = (176, 224, 230)
 DARK_BLUE = (0, 0, 139)
+REAL_BLUE = (0, 0, 255)
 #shades of purple
 PURPLE = (255, 0, 255)
+PURPLEV = (128, 0, 128)
+DARK_PURPLE = (75, 0, 130)
 #shades of green
 GREEN = (0, 255, 0)
 running = True
@@ -243,7 +247,7 @@ def sounds_play():
             s.set_volume(0.5)
             chan = pg.mixer.find_channel()
             if chan:
-                chan.set_endevent(sound_end_event)
+                chan.set_endevent(music_end_event)
                 chan.play(s)
                 current_sound_path = sound_path
         except Exception:
@@ -331,31 +335,31 @@ def draw_game_themes():
     #Draw DMC3 Dante theme button
     root.blit(DMC3_vergil_theme_label, (DMC3_vergil_button_position_X, DMC3_vergil_button_position_Y))
     #DMC3 Dante Theme
-    DMC3_dante_theme_label =font_medium.render("DMC3 Dante", True, DEEP_SKY_BLUE)
+    DMC3_dante_theme_label =font_medium.render("DMC3 Dante", True, DARK_RED)
     #DMC3 Dante theme position
     DMC3_dante_assistant_position_X = WIDTH * 0.15
     DMC3_dante_assistant_position_Y = HEIGHT * 0.7
     DMC3_dante_button_position_X = DMC3_dante_assistant_position_X
     DMC3_dante_button_position_Y = DMC3_dante_assistant_position_Y
     DMC3_dante_button = pg.Rect(DMC3_dante_button_position_X, DMC3_dante_button_position_Y, DMC3_dante_theme_label.get_width(), DMC3_dante_theme_label.get_height())
-    pg.draw.rect(root, DARK_BLUE, DMC3_dante_button)
+    pg.draw.rect(root, RED, DMC3_dante_button)
     #Draw V theme button
     root.blit(DMC3_dante_theme_label, (DMC3_dante_button_position_X, DMC3_dante_button_position_Y))
     #Draw V theme button
     #V Theme
-    v_theme_label =font_medium.render("V", True, DEEP_SKY_BLUE)
+    v_theme_label =font_medium.render("V", True, PURPLEV)
     #V theme position
     v_assistant_position_X = WIDTH * 0.15
     v_assistant_position_Y = HEIGHT * 0.8
     v_button_position_X = v_assistant_position_X
     v_button_position_Y = v_assistant_position_Y
     v_button = pg.Rect(v_button_position_X, v_button_position_Y, v_theme_label.get_width(), v_theme_label.get_height())
-    pg.draw.rect(root, DARK_BLUE, v_button)
+    pg.draw.rect(root, DARK_PURPLE, v_button)
     #Draw V theme button
     root.blit(v_theme_label, (v_button_position_X, v_button_position_Y))
     #Draw VergilDMC4 theme button
     #VergilDMC4 Theme
-    vergilDMC4_theme_label =font_medium.render("Vergil DMC4", True, DEEP_SKY_BLUE)
+    vergilDMC4_theme_label =font_medium.render("Vergil DMC4", True, REAL_BLUE)
     #VergilDMC4 theme position
     vergilDMC4_assistant_position_X = WIDTH * 0.15
     vergilDMC4_assistant_position_Y = HEIGHT * 0.9
@@ -708,7 +712,7 @@ while running:#It starts active by default, since we set it to "True", which mak
             full_button, close_button, menu_back_button = result
     for event in pg.event.get():#"for event in pg.event.get()""for" = makes it so that for each thing inside "event", which are the events that happen"in" inside "pg.event", Pygame events".get()"
      #to read or search inside pg.event. Pygame stores all user interactions in a list, and pg.event.get() searches for one of those already listed events—in this case, "event"
-        if event.type == sound_end_event:
+        if event.type == sound_end_event or event.type == music_end_event:
             sound = ""
             sound_exed = ""
             current_sound_path = None
@@ -729,6 +733,7 @@ while running:#It starts active by default, since we set it to "True", which mak
                 game_state = game_menu
                 sound = menus_buttons_sounds
                 menu_open = True
+                pg.mixer.music.pause()
                 #print(sound)
                 #print(game_state)
                 #print(menu_open)
@@ -736,6 +741,7 @@ while running:#It starts active by default, since we set it to "True", which mak
                 game_state = game_start
                 sound = menus_buttons_sounds
                 menu_open = False
+                pg.mixer.music.unpause()
                 #print(game_state)
                 #print(menu_open)
             #If the menu isn’t open, then the buttons, mouse, and eventually a controller will work
