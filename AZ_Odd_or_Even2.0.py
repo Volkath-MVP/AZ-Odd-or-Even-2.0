@@ -40,6 +40,10 @@ menu_open = False
 F = False #Yeah, this is necessary. For fullscreen mode ...this is strange
 menu_width, menu_height, menu_open= 300, 500, False
 game_state = "main_menu"
+#max exed
+sound_exed = ""
+exed_stack = []
+exed_current_sound_path = None
 #variable rank
 ScoreIfMissing = 800
 ScoreDrainedNormal = 40
@@ -171,6 +175,17 @@ def draw_main_menu():
     root.blit(exit_label, (exit_button_position_X, exit_button_position_Y))
     return theme_button, configuration_button, exit_button
 #Sounds efects
+def sounds_exed_choice(sound_exed):
+    if sound_exed == "":
+        return None
+    if sound_exed == exed_sounds:
+        #sound
+        exed_sound_path = os.path.join("Sonds_Efects", "exed.mp3")
+        return exed_sound_path
+    if sound_exed == max_exed_sounds:
+        #sound
+        exed_sound_path = os.path.join("Sonds_Efects", "max_exed.mp3")
+        return exed_sound_path
 def sounds_choice(sound):
     if sound == "":
         return None
@@ -181,14 +196,6 @@ def sounds_choice(sound):
     if sound == back_buttons_sounds:
         #sound
         sound_path = os.path.join("Sonds_Efects", "whoosh_efects.mp3")
-        return sound_path
-    if sound == exed_sounds:
-        #sound
-        sound_path = os.path.join("Sonds_Efects", "exed.mp3")
-        return sound_path
-    if sound == max_exed_sounds:
-        #sound
-        sound_path = os.path.join("Sonds_Efects", "max_exed.mp3")
         return sound_path
     if sound == RankD_sounds:
         #sound
@@ -241,6 +248,20 @@ def sounds_play():
                 current_sound_path = sound_path
         except Exception:
             current_sound_path = None
+def sounds_exed_play():
+    global exed_current_sound_path
+    exed_sound_path = sounds_exed_choice(sound_exed)
+    if exed_sound_path and exed_sound_path != exed_current_sound_path and game_state == game_start:
+        try:
+            s = pg.mixer.Sound(exed_sound_path)
+            s.set_volume(1.0)
+            chan = pg.mixer.find_channel()
+            if chan:
+                chan.set_endevent(sound_end_event)
+                chan.play(s)
+                exed_current_sound_path = exed_sound_path
+        except Exception:
+            exed_current_sound_path = None
 #draw themes
 def draw_game_themes():
     root.fill(BLACK)
@@ -332,14 +353,27 @@ def draw_game_themes():
     pg.draw.rect(root, DARK_BLUE, v_button)
     #Draw V theme button
     root.blit(v_theme_label, (v_button_position_X, v_button_position_Y))
-    return back_button, dante_button, DMC_dante_button, vergil_button, DMC3_vergil_button, DMC3_dante_button, v_button
+    #Draw VergilDMC4 theme button
+    #VergilDMC4 Theme
+    vergilDMC4_theme_label =font_medium.render("Vergil DMC4", True, DEEP_SKY_BLUE)
+    #VergilDMC4 theme position
+    vergilDMC4_assistant_position_X = WIDTH * 0.15
+    vergilDMC4_assistant_position_Y = HEIGHT * 0.9
+    vergilDMC4_button_position_X = vergilDMC4_assistant_position_X
+    vergilDMC4_button_position_Y = vergilDMC4_assistant_position_Y
+    vergilDMC4_button = pg.Rect(vergilDMC4_button_position_X, vergilDMC4_button_position_Y, vergilDMC4_theme_label.get_width(), vergilDMC4_theme_label.get_height())
+    pg.draw.rect(root, DARK_BLUE, vergilDMC4_button)
+    #Draw VergilDMC4 theme button
+    root.blit(vergilDMC4_theme_label, (vergilDMC4_button_position_X, vergilDMC4_button_position_Y))
+    return back_button, dante_button, DMC_dante_button, vergil_button, DMC3_vergil_button, DMC3_dante_button, v_button, vergilDMC4_button
 Theme = {
     "Theme0": "Dante", 
     "Theme1": "DMC_Dante", 
     "Theme2": "Vergil", 
     "Theme3": "DMC3_Vergil",
     "Theme4": "DMC3_Dante",
-    "Theme5": "V"}
+    "Theme5": "V",
+    "Theme6": "VergilDMC4"}
 selected_theme = ""
 def background_theme(selected_theme):
     if selected_theme == "":
@@ -363,7 +397,7 @@ def background_theme(selected_theme):
         img_path = os.path.join("Backgrounds", "vergil_DMC5.png")
         theme_select = img_path
         #Musics
-        music_path = os.path.join("Musics", "")
+        music_path = os.path.join("Musics", "bury_the_light.mp3")
         return theme_select, music_path
     elif selected_theme == "DMC3_Vergil":
         #background
@@ -385,6 +419,13 @@ def background_theme(selected_theme):
         theme_select = img_path
         #Musics
         music_path = os.path.join("Musics", "Devil May Cry 5 - Crimson Cloud [EPIC METAL COVER] (Little V)(MP3_128K).mp3")
+        return theme_select, music_path
+    elif selected_theme == "VergilDMC4":
+        #background
+        img_path = os.path.join("Backgrounds", "vergil_DMC4.jpg")
+        theme_select = img_path
+        #Musics
+        music_path = os.path.join("Musics", "vergils_theme_DMC4.mp3")
         return theme_select, music_path
 def draw_game():
     global current_music_path
@@ -523,21 +564,21 @@ def update_number():
     number=rd.randint(1, 100)
 def rank_announcer(response):
     global sound
-    if response and RankAZ <= score <= RankAZ + 700:
+    if response and RankAZ <= score <= RankAZ + 700 or response and score == RankAZ:
         sound = RankAZ_sounds
-    elif response and RankSSS <= score <= RankSSS + 700:
+    elif response and RankSSS <= score <= RankSSS + 700 or response and score == RankSSS:
         sound = RankSSS1_sounds
-    elif response and RankSS <= score <= RankSS + 700:
+    elif response and RankSS <= score <= RankSS + 500 or response and score == RankSS:
         sound = RankSS_sounds
-    elif response and RankS <= score <= RankS + 700:
+    elif response and RankS <= score <= RankS + 300 or response and score == RankS:
         sound = RankS_sounds
-    elif response and RankA <= score <= RankA + 700:
+    elif response and RankA <= score <= RankA + 300 or response and score == RankA:
         sound = RankA_sounds
-    elif response and RankB <= score <= RankB + 700:
+    elif response and RankB <= score <= RankB + 300 or response and score == RankB:
         sound = RankB_sounds
-    elif response and RankC <= score <= RankC + 700:
+    elif response and RankC <= score <= RankC + 300 or response and score == RankC:
         sound = RankC_sounds
-    elif response and RankD <= score <= RankD + 700:
+    elif response and RankD <= score <= RankD + 300 or response and score == RankD:
         sound = RankD_sounds
 #Odd or Even function
 def check(AZ):
@@ -550,6 +591,7 @@ def check(AZ):
     Points_Devil_trigger(response)
     V(response)
     update_rank()
+    max_exed_active(response)
     rank_announcer(response)
     pg.time.set_timer(pg.USEREVENT + 1, Drain_time)
 #reset message function
@@ -621,18 +663,33 @@ def game_drawings_events(game_state):
         return draw_menu()
     else:
         return None
+#max exed function
+def max_exed_active(response):
+    global sound_exed
+    if len(exed_stack) >= 3 and response:
+        sound_exed = max_exed_sounds
+        exed_stack.clear()
+        #print(sound_exed)
+        #print(exed_stack)
+    elif response:
+        exed_stack.append("STACK")
+        sound_exed = exed_sounds
+        #print(sound_exed)
+        #print(exed_stack)
 while running:#It starts active by default, since we set it to "True", which makes it run without being explicitly called. Ideal for things that should run continuously. "while" = as long as "running" is True
     WIDTH, HEIGHT = root.get_size()
     update_rank()
     sounds_choice(sound)
+    sounds_exed_choice(sound_exed)
     sounds_play()
+    sounds_exed_play()
     #game_drawings()
     #print(game_state)
     #print(menu_open)
     #print(event)
     #print(menu_open)
     theme_button = configuration_button = exit_button = None
-    back_button = dante_button = DMC_dante_button = vergil_button = DMC3_vergil_button = DMC3_dante_button = v_button = None
+    back_button = dante_button = DMC_dante_button = vergil_button = DMC3_vergil_button = DMC3_dante_button = v_button = vergilDMC4_button = None
     menu_button = odd_button = even_button = DT = Bar_DT_limit = Bar_DT_Min = None
     full_button = close_button = menu_back_button = None
     result = game_drawings_events(game_state)
@@ -642,7 +699,7 @@ while running:#It starts active by default, since we set it to "True", which mak
         if game_state == main_menu:
             theme_button, configuration_button, exit_button = result
         elif game_state == game_themes:
-            back_button, dante_button, DMC_dante_button, vergil_button, DMC3_vergil_button, DMC3_dante_button, v_button = result
+            back_button, dante_button, DMC_dante_button, vergil_button, DMC3_vergil_button, DMC3_dante_button, v_button, vergilDMC4_button = result
             devil_trigger = 0
             score = 0
         elif game_state == game_start:
@@ -653,7 +710,9 @@ while running:#It starts active by default, since we set it to "True", which mak
      #to read or search inside pg.event. Pygame stores all user interactions in a list, and pg.event.get() searches for one of those already listed events—in this case, "event"
         if event.type == sound_end_event:
             sound = ""
+            sound_exed = ""
             current_sound_path = None
+            exed_current_sound_path = None
         if event.type == pg.JOYDEVICEADDED:
             joystick = pg.joystick.Joystick(event.device_index)
             joystick.init()
@@ -670,15 +729,15 @@ while running:#It starts active by default, since we set it to "True", which mak
                 game_state = game_menu
                 sound = menus_buttons_sounds
                 menu_open = True
-                print(sound)
-                print(game_state)
-                print(menu_open)
+                #print(sound)
+                #print(game_state)
+                #print(menu_open)
             elif event.key == pg.K_ESCAPE and menu_open and game_state == game_menu:
                 game_state = game_start
                 sound = menus_buttons_sounds
                 menu_open = False
-                print(game_state)
-                print(menu_open)
+                #print(game_state)
+                #print(menu_open)
             #If the menu isn’t open, then the buttons, mouse, and eventually a controller will work
             #Odd and Even keyboard
             if game_state == game_start:
@@ -756,9 +815,17 @@ while running:#It starts active by default, since we set it to "True", which mak
                 #print(game_state)
                 #print(sound)
                 #print(current_sound_path)
+            elif vergilDMC4_button and vergilDMC4_button.collidepoint((x, y)):
+                selected_theme = Theme.get("Theme6")
+                game_state = game_start
+                sound = menus_buttons_sounds
+                #print(game_state)
+                #print(sound)
+                #print(current_sound_path)
         #Menu mouse
         elif event.type == pg.MOUSEBUTTONDOWN and menu_open and game_state == game_menu:
             x, y = event.pos
+            sound = menus_buttons_sounds
             if full_button and full_button.collidepoint((x, y)):
                 F = not F
                 if F:
@@ -781,6 +848,7 @@ while running:#It starts active by default, since we set it to "True", which mak
         #Odd and Even mouse
         elif event.type == pg.MOUSEBUTTONDOWN and not menu_open:
             x, y = event.pos
+            sound = menus_buttons_sounds
             #Menu botton
             if menu_button and menu_button.collidepoint((x, y)) and game_state == game_start:
                 game_state = game_menu
