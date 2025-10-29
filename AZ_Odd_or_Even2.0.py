@@ -1,4 +1,4 @@
-#all imports
+﻿#all imports
 #Pygame has features focused on games and also its own graphical interface (I even had to remove Tkinter because of it), and random was just used to create the random number generation system
 import pygame as pg
 import random as rd #random events
@@ -71,7 +71,8 @@ DTactive = False
 #game state variables
 main_menu = "main_menu"
 game_themes = "game_themes"
-game_config = "game_config"
+main_menu_config = "main_menu_config"
+menu_config = "menu_config"
 game_start = "game_start"
 game_menu = "game_menu"
 #game sounds EFX
@@ -89,8 +90,6 @@ RankSS_sounds = "RankSS_sounds"
 RankSSS1_sounds = "RankSSS1_sounds"
 RankSSS2_sounds = "RankSSS2_sounds"
 RankAZ_sounds = "RankAZ_sounds"
-#max exed counter
-#max_exed_counter = []
 #Colors
 #shades of gray
 WHITE = (255, 255, 255)
@@ -371,7 +370,7 @@ def draw_game_themes():
     root.blit(vergilDMC4_theme_label, (vergilDMC4_button_position_X, vergilDMC4_button_position_Y))
     return back_button, dante_button, DMC_dante_button, vergil_button, DMC3_vergil_button, DMC3_dante_button, v_button, vergilDMC4_button
 Theme = {
-    "Theme0": "Dante", 
+    "Theme0": "Dante",
     "Theme1": "DMC_Dante", 
     "Theme2": "Vergil", 
     "Theme3": "DMC3_Vergil",
@@ -536,7 +535,14 @@ def draw_menu():
     pg.draw.rect(root, RED, close_button)
     #Close button draw
     root.blit(close_label, (close_button.centerx - close_label.get_width() // 2, close_button.top + 10))
-    return full_button, close_button, menu_back_button
+    #Configuration button in menu
+    menu_configuration_label = font_small.render("Configuration", True, BLACK)
+    #configuration button position
+    menu_configuration_button = pg.Rect(menu_box.centerx - 100, menu_box.centery - -10, 200, 40)
+    pg.draw.rect(root, WHITE, menu_configuration_button)
+    #configuration draw
+    root.blit(menu_configuration_label, (menu_configuration_button.centerx - menu_configuration_label.get_width() // 2, menu_configuration_button.top + 10))
+    return full_button, close_button, menu_back_button, menu_configuration_button
 def reset_message():
     global message
     message = ""
@@ -571,7 +577,7 @@ def rank_announcer(response):
     if response and RankAZ <= score <= RankAZ + 700 or response and score == RankAZ:
         sound = RankAZ_sounds
     elif response and RankSSS <= score <= RankSSS + 700 or response and score == RankSSS:
-        sound = RankSSS1_sounds
+        sound = rd.choice([RankSSS1_sounds, RankSSS2_sounds])
     elif response and RankSS <= score <= RankSS + 500 or response and score == RankSS:
         sound = RankSS_sounds
     elif response and RankS <= score <= RankS + 300 or response and score == RankS:
@@ -692,16 +698,26 @@ while running:#It starts active by default, since we set it to "True", which mak
     #print(menu_open)
     #print(event)
     #print(menu_open)
+    #print(pg.mixer.get_init())
+    #main menu buttons
     theme_button = configuration_button = exit_button = None
+    #configuration in main menu
+    main_menu_configuration_volume_button = main_menu_configuration_back_button = main_menu_configuration_fps_button = None
+    #Themes buttons
     back_button = dante_button = DMC_dante_button = vergil_button = DMC3_vergil_button = DMC3_dante_button = v_button = vergilDMC4_button = None
+    #Game buttons
     menu_button = odd_button = even_button = DT = Bar_DT_limit = Bar_DT_Min = None
-    full_button = close_button = menu_back_button = None
+    #Menu buttons
+    full_button = close_button = menu_back_button = menu_configuration_button = None
+    #menu configuration
+    menu_configuration_volume_button = menu_configuration_back_button = menu_configuration_fps_button = None
     result = game_drawings_events(game_state)
     #state_confirm(game_state)
-    #print(pg.mixer.get_init())
     if result:
         if game_state == main_menu:
             theme_button, configuration_button, exit_button = result
+        elif game_state == main_menu_config:
+            main_menu_configuration_volume_button, main_menu_configuration_back_button, main_menu_configuration_fps_button
         elif game_state == game_themes:
             back_button, dante_button, DMC_dante_button, vergil_button, DMC3_vergil_button, DMC3_dante_button, v_button, vergilDMC4_button = result
             devil_trigger = 0
@@ -709,7 +725,9 @@ while running:#It starts active by default, since we set it to "True", which mak
         elif game_state == game_start:
             menu_button, odd_button, even_button, DT, Bar_DT_limit, Bar_DT_Min = result
         elif game_state == game_menu:
-            full_button, close_button, menu_back_button = result
+            full_button, close_button, menu_back_button, menu_configuration_button = result
+        elif game_state == menu_config:
+            menu_configuration_volume_button, menu_configuration_back_button, menu_configuration_fps_button
     for event in pg.event.get():#"for event in pg.event.get()""for" = makes it so that for each thing inside "event", which are the events that happen"in" inside "pg.event", Pygame events".get()"
      #to read or search inside pg.event. Pygame stores all user interactions in a list, and pg.event.get() searches for one of those already listed events—in this case, "event"
         if event.type == sound_end_event or event.type == music_end_event:
@@ -768,7 +786,7 @@ while running:#It starts active by default, since we set it to "True", which mak
                 #print(sound)
             elif configuration_button and configuration_button.collidepoint((x, y)):
                 sound = menus_buttons_sounds
-                game_state = game_config
+                game_state = main_menu_config
             elif exit_button and exit_button.collidepoint((x, y)):
                 running = False
         elif event.type == pg.MOUSEBUTTONDOWN and game_state == game_themes:
@@ -851,6 +869,9 @@ while running:#It starts active by default, since we set it to "True", which mak
                 sound = menus_buttons_sounds
                 menu_open = F
                 pg.mixer.music.fadeout(1000)
+            elif menu_configuration_button and menu_configuration_button.collidepoint((x, y)) and game_state == game_menu:
+                sound = menus_buttons_sounds
+                game_state = main_menu_config
         #Odd and Even mouse
         elif event.type == pg.MOUSEBUTTONDOWN and not menu_open:
             x, y = event.pos
