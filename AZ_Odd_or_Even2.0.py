@@ -236,7 +236,7 @@ def sounds_choice(sound):
         #sound
         sound_path = os.path.join("Sonds_Efects", "sound_rank_AZ.mp3")
         return sound_path
-def sounds_play():
+def musics_play():
     global current_sound_path
     sound_path = sounds_choice(sound)
     #print(sound_path)
@@ -300,16 +300,16 @@ def draw_game_themes():
     #Draw Dante theme button
     root.blit(dante_theme_label, (dante_button_position_X, dante_button_position_Y))
     #DMC Dante
-    #DMCDante Theme
+    #DMC Dante Theme
     DMC_dante_theme_label = font_medium.render("DMC Dante", True, RED)
-    #Dante theme position
+    #DMC Dante theme position
     DMC_dante_assistant_position_X = WIDTH * 0.15
     DMC_dante_assistant_position_Y = HEIGHT * 0.4
     DMC_dante_button_position_X = DMC_dante_assistant_position_X
     DMC_dante_button_position_Y = DMC_dante_assistant_position_Y
     DMC_dante_button = pg.Rect(DMC_dante_button_position_X, DMC_dante_button_position_Y, DMC_dante_theme_label.get_width(), DMC_dante_theme_label.get_height())
     pg.draw.rect(root, DARK_RED, DMC_dante_button)
-    #Draw Dante theme button
+    #Draw DMC Dante theme button
     root.blit(DMC_dante_theme_label, (DMC_dante_button_position_X, DMC_dante_button_position_Y))
     #Vergil Theme
     vergil_theme_label =font_medium.render("Vergil", True, DEEP_SKY_BLUE)
@@ -500,6 +500,32 @@ def draw_game():
     menu_button_label = font_small.render("MENU", True, WHITE)
     root.blit(menu_button_label, (10, 10))
     return menu_button, odd_button, even_button, DT, Bar_DT_limit, Bar_DT_Min
+def draw_main_menu_configuration():
+    root.fill(BLACK)
+    #main menu configuration volume button
+    main_menu_configuration_volume_button_label = font_medium.render("Volume", True, WHITE)
+    #main menu configuration volume button position
+    main_menu_configuration_volume_button_assistant_position_X = WIDTH * 0.15
+    main_menu_configuration_volume_button_assistant_position_Y = HEIGHT * 0.4
+    main_menu_configuration_volume_button_position_X = main_menu_configuration_volume_button_assistant_position_X
+    main_menu_configuration_volume_button_position_Y = main_menu_configuration_volume_button_assistant_position_Y
+    main_menu_configuration_volume_button = pg.Rect(main_menu_configuration_volume_button_position_X, main_menu_configuration_volume_button_position_Y, main_menu_configuration_volume_button_label.get_width(), main_menu_configuration_volume_button_label.get_height())
+    pg.draw.rect(root, GRAY, main_menu_configuration_volume_button)
+    #Draw main menu configuration volume button button
+    root.blit(main_menu_configuration_volume_button_label, (main_menu_configuration_volume_button_position_X, main_menu_configuration_volume_button_position_Y))
+    #main menu configuration back button
+    main_menu_configuration_back_button_label = font_medium.render("Back", True, WHITE)
+    #main menu configuration volume button position
+    main_menu_configuration_back_button_assistant_position_X = WIDTH * 0.1
+    main_menu_configuration_back_button_assistant_position_Y = HEIGHT * 0.1
+    main_menu_configuration_back_button_position_X = main_menu_configuration_back_button_assistant_position_X
+    main_menu_configuration_back_button_position_Y = main_menu_configuration_back_button_assistant_position_Y
+    main_menu_configuration_back_button = pg.Rect(main_menu_configuration_back_button_position_X, main_menu_configuration_back_button_position_Y, main_menu_configuration_back_button_label.get_width(), main_menu_configuration_back_button_label.get_height())
+    pg.draw.rect(root, GRAY, main_menu_configuration_back_button)
+    #Draw main menu configuration volume button button
+    root.blit(main_menu_configuration_back_button_label, (main_menu_configuration_back_button_position_X, main_menu_configuration_back_button_position_Y))
+    return main_menu_configuration_volume_button_label, main_menu_configuration_back_button
+#def draw_menu_configuration():
 def draw_menu():
     overlay = pg.Surface((WIDTH, HEIGHT))#Creates a surface with the size (WIDTH, HEIGHT), in this case the same size as the initial screen. From this point on, "overlay" is equal to a surface of size (WIDTH, HEIGHT)
     #Background
@@ -665,6 +691,8 @@ thread_controle.start()
 def game_drawings_events(game_state):
     if game_state == main_menu:
         return draw_main_menu()
+    elif game_state == main_menu_config:
+        return draw_main_menu_configuration()
     elif game_state == game_themes:
         return draw_game_themes()
     elif game_state == game_start:
@@ -686,12 +714,30 @@ def max_exed_active(response):
         sound_exed = exed_sounds
         #print(sound_exed)
         #print(exed_stack)
+#main menu buttons
+theme_button = configuration_button = exit_button = None
+#configuration in main menu
+main_menu_configuration_volume_button = main_menu_configuration_back_button = main_menu_configuration_fps_button = None
+#Themes buttons
+back_button = dante_button = DMC_dante_button = vergil_button = DMC3_vergil_button = DMC3_dante_button = v_button = vergilDMC4_button = None
+#Game buttons
+menu_button = odd_button = even_button = DT = Bar_DT_limit = Bar_DT_Min = None
+#Menu buttons
+full_button = close_button = menu_back_button = menu_configuration_button = None
+#menu configuration
+menu_configuration_volume_button = menu_configuration_back_button = menu_configuration_fps_button = None
+main_menu_button_list = [theme_button, configuration_button, exit_button]
+theme_button_list = [back_button, dante_button, DMC_dante_button, vergil_button, DMC3_vergil_button, DMC3_dante_button, v_button, vergilDMC4_button]
+menu_button_list = [full_button, close_button, menu_back_button, menu_configuration_button]
+current_button = 0
+joystick_moved = False
+
 while running:#It starts active by default, since we set it to "True", which makes it run without being explicitly called. Ideal for things that should run continuously. "while" = as long as "running" is True
     WIDTH, HEIGHT = root.get_size()
     update_rank()
     sounds_choice(sound)
     sounds_exed_choice(sound_exed)
-    sounds_play()
+    musics_play()
     sounds_exed_play()
     #game_drawings()
     #print(game_state)
@@ -699,25 +745,13 @@ while running:#It starts active by default, since we set it to "True", which mak
     #print(event)
     #print(menu_open)
     #print(pg.mixer.get_init())
-    #main menu buttons
-    theme_button = configuration_button = exit_button = None
-    #configuration in main menu
-    main_menu_configuration_volume_button = main_menu_configuration_back_button = main_menu_configuration_fps_button = None
-    #Themes buttons
-    back_button = dante_button = DMC_dante_button = vergil_button = DMC3_vergil_button = DMC3_dante_button = v_button = vergilDMC4_button = None
-    #Game buttons
-    menu_button = odd_button = even_button = DT = Bar_DT_limit = Bar_DT_Min = None
-    #Menu buttons
-    full_button = close_button = menu_back_button = menu_configuration_button = None
-    #menu configuration
-    menu_configuration_volume_button = menu_configuration_back_button = menu_configuration_fps_button = None
     result = game_drawings_events(game_state)
     #state_confirm(game_state)
     if result:
         if game_state == main_menu:
             theme_button, configuration_button, exit_button = result
         elif game_state == main_menu_config:
-            main_menu_configuration_volume_button, main_menu_configuration_back_button, main_menu_configuration_fps_button
+            main_menu_configuration_volume_button, main_menu_configuration_back_button, main_menu_configuration_fps_button = result
         elif game_state == game_themes:
             back_button, dante_button, DMC_dante_button, vergil_button, DMC3_vergil_button, DMC3_dante_button, v_button, vergilDMC4_button = result
             devil_trigger = 0
@@ -727,7 +761,8 @@ while running:#It starts active by default, since we set it to "True", which mak
         elif game_state == game_menu:
             full_button, close_button, menu_back_button, menu_configuration_button = result
         elif game_state == menu_config:
-            menu_configuration_volume_button, menu_configuration_back_button, menu_configuration_fps_button
+            menu_configuration_volume_button, menu_configuration_back_button, menu_configuration_fps_button = result
+    #print(theme_button in result, configuration_button in result, exit_button in result)
     for event in pg.event.get():#"for event in pg.event.get()""for" = makes it so that for each thing inside "event", which are the events that happen"in" inside "pg.event", Pygame events".get()"
      #to read or search inside pg.event. Pygame stores all user interactions in a list, and pg.event.get() searches for one of those already listed events—in this case, "event"
         if event.type == sound_end_event or event.type == music_end_event:
