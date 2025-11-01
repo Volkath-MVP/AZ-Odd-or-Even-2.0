@@ -731,13 +731,32 @@ theme_button_list = [back_button, dante_button, DMC_dante_button, vergil_button,
 menu_button_list = [full_button, close_button, menu_back_button, menu_configuration_button]
 current_button = 0
 joystick_moved = False
-
+def controller_button_list(main_menu_button_list):
+    global current_button, joystick_moved
+    joystick = pg.joystick.Joystick(0)
+    joystick.init()
+    axis_y = joystick.get_axis(1)
+    print(axis_y)
+    if not joystick_moved:
+        #up
+        if axis_y < -0.5:
+            current_button = (current_button - 1) % len(main_menu_button_list)
+            joystick_moved = True
+        #down
+        elif axis_y > 0.5:
+            current_button = (current_button + 1) % len(main_menu_button_list)
+            joystick_moved = True
+        return main_menu_button_list[current_button]
+    #anti double click
+    elif -0.5 < axis_y < 0.5:
+        joystick_moved = False
 while running:#It starts active by default, since we set it to "True", which makes it run without being explicitly called. Ideal for things that should run continuously. "while" = as long as "running" is True
     WIDTH, HEIGHT = root.get_size()
     update_rank()
     sounds_choice(sound)
     sounds_exed_choice(sound_exed)
     musics_play()
+    controller_button_list(main_menu_button_list)
     sounds_exed_play()
     #game_drawings()
     #print(game_state)
