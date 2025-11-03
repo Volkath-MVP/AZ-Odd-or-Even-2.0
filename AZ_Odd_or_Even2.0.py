@@ -731,32 +731,54 @@ theme_button_list = [back_button, dante_button, DMC_dante_button, vergil_button,
 menu_button_list = [full_button, close_button, menu_back_button, menu_configuration_button]
 current_button = 0
 joystick_moved = False
-def controller_button_list(main_menu_button_list):
+button_selected = None
+is_selected = True
+def controller_button_list(active_list):
     global current_button, joystick_moved
-    joystick = pg.joystick.Joystick(0)
-    joystick.init()
-    axis_y = joystick.get_axis(1)
+    if not active_list:
+        return
+    if pg.joystick.get_count() == 0:
+        return
+    j = pg.joystick.Joystick(0)
+    j.init()
+    axis_y = j.get_axis(1)
     print(axis_y)
     if not joystick_moved:
         #up
         if axis_y < -0.5:
-            current_button = (current_button - 1) % len(main_menu_button_list)
+            current_button = (current_button - 1) % len(active_list)
             joystick_moved = True
         #down
         elif axis_y > 0.5:
-            current_button = (current_button + 1) % len(main_menu_button_list)
+            current_button = (current_button + 1) % len(active_list)
             joystick_moved = True
-        return main_menu_button_list[current_button]
     #anti double click
-    elif -0.5 < axis_y < 0.5:
-        joystick_moved = False
+    else: 
+        if -0.5 < axis_y < 0.5:
+            joystick_moved = False
+def button_selected_value(active_list, current_button):
+    if not active_list:
+        return None
+    idx = current_button % len(active_list)
+    if current_button == 0:
+        button_selected = theme_button
+        return button_selected
+    elif current_button == 1:
+        button_selected = configuration_button
+        return button_selected
+    return active_list[idx]
+def draw_focus(button_selected):
+    global current_button
+    if not button_selected:
+        return
+    if isinstance(button_selected, pg.Rect) and is_selected:
+        pg.draw.rect(root, WHITE, button_selected, 3)
 while running:#It starts active by default, since we set it to "True", which makes it run without being explicitly called. Ideal for things that should run continuously. "while" = as long as "running" is True
     WIDTH, HEIGHT = root.get_size()
     update_rank()
     sounds_choice(sound)
     sounds_exed_choice(sound_exed)
     musics_play()
-    controller_button_list(main_menu_button_list)
     sounds_exed_play()
     #game_drawings()
     #print(game_state)
@@ -766,21 +788,34 @@ while running:#It starts active by default, since we set it to "True", which mak
     #print(pg.mixer.get_init())
     result = game_drawings_events(game_state)
     #state_confirm(game_state)
+    draw_focus(button_selected)
     if result:
         if game_state == main_menu:
             theme_button, configuration_button, exit_button = result
+            main_menu_button_list = [theme_button, configuration_button, exit_button]
+            active_list = main_menu_button_list
         elif game_state == main_menu_config:
             main_menu_configuration_volume_button, main_menu_configuration_back_button, main_menu_configuration_fps_button = result
+            main_menu_config_list = [main_menu_configuration_back_button, main_menu_configuration_volume_button, main_menu_configuration_fps_button]
+            active_list = main_menu_config_list
         elif game_state == game_themes:
             back_button, dante_button, DMC_dante_button, vergil_button, DMC3_vergil_button, DMC3_dante_button, v_button, vergilDMC4_button = result
             devil_trigger = 0
             score = 0
+            theme_button_list = [back_button, dante_button, DMC_dante_button, vergil_button, DMC3_vergil_button, DMC3_dante_button, v_button, vergilDMC4_button]
+            active_list = theme_button_list
         elif game_state == game_start:
             menu_button, odd_button, even_button, DT, Bar_DT_limit, Bar_DT_Min = result
         elif game_state == game_menu:
             full_button, close_button, menu_back_button, menu_configuration_button = result
+            menu_button_list = [full_button, close_button, menu_back_button, menu_configuration_button]
+            active_list = menu_button_list
         elif game_state == menu_config:
             menu_configuration_volume_button, menu_configuration_back_button, menu_configuration_fps_button = result
+        else:
+            active_list = []
+    controller_button_list(active_list)
+    button_selected = button_selected_value(active_list, current_button)
     #print(theme_button in result, configuration_button in result, exit_button in result)
     for event in pg.event.get():#"for event in pg.event.get()""for" = makes it so that for each thing inside "event", which are the events that happen"in" inside "pg.event", Pygame events".get()"
      #to read or search inside pg.event. Pygame stores all user interactions in a list, and pg.event.get() searches for one of those already listed events—in this case, "event"
