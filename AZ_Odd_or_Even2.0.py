@@ -544,14 +544,14 @@ def draw_menu():
     menu_back_label = font_small.render("Back", True, BLACK)
     #Back position
     menu_back_button = pg.Rect(menu_box.centerx - 100, menu_box.centery - 55, 200, 40)
-    pg.draw.rect(root, WHITE, menu_back_button)
+    pg.draw.rect(root, RED, menu_back_button)
     #Back draw
     root.blit(menu_back_label, (menu_back_button.centerx - menu_back_label.get_width() // 2, menu_back_button.top + 10))
     #Fullscreen label
     full_label = font_small.render("Fullscreen", True, BLACK)
     #Fullscreen btn position
     full_button = pg.Rect(menu_box.centerx - 100, menu_box.centery - 120, 200, 40)
-    pg.draw.rect(root, WHITE, full_button)
+    pg.draw.rect(root, RED, full_button)
     #Fullscreen draw
     root.blit(full_label, (full_button.centerx - full_label.get_width() // 2, full_button.top + 10))
     #Close button label
@@ -565,10 +565,10 @@ def draw_menu():
     menu_configuration_label = font_small.render("Configuration", True, BLACK)
     #configuration button position
     menu_configuration_button = pg.Rect(menu_box.centerx - 100, menu_box.centery - -10, 200, 40)
-    pg.draw.rect(root, WHITE, menu_configuration_button)
+    pg.draw.rect(root, RED, menu_configuration_button)
     #configuration draw
     root.blit(menu_configuration_label, (menu_configuration_button.centerx - menu_configuration_label.get_width() // 2, menu_configuration_button.top + 10))
-    return full_button, close_button, menu_back_button, menu_configuration_button
+    return close_button, full_button, menu_back_button, menu_configuration_button
 def reset_message():
     global message
     message = ""
@@ -723,12 +723,12 @@ back_button = dante_button = DMC_dante_button = vergil_button = DMC3_vergil_butt
 #Game buttons
 menu_button = odd_button = even_button = DT = Bar_DT_limit = Bar_DT_Min = None
 #Menu buttons
-full_button = close_button = menu_back_button = menu_configuration_button = None
+close_button = full_button = menu_back_button = menu_configuration_button = None
 #menu configuration
 menu_configuration_volume_button = menu_configuration_back_button = menu_configuration_fps_button = None
 main_menu_button_list = [theme_button, configuration_button, exit_button]
 theme_button_list = [back_button, dante_button, DMC_dante_button, vergil_button, DMC3_vergil_button, DMC3_dante_button, v_button, vergilDMC4_button]
-menu_button_list = [full_button, close_button, menu_back_button, menu_configuration_button]
+menu_button_list = [close_button, full_button, menu_back_button, menu_configuration_button]
 current_button = 0
 joystick_moved = False
 button_selected = None
@@ -761,10 +761,7 @@ def button_selected_value(active_list, current_button):
         return None
     idx = current_button % len(active_list)
     if current_button == 0:
-        button_selected = theme_button
-        return button_selected
-    elif current_button == 1:
-        button_selected = configuration_button
+        button_selected = active_list[0]
         return button_selected
     return active_list[idx]
 def draw_focus(button_selected):
@@ -796,7 +793,7 @@ while running:#It starts active by default, since we set it to "True", which mak
             active_list = main_menu_button_list
         elif game_state == main_menu_config:
             main_menu_configuration_volume_button, main_menu_configuration_back_button, main_menu_configuration_fps_button = result
-            main_menu_config_list = [main_menu_configuration_back_button, main_menu_configuration_volume_button, main_menu_configuration_fps_button]
+            main_menu_config_list = [main_menu_configuration_volume_button, main_menu_configuration_back_button, main_menu_configuration_fps_button]
             active_list = main_menu_config_list
         elif game_state == game_themes:
             back_button, dante_button, DMC_dante_button, vergil_button, DMC3_vergil_button, DMC3_dante_button, v_button, vergilDMC4_button = result
@@ -806,9 +803,10 @@ while running:#It starts active by default, since we set it to "True", which mak
             active_list = theme_button_list
         elif game_state == game_start:
             menu_button, odd_button, even_button, DT, Bar_DT_limit, Bar_DT_Min = result
+            active_list = []
         elif game_state == game_menu:
-            full_button, close_button, menu_back_button, menu_configuration_button = result
-            menu_button_list = [full_button, close_button, menu_back_button, menu_configuration_button]
+            close_button, full_button, menu_back_button, menu_configuration_button = result
+            menu_button_list = [close_button, full_button, menu_back_button, menu_configuration_button]
             active_list = menu_button_list
         elif game_state == menu_config:
             menu_configuration_volume_button, menu_configuration_back_button, menu_configuration_fps_button = result
@@ -997,6 +995,10 @@ while running:#It starts active by default, since we set it to "True", which mak
                 check("Odd")
             elif event.button == 1:
                 check("Even")
+            elif event.button == 4 and devil_trigger >= 200 and not DTactive and game_state == game_start:
+                    DTactive = True
+            elif event.button == 4 and DTactive and game_state == game_start:
+                    DTactive = False
         #Message and random number update
         elif event.type == pg.USEREVENT + 1:
             message = ""
