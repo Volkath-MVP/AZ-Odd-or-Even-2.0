@@ -278,7 +278,7 @@ def draw_game_themes():
     #Title draw
     root.blit(title_label, (title_position_X, title_height_position_Y))
     #Back
-    back_label = font_medium.render("Back", True, WHITE)
+    back_label = font_medium.render("Voltar", True, WHITE)
     #Back position
     back_assistant_position_X = WIDTH * 0.1
     back_assistant_position_Y = HEIGHT * 0.1
@@ -514,7 +514,7 @@ def draw_main_menu_configuration():
     #Draw main menu configuration volume button button
     root.blit(main_menu_configuration_volume_button_label, (main_menu_configuration_volume_button_position_X, main_menu_configuration_volume_button_position_Y))
     #main menu configuration back button
-    main_menu_configuration_back_button_label = font_medium.render("Back", True, WHITE)
+    main_menu_configuration_back_button_label = font_medium.render("Voltar", True, WHITE)
     #main menu configuration volume button position
     main_menu_configuration_back_button_assistant_position_X = WIDTH * 0.1
     main_menu_configuration_back_button_assistant_position_Y = HEIGHT * 0.1
@@ -541,7 +541,7 @@ def draw_menu():
     root.blit(menu_label, (menu_box.centerx - menu_label.get_width() // 2, menu_box.top + 20))
     #Menu buttons
     #Back menu
-    menu_back_label = font_small.render("Back", True, BLACK)
+    menu_back_label = font_small.render("Voltar ao menu principal", True, BLACK)
     #Back position
     menu_back_button = pg.Rect(menu_box.centerx - 100, menu_box.centery - 55, 200, 40)
     pg.draw.rect(root, RED, menu_back_button)
@@ -742,7 +742,7 @@ def controller_button_list(active_list):
     j = pg.joystick.Joystick(0)
     j.init()
     axis_y = j.get_axis(1)
-    print(axis_y)
+    #print(axis_y)
     if not joystick_moved:
         #up
         if axis_y < -0.5:
@@ -942,19 +942,19 @@ while running:#It starts active by default, since we set it to "True", which mak
                 if F:
                     pg.display.set_mode((0, 0), pg.FULLSCREEN)
                 else:
-                    pg.display.set_mode((WIDTH, HEIGHT), pg.RESIZABLE)
+                    pg.display.set_mode((Init_Width, Init_Height), pg.RESIZABLE)
             #Close Menu
             if close_button and close_button.collidepoint((x, y)) and game_state == game_menu:
                 game_state= game_start
                 sound = menus_buttons_sounds
-                menu_open = F
+                menu_open = False
                 #print(game_state)
                 #print(menu_open)
                 pg.mixer.music.unpause()
             elif menu_back_button and menu_back_button.collidepoint((x, y)) and game_state == game_menu:
                 game_state = main_menu
                 sound = menus_buttons_sounds
-                menu_open = F
+                menu_open = False
                 pg.mixer.music.fadeout(1000)
             elif menu_configuration_button and menu_configuration_button.collidepoint((x, y)) and game_state == game_menu:
                 sound = menus_buttons_sounds
@@ -983,11 +983,13 @@ while running:#It starts active by default, since we set it to "True", which mak
             if event.button == 7 and not menu_open and game_state == game_start:
                 game_state = game_menu
                 sound = menus_buttons_sounds
+                pg.mixer.music.pause()
                 menu_open = True
             #close menu
             elif event.button == 7 and menu_open and game_state == game_menu:
                 game_state = game_start
                 sound = menus_buttons_sounds
+                pg.mixer.music.unpause()
                 menu_open = False
         #Odd and Even controller
         if event.type == pg.JOYBUTTONDOWN and not menu_open and game_state == game_start:
@@ -999,6 +1001,84 @@ while running:#It starts active by default, since we set it to "True", which mak
                     DTactive = True
             elif event.button == 4 and DTactive and game_state == game_start:
                     DTactive = False
+        elif event.type == pg.JOYBUTTONDOWN and game_state == main_menu:
+            if event.button == 0 and current_button == 0:
+                sound = menus_buttons_sounds
+                game_state = game_themes
+                #print(game_state)
+                #print(sound)
+                #print(event.button)
+            elif event.button == 0 and current_button == 1:
+                sound = menus_buttons_sounds
+                game_state = main_menu_config
+                #print(game_state)
+                #print(sound)
+                #print(event.button)
+            elif event.button == 0 and current_button == 2:
+                running = False
+                #print(running)
+        elif event.type == pg.JOYBUTTONDOWN and game_state == game_themes:
+            if event.button == 0 and current_button == 0:
+                sound = menus_buttons_sounds
+                game_state = main_menu
+                #print(game_state)
+                #print(sound)
+                #print(event.button)
+            elif event.button == 0 and current_button == 1:
+                selected_theme = Theme.get("Theme0")
+                game_state = game_start
+                current_button = 0
+                sound = menus_buttons_sounds
+            elif event.button == 0 and current_button == 2:
+                selected_theme = Theme.get("Theme1")
+                game_state = game_start
+                sound = menus_buttons_sounds
+                current_button = 0
+            elif event.button == 0 and current_button == 3:
+                selected_theme = Theme.get("Theme2")
+                game_state = game_start
+                sound = menus_buttons_sounds
+                current_button = 0
+            elif event.button == 0 and current_button == 4:
+                selected_theme = Theme.get("Theme3")
+                game_state = game_start
+                sound = menus_buttons_sounds
+                current_button = 0
+            elif event.button == 0 and current_button == 5:
+                selected_theme = Theme.get("Theme4")
+                game_state = game_start
+                sound = menus_buttons_sounds
+                current_button = 0
+            elif event.button == 0 and current_button == 6:
+                selected_theme = Theme.get("Theme5")
+                game_state = game_start
+                sound = menus_buttons_sounds
+                current_button = 0
+            elif event.button == 0 and current_button == 7:
+                selected_theme = Theme.get("Theme6")
+                game_state = game_start
+                sound = menus_buttons_sounds
+                current_button = 0
+        #fechar o menu
+        elif event.type == pg.JOYBUTTONDOWN and game_state == game_menu:
+            if event.button == 0 and current_button == 0:
+                game_state = game_start
+                sound = menus_buttons_sounds
+                current_button = 0
+                pg.mixer.music.unpause()
+                menu_open = False
+            elif event.button == 0 and current_button == 1:
+                F = not F
+                if F:
+                    pg.display.set_mode((0, 0), pg.FULLSCREEN)
+                else:
+                    pg.display.set_mode((Init_Width, Init_Height), pg.RESIZABLE)
+            elif event.button == 0 and current_button == 2:
+                game_state = main_menu
+                sound = menus_buttons_sounds
+                current_button = 0
+                menu_open = False
+                pg.mixer.music.fadeout(1000)
         #Message and random number update
         elif event.type == pg.USEREVENT + 1:
             message = ""
