@@ -42,6 +42,13 @@ init_fps = 60
 menu_open = False
 F = False #Yeah, this is necessary. For fullscreen mode ...this is strange
 menu_width, menu_height, menu_open= 300, 500, False
+#Volume variables
+volume_mute = 0.0
+volume_min = 0.3
+volume_med = 0.5
+volume_max = 1.0
+current_volume_music = volume_med
+current_volume_sound = volume_max
 #max exed variables
 sound_exed = ""
 exed_stack = []
@@ -74,8 +81,10 @@ game_state = "main_menu"
 #game state variables
 main_menu = "main_menu"
 game_themes = "game_themes"
-config_volume = "config_volume"
-game_fps = "game_fps"
+main_menu_config_volume = "main_menu_config_volume"
+menu_config_volume = "menu_config_volume"
+main_menu_config_fps = "main_menu_game_fps"
+menu_config_fps = "menu_config_fps"
 main_menu_config = "main_menu_config"
 menu_config = "menu_config"
 game_start = "game_start"
@@ -248,7 +257,7 @@ def musics_play():
     if sound_path and sound_path != current_sound_path and game_state == game_start:
         try:
             s = pg.mixer.Sound(sound_path)
-            s.set_volume(0.5)
+            s.set_volume(current_volume_music)
             chan = pg.mixer.find_channel()
             if chan:
                 chan.set_endevent(music_end_event)
@@ -262,7 +271,7 @@ def sounds_exed_play():
     if exed_sound_path and exed_sound_path != exed_current_sound_path and game_state == game_start:
         try:
             s = pg.mixer.Sound(exed_sound_path)
-            s.set_volume(1.0)
+            s.set_volume(current_volume_sound)
             chan = pg.mixer.find_channel()
             if chan:
                 chan.set_endevent(sound_end_event)
@@ -543,21 +552,47 @@ def draw_main_menu_configuration():
     return main_menu_configuration_back_button, main_menu_configuration_volume_button, main_menu_configuration_fps_button
 def draw_menu_configuration():
     root.fill(BLACK)
-    #main menu configuration volume button label
-    main_menu_configuration_back_button_label = font_medium.render("Volume", True, WHITE)
-    #main menu configuration volume button position
-    main_menu_configuration_back_button_assistant_position_X = WIDTH * 0.15
-    main_menu_configuration_back_button_assistant_position_Y = HEIGHT * 0.4
-    main_menu_configuration_back_button_position_X = main_menu_configuration_back_button_assistant_position_X
-    main_menu_configuration_back_button_position_Y = main_menu_configuration_back_button_assistant_position_Y
-    main_menu_configuration_back_button = pg.Rect(main_menu_configuration_back_button_position_X, main_menu_configuration_back_button_position_Y, main_menu_configuration_back_button_label.get_width(), main_menu_configuration_back_button_label.get_height())
-    pg.draw.rect(root, GRAY, main_menu_configuration_back_button)
-    #Draw main menu configuration volume button button
-    root.blit(main_menu_configuration_back_button_label, (main_menu_configuration_back_button_position_X, main_menu_configuration_back_button_position_Y))
-    #main_menu_configuration_volume_button = main_menu_configuration_back_button = main_menu_configuration_fps_button
+    #menu configuration volume button label
+    menu_configuration_back_button_label = font_medium.render("Voltar", True, WHITE)
+    #menu configuration volume button position
+    menu_configuration_back_button_assistant_position_X = WIDTH * 0.1
+    menu_configuration_back_button_assistant_position_Y = HEIGHT * 0.1
+    menu_configuration_back_button_position_X = menu_configuration_back_button_assistant_position_X
+    menu_configuration_back_button_position_Y = menu_configuration_back_button_assistant_position_Y
+    menu_configuration_back_button = pg.Rect(menu_configuration_back_button_position_X, menu_configuration_back_button_position_Y, menu_configuration_back_button_label.get_width(), menu_configuration_back_button_label.get_height())
+    pg.draw.rect(root, GRAY, menu_configuration_back_button)
+    #Draw menu configuration volume button button
+    root.blit(menu_configuration_back_button_label, (menu_configuration_back_button_position_X, menu_configuration_back_button_position_Y))
+    #menu configuration volume button label
+    menu_configuration_volume_button_label = font_medium.render("Volume", True, WHITE)
+    #menu configuration volume button position
+    menu_configuration_volume_button_assistant_position_X = WIDTH * 0.15
+    menu_configuration_volume_button_assistant_position_Y = HEIGHT * 0.4
+    menu_configuration_volume_button_position_X = menu_configuration_volume_button_assistant_position_X
+    menu_configuration_volume_button_position_Y = menu_configuration_volume_button_assistant_position_Y
+    menu_configuration_volume_button = pg.Rect(menu_configuration_volume_button_position_X, menu_configuration_volume_button_position_Y, menu_configuration_volume_button_label.get_width(), menu_configuration_volume_button_label.get_height())
+    pg.draw.rect(root, GRAY, menu_configuration_volume_button)
+    #Draw menu configuration volume button button label
+    root.blit(menu_configuration_volume_button_label, (menu_configuration_volume_button_position_X, menu_configuration_volume_button_position_Y))
+    #menu configuration fps button
+    menu_configuration_fps_button_label = font_medium.render("FPS", True, WHITE)
+    #menu configuration fps button position
+    menu_configuration_fps_button_assistant_position_X = WIDTH * 0.15
+    menu_configuration_fps_button_assistant_position_Y = HEIGHT * 0.5
+    menu_configuration_fps_button_position_X = menu_configuration_fps_button_assistant_position_X
+    menu_configuration_fps_button_position_Y = menu_configuration_fps_button_assistant_position_Y
+    menu_configuration_fps_button = pg.Rect(menu_configuration_fps_button_position_X, menu_configuration_fps_button_position_Y, menu_configuration_fps_button_label.get_width(), menu_configuration_fps_button_label.get_height())
+    pg.draw.rect(root, GRAY, menu_configuration_fps_button)
+    #Draw menu configuration fps button button
+    root.blit(menu_configuration_fps_button_label, (menu_configuration_fps_button_position_X, menu_configuration_fps_button_position_Y))
+    return menu_configuration_back_button, menu_configuration_volume_button, menu_configuration_fps_button
 def draw_main_menu_configuration_volume():
     root.fill(BLACK)
 def draw_main_menu_configuration_fps():
+    root.fill(BLACK)
+def draw_menu_configuration_volume():
+    root.fill(BLACK)
+def draw_menu_configuration_fps():
     root.fill(BLACK)
 def draw_menu():
     overlay = pg.Surface((WIDTH, HEIGHT))#Creates a surface with the size (WIDTH, HEIGHT), in this case the same size as the initial screen. From this point on, "overlay" is equal to a surface of size (WIDTH, HEIGHT)
@@ -726,9 +761,9 @@ def game_drawings_events(game_state):
         return draw_main_menu()
     elif game_state == main_menu_config:
         return draw_main_menu_configuration()
-    elif game_state == config_volume:
+    elif game_state == main_menu_config_volume:
         return draw_main_menu_configuration_volume()
-    elif game_state == game_fps:
+    elif game_state == main_menu_config_fps:
         return draw_main_menu_configuration_fps()
     elif game_state == game_themes:
         return draw_game_themes()
@@ -736,6 +771,12 @@ def game_drawings_events(game_state):
         return draw_game()
     elif game_state == game_menu:
         return draw_menu()
+    elif game_state == menu_config:
+        return draw_menu_configuration()
+    elif game_state == menu_config_volume:
+        return draw_menu_configuration_volume()
+    elif game_state == menu_config_fps:
+        return draw_menu_configuration_fps()
     else:
         return None
 #max exed function
@@ -768,6 +809,7 @@ main_menu_button_list = [theme_button, configuration_button, exit_button]
 main_menu_configuration_list = [main_menu_configuration_back_button, main_menu_configuration_volume_button, main_menu_configuration_fps_button]
 theme_button_list = [back_button, dante_button, DMC_dante_button, vergil_button, DMC3_vergil_button, DMC3_dante_button, v_button, vergilDMC4_button]
 menu_button_list = [close_button, full_button, menu_back_button, menu_configuration_button]
+menu_configuration_button_list = [menu_configuration_back_button, menu_configuration_volume_button, menu_configuration_fps_button]
 #buttons highlight variables
 current_button = 0
 joystick_moved = False
@@ -985,7 +1027,12 @@ while running:#It starts active by default, since we set it to "True", which mak
                 #print(game_state)
                 #print(sound)
             elif main_menu_configuration_volume_button and main_menu_configuration_volume_button.collidepoint((x, y)):
-                game_state = config_volume
+                game_state = main_menu_config_volume
+                sound = menus_buttons_sounds
+                #print(game_state)
+                #print(sound)
+            elif main_menu_configuration_fps_button and main_menu_configuration_fps_button.collidepoint((x, y)):
+                game_state = main_menu_config_fps
                 sound = menus_buttons_sounds
                 #print(game_state)
                 #print(sound)
@@ -993,12 +1040,6 @@ while running:#It starts active by default, since we set it to "True", which mak
         elif event.type == pg.MOUSEBUTTONDOWN and menu_open and game_state == game_menu:
             x, y = event.pos
             sound = menus_buttons_sounds
-            if full_button and full_button.collidepoint((x, y)):
-                F = not F
-                if F:
-                    pg.display.set_mode((0, 0), pg.FULLSCREEN)
-                else:
-                    pg.display.set_mode((Init_Width, Init_Height), pg.RESIZABLE)
             #Close Menu
             if close_button and close_button.collidepoint((x, y)) and game_state == game_menu:
                 game_state= game_start
@@ -1007,14 +1048,28 @@ while running:#It starts active by default, since we set it to "True", which mak
                 #print(game_state)
                 #print(menu_open)
                 pg.mixer.music.unpause()
+            #fullscreen
+            elif full_button and full_button.collidepoint((x, y)) and game_state == game_menu:
+                F = not F
+                if F:
+                    pg.display.set_mode((0, 0), pg.FULLSCREEN)
+                else:
+                    pg.display.set_mode((Init_Width, Init_Height), pg.RESIZABLE)
+            #back to main menu
             elif menu_back_button and menu_back_button.collidepoint((x, y)) and game_state == game_menu:
                 game_state = main_menu
                 sound = menus_buttons_sounds
                 menu_open = False
                 pg.mixer.music.fadeout(1000)
+                #print(game_state)
+                #print(menu_open)
+            #configurations
             elif menu_configuration_button and menu_configuration_button.collidepoint((x, y)) and game_state == game_menu:
                 sound = menus_buttons_sounds
-                game_state = main_menu_config
+                game_state = menu_config
+                menu_open = False
+                #print(game_state)
+                #print(menu_open)
         #Odd and Even mouse
         elif event.type == pg.MOUSEBUTTONDOWN and not menu_open:
             x, y = event.pos
