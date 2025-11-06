@@ -588,12 +588,214 @@ def draw_menu_configuration():
     return menu_configuration_back_button, menu_configuration_volume_button, menu_configuration_fps_button
 def draw_main_menu_configuration_volume():
     root.fill(BLACK)
+    #main menu volume back button
+    main_menu_volume_back_button_label = font_medium.render("Voltar", True, WHITE)
+    #main menu volume back button position
+    main_menu_volume_back_button_assistant_position_X = WIDTH * 0.1
+    main_menu_volume_back_button_assistant_position_Y = HEIGHT * 0.1
+    main_menu_volume_back_button_position_X = main_menu_volume_back_button_assistant_position_X
+    main_menu_volume_back_button_position_Y = main_menu_volume_back_button_assistant_position_Y
+    main_menu_volume_back_button = pg.Rect(main_menu_volume_back_button_position_X, main_menu_volume_back_button_position_Y, main_menu_volume_back_button_label.get_width(), main_menu_volume_back_button_label.get_height())
+    pg.draw.rect(root, GRAY, main_menu_volume_back_button)
+    #Draw main menu volume button button
+    root.blit(main_menu_volume_back_button_label, (main_menu_volume_back_button_position_X, main_menu_volume_back_button_position_Y))
+    #main menu volume music mute button
+    main_menu_volume_music_mute_button_label = font_medium.render("Silenciar musica", True, WHITE)
+    #main menu volume music mute button position
+    main_menu_volume_music_mute_button_assistant_position_X = WIDTH * 0.15
+    main_menu_volume_music_mute_button_assistant_position_Y = HEIGHT * 0.2
+    main_menu_volume_music_mute_button_position_X = main_menu_volume_music_mute_button_assistant_position_X
+    main_menu_volume_music_mute_button_position_Y = main_menu_volume_music_mute_button_assistant_position_Y
+    main_menu_volume_music_mute_button = pg.Rect(main_menu_volume_music_mute_button_position_X, main_menu_volume_music_mute_button_position_Y, main_menu_volume_music_mute_button_label.get_width(), main_menu_volume_music_mute_button_label.get_height())
+    pg.draw.rect(root, GRAY, main_menu_volume_music_mute_button)
+    #Draw main menu volume music min button button
+    root.blit(main_menu_volume_music_mute_button_label, (main_menu_volume_music_mute_button_position_X, main_menu_volume_music_mute_button_position_Y))
+    #main menu volume music min button
+    main_menu_volume_music_min_button_label = font_medium.render("Volume mínimo", True, WHITE)
+    #main menu volume music min button position
+    main_menu_volume_music_min_button_assistant_position_X = WIDTH * 0.25
+    main_menu_volume_music_min_button_assistant_position_Y = HEIGHT * 0.2
+    main_menu_volume_music_min_button_position_X = main_menu_volume_music_min_button_assistant_position_X
+    main_menu_volume_music_min_button_position_Y = main_menu_volume_music_min_button_assistant_position_Y
+    main_menu_volume_music_min_button = pg.Rect(main_menu_volume_music_min_button_position_X, main_menu_volume_music_min_button_position_Y, main_menu_volume_music_min_button_label.get_width(), main_menu_volume_music_min_button_label.get_height())
+    pg.draw.rect(root, GRAY, main_menu_volume_music_min_button)
+    #Draw main menu volume music min button button
+    root.blit(main_menu_volume_music_min_button_label, (main_menu_volume_music_min_button_position_X, main_menu_volume_music_min_button_position_Y))
+    #main menu volume music med button
+    main_menu_volume_music_med_button_label = font_medium.render("Volume médio", True, WHITE)
+    #main menu volume music med button position
+    main_menu_volume_music_med_button_assistant_position_X = WIDTH * 0.35
+    main_menu_volume_music_med_button_assistant_position_Y = HEIGHT * 0.2
+    main_menu_volume_music_med_button_position_X = main_menu_volume_music_med_button_assistant_position_X
+    main_menu_volume_music_med_button_position_Y = main_menu_volume_music_med_button_assistant_position_Y
+    main_menu_volume_music_med_button = pg.Rect(main_menu_volume_music_med_button_position_X, main_menu_volume_music_med_button_position_Y, main_menu_volume_music_med_button_label.get_width(), main_menu_volume_music_med_button_label.get_height())
+    pg.draw.rect(root, GRAY, main_menu_volume_music_med_button)
+    #Draw main menu volume music med button button
+    root.blit(main_menu_volume_music_med_button_label, (main_menu_volume_music_med_button_position_X, main_menu_volume_music_med_button_position_Y))
+    #main menu volume music max button
+    main_menu_volume_music_max_button_label = font_medium.render("Volume máximo", True, WHITE)
+    #main menu volume music max button position
+    main_menu_volume_music_max_button_assistant_position_X = WIDTH * 0.45
+    main_menu_volume_music_max_button_assistant_position_Y = HEIGHT * 0.2
+    main_menu_volume_music_max_button_position_X = main_menu_volume_music_max_button_assistant_position_X
+    main_menu_volume_music_max_button_position_Y = main_menu_volume_music_max_button_assistant_position_Y
+    main_menu_volume_music_max_button = pg.Rect(main_menu_volume_music_max_button_position_X, main_menu_volume_music_max_button_position_Y, main_menu_volume_music_max_button_label.get_width(), main_menu_volume_music_max_button_label.get_height())
+    pg.draw.rect(root, GRAY, main_menu_volume_music_max_button)
+    #Draw main menu volume music max button button
+    root.blit(main_menu_volume_music_max_button_label, (main_menu_volume_music_max_button_position_X, main_menu_volume_music_max_button_position_Y))
+    return main_menu_volume_back_button, main_menu_volume_music_mute_button, main_menu_volume_music_min_button, main_menu_volume_music_med_button, main_menu_volume_music_max_button
 def draw_main_menu_configuration_fps():
     root.fill(BLACK)
+    #main menu fps back button
+    main_menu_fps_back_button_label = font_medium.render("Voltar", True, WHITE)
+    #main menu fps back button position
+    main_menu_fps_back_button_assistant_position_X = WIDTH * 0.1
+    main_menu_fps_back_button_assistant_position_Y = HEIGHT * 0.1
+    main_menu_fps_back_button_position_X = main_menu_fps_back_button_assistant_position_X
+    main_menu_fps_back_button_position_Y = main_menu_fps_back_button_assistant_position_Y
+    main_menu_fps_back_button = pg.Rect(main_menu_fps_back_button_position_X, main_menu_fps_back_button_position_Y, main_menu_fps_back_button_label.get_width(), main_menu_fps_back_button_label.get_height())
+    pg.draw.rect(root, GRAY, main_menu_fps_back_button)
+    #Draw main menu fps button button
+    root.blit(main_menu_fps_back_button_label, (main_menu_fps_back_button_position_X, main_menu_fps_back_button_position_Y))
+    #main menu fps music mute button
+    main_menu_fps_30_button_label = font_medium.render("30 fps", True, WHITE)
+    #main menu fps music mute button position
+    main_menu_fps_30_button_assistant_position_X = WIDTH * 0.15
+    main_menu_fps_30_button_assistant_position_Y = HEIGHT * 0.2
+    main_menu_fps_30_button_position_X = main_menu_fps_30_button_assistant_position_X
+    main_menu_fps_30_button_position_Y = main_menu_fps_30_button_assistant_position_Y
+    main_menu_fps_30_button = pg.Rect(main_menu_fps_30_button_position_X, main_menu_fps_30_button_position_Y, main_menu_fps_30_button_label.get_width(), main_menu_fps_30_button_label.get_height())
+    pg.draw.rect(root, GRAY, main_menu_fps_30_button)
+    #Draw main menu fps music min button button
+    root.blit(main_menu_fps_30_button_label, (main_menu_fps_30_button_position_X, main_menu_fps_30_button_position_Y))
+    #main menu fps music min button
+    main_menu_fps_60_button_label = font_medium.render("60 fps", True, WHITE)
+    #main menu fps music min button position
+    main_menu_fps_60_button_assistant_position_X = WIDTH * 0.25
+    main_menu_fps_60_button_assistant_position_Y = HEIGHT * 0.2
+    main_menu_fps_60_button_position_X = main_menu_fps_60_button_assistant_position_X
+    main_menu_fps_60_button_position_Y = main_menu_fps_60_button_assistant_position_Y
+    main_menu_fps_60_button = pg.Rect(main_menu_fps_60_button_position_X, main_menu_fps_60_button_position_Y, main_menu_fps_60_button_label.get_width(), main_menu_fps_60_button_label.get_height())
+    pg.draw.rect(root, GRAY, main_menu_fps_60_button)
+    #Draw main menu fps music min button button
+    root.blit(main_menu_fps_60_button_label, (main_menu_fps_60_button_position_X, main_menu_fps_60_button_position_Y))
+    #main menu fps music med button
+    main_menu_fps_120_button_label = font_medium.render("120 fps", True, WHITE)
+    #main menu fps music med button position
+    main_menu_fps_120_button_assistant_position_X = WIDTH * 0.35
+    main_menu_fps_120_button_assistant_position_Y = HEIGHT * 0.2
+    main_menu_fps_120_button_position_X = main_menu_fps_120_button_assistant_position_X
+    main_menu_fps_120_button_position_Y = main_menu_fps_120_button_assistant_position_Y
+    main_menu_fps_120_button = pg.Rect(main_menu_fps_120_button_position_X, main_menu_fps_120_button_position_Y, main_menu_fps_120_button_label.get_width(), main_menu_fps_120_button_label.get_height())
+    pg.draw.rect(root, GRAY, main_menu_fps_120_button)
+    #Draw main menu fps music med button button
+    root.blit(main_menu_fps_120_button_label, (main_menu_fps_120_button_position_X, main_menu_fps_120_button_position_Y))
+    return main_menu_fps_back_button, main_menu_fps_30_button, main_menu_fps_60_button, main_menu_fps_120_button
 def draw_menu_configuration_volume():
     root.fill(BLACK)
+    #menu volume back button
+    menu_volume_back_button_label = font_medium.render("Voltar", True, WHITE)
+    #menu volume back button position
+    menu_volume_back_button_assistant_position_X = WIDTH * 0.1
+    menu_volume_back_button_assistant_position_Y = HEIGHT * 0.1
+    menu_volume_back_button_position_X = menu_volume_back_button_assistant_position_X
+    menu_volume_back_button_position_Y = menu_volume_back_button_assistant_position_Y
+    menu_volume_back_button = pg.Rect(menu_volume_back_button_position_X, menu_volume_back_button_position_Y, menu_volume_back_button_label.get_width(), menu_volume_back_button_label.get_height())
+    pg.draw.rect(root, GRAY, menu_volume_back_button)
+    #Draw menu volume button button
+    root.blit(menu_volume_back_button_label, (menu_volume_back_button_position_X, menu_volume_back_button_position_Y))
+    #menu volume music mute button
+    menu_volume_music_mute_button_label = font_medium.render("Silenciar musica", True, WHITE)
+    #menu volume music mute button position
+    menu_volume_music_mute_button_assistant_position_X = WIDTH * 0.15
+    menu_volume_music_mute_button_assistant_position_Y = HEIGHT * 0.2
+    menu_volume_music_mute_button_position_X = menu_volume_music_mute_button_assistant_position_X
+    menu_volume_music_mute_button_position_Y = menu_volume_music_mute_button_assistant_position_Y
+    menu_volume_music_mute_button = pg.Rect(menu_volume_music_mute_button_position_X, menu_volume_music_mute_button_position_Y, menu_volume_music_mute_button_label.get_width(), menu_volume_music_mute_button_label.get_height())
+    pg.draw.rect(root, GRAY, menu_volume_music_mute_button)
+    #Draw menu volume music min button button
+    root.blit(menu_volume_music_mute_button_label, (menu_volume_music_mute_button_position_X, menu_volume_music_mute_button_position_Y))
+    #menu volume music min button
+    menu_volume_music_min_button_label = font_medium.render("Volume mínimo", True, WHITE)
+    #menu volume music min button position
+    menu_volume_music_min_button_assistant_position_X = WIDTH * 0.25
+    menu_volume_music_min_button_assistant_position_Y = HEIGHT * 0.2
+    menu_volume_music_min_button_position_X = menu_volume_music_min_button_assistant_position_X
+    menu_volume_music_min_button_position_Y = menu_volume_music_min_button_assistant_position_Y
+    menu_volume_music_min_button = pg.Rect(menu_volume_music_min_button_position_X, menu_volume_music_min_button_position_Y, menu_volume_music_min_button_label.get_width(), menu_volume_music_min_button_label.get_height())
+    pg.draw.rect(root, GRAY, menu_volume_music_min_button)
+    #Draw menu volume music min button button
+    root.blit(menu_volume_music_min_button_label, (menu_volume_music_min_button_position_X, menu_volume_music_min_button_position_Y))
+    #menu volume music med button
+    menu_volume_music_med_button_label = font_medium.render("Volume médio", True, WHITE)
+    #menu volume music med button position
+    menu_volume_music_med_button_assistant_position_X = WIDTH * 0.35
+    menu_volume_music_med_button_assistant_position_Y = HEIGHT * 0.2
+    menu_volume_music_med_button_position_X = menu_volume_music_med_button_assistant_position_X
+    menu_volume_music_med_button_position_Y = menu_volume_music_med_button_assistant_position_Y
+    menu_volume_music_med_button = pg.Rect(menu_volume_music_med_button_position_X, menu_volume_music_med_button_position_Y, menu_volume_music_med_button_label.get_width(), menu_volume_music_med_button_label.get_height())
+    pg.draw.rect(root, GRAY, menu_volume_music_med_button)
+    #Draw menu volume music med button button
+    root.blit(menu_volume_music_med_button_label, (menu_volume_music_med_button_position_X, menu_volume_music_med_button_position_Y))
+    #menu volume music max button
+    menu_volume_music_max_button_label = font_medium.render("Volume máximo", True, WHITE)
+    #menu volume music max button position
+    menu_volume_music_max_button_assistant_position_X = WIDTH * 0.45
+    menu_volume_music_max_button_assistant_position_Y = HEIGHT * 0.2
+    menu_volume_music_max_button_position_X = menu_volume_music_max_button_assistant_position_X
+    menu_volume_music_max_button_position_Y = menu_volume_music_max_button_assistant_position_Y
+    menu_volume_music_max_button = pg.Rect(menu_volume_music_max_button_position_X, menu_volume_music_max_button_position_Y, menu_volume_music_max_button_label.get_width(), menu_volume_music_max_button_label.get_height())
+    pg.draw.rect(root, GRAY, menu_volume_music_max_button)
+    #Draw menu volume music max button button
+    root.blit(menu_volume_music_max_button_label, (menu_volume_music_max_button_position_X, menu_volume_music_max_button_position_Y))
+    return menu_volume_back_button, menu_volume_music_mute_button, menu_volume_music_min_button, menu_volume_music_med_button, menu_volume_music_max_button
 def draw_menu_configuration_fps():
     root.fill(BLACK)
+    #menu fps back button
+    menu_fps_back_button_label = font_medium.render("Voltar", True, WHITE)
+    #menu fps back button position
+    menu_fps_back_button_assistant_position_X = WIDTH * 0.1
+    menu_fps_back_button_assistant_position_Y = HEIGHT * 0.1
+    menu_fps_back_button_position_X = menu_fps_back_button_assistant_position_X
+    menu_fps_back_button_position_Y = menu_fps_back_button_assistant_position_Y
+    menu_fps_back_button = pg.Rect(menu_fps_back_button_position_X, menu_fps_back_button_position_Y, menu_fps_back_button_label.get_width(), menu_fps_back_button_label.get_height())
+    pg.draw.rect(root, GRAY, menu_fps_back_button)
+    #Draw menu fps button button
+    root.blit(menu_fps_back_button_label, (menu_fps_back_button_position_X, menu_fps_back_button_position_Y))
+    #menu fps music mute button
+    menu_fps_30_button_label = font_medium.render("30 fps", True, WHITE)
+    #menu fps music mute button position
+    menu_fps_30_button_assistant_position_X = WIDTH * 0.15
+    menu_fps_30_button_assistant_position_Y = HEIGHT * 0.2
+    menu_fps_30_button_position_X = menu_fps_30_button_assistant_position_X
+    menu_fps_30_button_position_Y = menu_fps_30_button_assistant_position_Y
+    menu_fps_30_button = pg.Rect(menu_fps_30_button_position_X, menu_fps_30_button_position_Y, menu_fps_30_button_label.get_width(), menu_fps_30_button_label.get_height())
+    pg.draw.rect(root, GRAY, menu_fps_30_button)
+    #Draw menu fps music min button button
+    root.blit(menu_fps_30_button_label, (menu_fps_30_button_position_X, menu_fps_30_button_position_Y))
+    #menu fps music min button
+    menu_fps_60_button_label = font_medium.render("60 fps", True, WHITE)
+    #menu fps music min button position
+    menu_fps_60_button_assistant_position_X = WIDTH * 0.25
+    menu_fps_60_button_assistant_position_Y = HEIGHT * 0.2
+    menu_fps_60_button_position_X = menu_fps_60_button_assistant_position_X
+    menu_fps_60_button_position_Y = menu_fps_60_button_assistant_position_Y
+    menu_fps_60_button = pg.Rect(menu_fps_60_button_position_X, menu_fps_60_button_position_Y, menu_fps_60_button_label.get_width(), menu_fps_60_button_label.get_height())
+    pg.draw.rect(root, GRAY, menu_fps_60_button)
+    #Draw menu fps music min button button
+    root.blit(menu_fps_60_button_label, (menu_fps_60_button_position_X, menu_fps_60_button_position_Y))
+    #menu fps music med button
+    menu_fps_120_button_label = font_medium.render("120 fps", True, WHITE)
+    #menu fps music med button position
+    menu_fps_120_button_assistant_position_X = WIDTH * 0.35
+    menu_fps_120_button_assistant_position_Y = HEIGHT * 0.2
+    menu_fps_120_button_position_X = menu_fps_120_button_assistant_position_X
+    menu_fps_120_button_position_Y = menu_fps_120_button_assistant_position_Y
+    menu_fps_120_button = pg.Rect(menu_fps_120_button_position_X, menu_fps_120_button_position_Y, menu_fps_120_button_label.get_width(), menu_fps_120_button_label.get_height())
+    pg.draw.rect(root, GRAY, menu_fps_120_button)
+    #Draw menu fps music med button button
+    root.blit(menu_fps_120_button_label, (menu_fps_120_button_position_X, menu_fps_120_button_position_Y))
+    return menu_fps_back_button, menu_fps_30_button, menu_fps_60_button, menu_fps_120_button
 def draw_menu():
     overlay = pg.Surface((WIDTH, HEIGHT))#Creates a surface with the size (WIDTH, HEIGHT), in this case the same size as the initial screen. From this point on, "overlay" is equal to a surface of size (WIDTH, HEIGHT)
     #Background
@@ -895,7 +1097,7 @@ while running:#It starts active by default, since we set it to "True", which mak
             menu_button_list = [close_button, full_button, menu_back_button, menu_configuration_button]
             active_list = menu_button_list
         elif game_state == menu_config:
-            menu_configuration_volume_button, menu_configuration_back_button, menu_configuration_fps_button = result
+            menu_configuration_back_button, menu_configuration_volume_button, menu_configuration_fps_button = result
         else:
             active_list = []
     controller_button_list(active_list)
@@ -952,6 +1154,7 @@ while running:#It starts active by default, since we set it to "True", which mak
         #main menu mouse
         elif event.type == pg.MOUSEBUTTONDOWN and game_state == main_menu:
             x, y = event.pos
+            #print(game_state)
             if theme_button and theme_button.collidepoint((x, y)):
                 sound = menus_buttons_sounds
                 game_state = game_themes
@@ -964,6 +1167,7 @@ while running:#It starts active by default, since we set it to "True", which mak
                 running = False
         elif event.type == pg.MOUSEBUTTONDOWN and game_state == game_themes:
             x, y = event.pos
+            #print(game_state)
             if back_button and back_button.collidepoint((x, y)):
                 game_state = main_menu
                 sound = menus_buttons_sounds
@@ -1021,6 +1225,7 @@ while running:#It starts active by default, since we set it to "True", which mak
                 #print(current_sound_path)
         elif event.type == pg.MOUSEBUTTONDOWN and game_state == main_menu_config:
             x, y = event.pos
+            #print(game_state)
             if main_menu_configuration_back_button and main_menu_configuration_back_button.collidepoint((x, y)):
                 game_state = main_menu
                 sound = menus_buttons_sounds
@@ -1040,6 +1245,7 @@ while running:#It starts active by default, since we set it to "True", which mak
         elif event.type == pg.MOUSEBUTTONDOWN and menu_open and game_state == game_menu:
             x, y = event.pos
             sound = menus_buttons_sounds
+            #print(game_state)
             #Close Menu
             if close_button and close_button.collidepoint((x, y)) and game_state == game_menu:
                 game_state= game_start
@@ -1070,6 +1276,25 @@ while running:#It starts active by default, since we set it to "True", which mak
                 menu_open = False
                 #print(game_state)
                 #print(menu_open)
+        elif event.type == pg.MOUSEBUTTONDOWN and game_state == menu_config:
+            x, y = event.pos
+            #print(game_state)
+            if menu_configuration_back_button and menu_configuration_back_button.collidepoint((x, y)):
+                game_state = game_menu
+                sound = menus_buttons_sounds
+                menu_open = True
+                #print(game_state)
+                #print(sound)
+            elif menu_configuration_volume_button and menu_configuration_volume_button.collidepoint((x, y)):
+                game_state = menu_config_volume
+                sound = menus_buttons_sounds
+                #print(game_state)
+                #print(sound)
+            elif menu_configuration_fps_button and menu_configuration_fps_button.collidepoint((x, y)):
+                game_state = menu_config_fps
+                sound = menus_buttons_sounds
+                #print(game_state)
+                #print(sound)
         #Odd and Even mouse
         elif event.type == pg.MOUSEBUTTONDOWN and not menu_open:
             x, y = event.pos
