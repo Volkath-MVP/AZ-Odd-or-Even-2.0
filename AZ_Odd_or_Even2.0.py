@@ -998,6 +998,10 @@ def max_exed_active(response):
 theme_button = configuration_button = exit_button = None
 #configuration in main menu
 main_menu_configuration_back_button = main_menu_configuration_volume_button = main_menu_configuration_fps_button = None
+#volume in main menu
+main_menu_volume_back_button = main_menu_volume_music_mute_button = main_menu_volume_music_min_button = main_menu_volume_music_med_button = main_menu_volume_music_max_button = None
+#fps in main menu
+main_menu_fps_back_button = main_menu_fps_30_button = main_menu_fps_60_button = main_menu_fps_120_button = None
 #Themes buttons
 back_button = dante_button = DMC_dante_button = vergil_button = DMC3_vergil_button = DMC3_dante_button = v_button = vergilDMC4_button = None
 #Game buttons
@@ -1005,13 +1009,21 @@ menu_button = odd_button = even_button = DT = Bar_DT_limit = Bar_DT_Min = None
 #Menu buttons
 close_button = full_button = menu_back_button = menu_configuration_button = None
 #menu configuration
-menu_configuration_volume_button = menu_configuration_back_button = menu_configuration_fps_button = None
+menu_configuration_back_button = menu_configuration_volume_button = menu_configuration_fps_button = None
+#volume in menu
+menu_volume_back_button = menu_volume_music_mute_button = menu_volume_music_min_button = menu_volume_music_med_button = menu_volume_music_max_button = None
+#fps in menu
+menu_fps_back_button = menu_fps_30_button = menu_fps_60_button = menu_fps_120_button = None
 #buttons lists
 main_menu_button_list = [theme_button, configuration_button, exit_button]
 main_menu_configuration_list = [main_menu_configuration_back_button, main_menu_configuration_volume_button, main_menu_configuration_fps_button]
+main_menu_configuration_volume_list = [main_menu_volume_back_button, main_menu_volume_music_mute_button, main_menu_volume_music_min_button, main_menu_volume_music_med_button, main_menu_volume_music_max_button]
+main_menu_configuration_fps_list = [main_menu_fps_back_button, main_menu_fps_30_button, main_menu_fps_60_button, main_menu_fps_120_button]
 theme_button_list = [back_button, dante_button, DMC_dante_button, vergil_button, DMC3_vergil_button, DMC3_dante_button, v_button, vergilDMC4_button]
 menu_button_list = [close_button, full_button, menu_back_button, menu_configuration_button]
 menu_configuration_button_list = [menu_configuration_back_button, menu_configuration_volume_button, menu_configuration_fps_button]
+menu_configuration_volume_list = [menu_volume_back_button, menu_volume_music_mute_button, menu_volume_music_min_button, menu_volume_music_med_button, menu_volume_music_max_button]
+menu_configuration_fps_list = [menu_fps_back_button, menu_fps_30_button, menu_fps_60_button, menu_fps_120_button]
 #buttons highlight variables
 current_button = 0
 joystick_moved = False
@@ -1083,6 +1095,14 @@ while running:#It starts active by default, since we set it to "True", which mak
             main_menu_configuration_back_button, main_menu_configuration_volume_button, main_menu_configuration_fps_button = result
             main_menu_configuration_list = [main_menu_configuration_back_button, main_menu_configuration_volume_button, main_menu_configuration_fps_button]
             active_list = main_menu_configuration_list
+        elif game_state == main_menu_config_volume:
+            main_menu_volume_back_button, main_menu_volume_music_mute_button, main_menu_volume_music_min_button, main_menu_volume_music_med_button, main_menu_volume_music_max_button = result
+            main_menu_configuration_volume_list = [main_menu_volume_back_button, main_menu_volume_music_mute_button, main_menu_volume_music_min_button, main_menu_volume_music_med_button, main_menu_volume_music_max_button]
+            active_list = main_menu_configuration_volume_list
+        elif game_state == main_menu_config_fps:
+            main_menu_fps_back_button, main_menu_fps_30_button, main_menu_fps_60_button, main_menu_fps_120_button = result
+            main_menu_configuration_fps_list = [main_menu_fps_back_button, main_menu_fps_30_button, main_menu_fps_60_button, main_menu_fps_120_button]
+            active_list = main_menu_configuration_fps_list
         elif game_state == game_themes:
             back_button, dante_button, DMC_dante_button, vergil_button, DMC3_vergil_button, DMC3_dante_button, v_button, vergilDMC4_button = result
             devil_trigger = 0
@@ -1098,6 +1118,16 @@ while running:#It starts active by default, since we set it to "True", which mak
             active_list = menu_button_list
         elif game_state == menu_config:
             menu_configuration_back_button, menu_configuration_volume_button, menu_configuration_fps_button = result
+            menu_configuration_button_list = [menu_configuration_back_button, menu_configuration_volume_button, menu_configuration_fps_button]
+            active_list = menu_configuration_button_list
+        elif game_state == menu_config_volume:
+            menu_volume_back_button, menu_volume_music_mute_button, menu_volume_music_min_button, menu_volume_music_med_button, menu_volume_music_max_button = result
+            menu_configuration_volume_list = [menu_volume_back_button, menu_volume_music_mute_button, menu_volume_music_min_button, menu_volume_music_med_button, menu_volume_music_max_button]
+            active_list = menu_configuration_volume_list
+        elif game_state == menu_config_fps:
+            menu_fps_back_button, menu_fps_30_button, menu_fps_60_button, menu_fps_120_button = result
+            menu_configuration_fps_list = [menu_fps_back_button, menu_fps_30_button, menu_fps_60_button, menu_fps_120_button]
+            active_list = menu_configuration_fps_list
         else:
             active_list = []
     controller_button_list(active_list)
