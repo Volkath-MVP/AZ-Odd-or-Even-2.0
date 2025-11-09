@@ -1330,24 +1330,28 @@ while running:#It starts active by default, since we set it to "True", which mak
             elif main_menu_volume_music_mute_button and main_menu_volume_music_mute_button.collidepoint((x, y)):
                 current_volume_music = volume_mute
                 sound_efx = menus_buttons_sounds
+                pg.mixer.music.set_volume(current_volume_music)
                 #print(current_volume_music)
                 #print(game_state)
                 #print(sound_efx)
             elif main_menu_volume_music_min_button and main_menu_volume_music_min_button.collidepoint((x, y)):
                 current_volume_music = volume_min
                 sound_efx = menus_buttons_sounds
+                pg.mixer.music.set_volume(current_volume_music)
                 #print(current_volume_music)
                 #print(game_state)
                 #print(sound_efx)
             elif main_menu_volume_music_med_button and main_menu_volume_music_med_button.collidepoint((x, y)):
                 current_volume_music = volume_med
                 sound_efx = menus_buttons_sounds
+                pg.mixer.music.set_volume(current_volume_music)
                 #print(current_volume_music)
                 #print(game_state)
                 #print(sound_efx)
             elif main_menu_volume_music_max_button and main_menu_volume_music_max_button.collidepoint((x, y)):
                 current_volume_music = volume_max
                 sound_efx = menus_buttons_sounds
+                pg.mixer.music.set_volume(current_volume_music)
                 #print(current_volume_music)
                 #print(game_state)
                 #print(sound_efx)
@@ -1442,24 +1446,28 @@ while running:#It starts active by default, since we set it to "True", which mak
             elif menu_volume_music_mute_button and menu_volume_music_mute_button.collidepoint((x, y)):
                 current_volume_music = volume_mute
                 sound_efx = menus_buttons_sounds
+                pg.mixer.music.set_volume(current_volume_music)
                 #print(current_volume_music)
                 #print(game_state)
                 #print(sound_efx)
             elif menu_volume_music_min_button and menu_volume_music_min_button.collidepoint((x, y)):
                 current_volume_music = volume_min
                 sound_efx = menus_buttons_sounds
+                pg.mixer.music.set_volume(current_volume_music)
                 #print(current_volume_music)
                 #print(game_state)
                 #print(sound_efx)
             elif menu_volume_music_med_button and menu_volume_music_med_button.collidepoint((x, y)):
                 current_volume_music = volume_med
                 sound_efx = menus_buttons_sounds
+                pg.mixer.music.set_volume(current_volume_music)
                 #print(current_volume_music)
                 #print(game_state)
                 #print(sound_efx)
             elif menu_volume_music_max_button and menu_volume_music_max_button.collidepoint((x, y)):
                 current_volume_music = volume_max
                 sound_efx = menus_buttons_sounds
+                pg.mixer.music.set_volume(current_volume_music)
                 #print(current_volume_music)
                 #print(game_state)
                 #print(sound_efx)
@@ -1624,24 +1632,28 @@ while running:#It starts active by default, since we set it to "True", which mak
             elif event.button == 0 and current_button == 1:
                 sound_efx = menus_buttons_sounds
                 current_volume_music = volume_mute
+                pg.mixer.music.set_volume(current_volume_music)
                 #print(sound_efx)
                 #print(event.button)
                 print(current_volume_music)
             elif event.button == 0 and current_button == 2:
                 sound_efx = menus_buttons_sounds
                 current_volume_music = volume_min
+                pg.mixer.music.set_volume(current_volume_music)
                 #print(sound_efx)
                 #print(event.button)
                 print(current_volume_music)
             elif event.button == 0 and current_button == 3:
                 sound_efx = menus_buttons_sounds
                 current_volume_music = volume_med
+                pg.mixer.music.set_volume(current_volume_music)
                 #print(sound_efx)
                 #print(event.button)
                 print(current_volume_music)
             elif event.button == 0 and current_button == 4:
                 sound_efx = menus_buttons_sounds
                 current_volume_music = volume_max
+                pg.mixer.music.set_volume(current_volume_music)
                 #print(sound_efx)
                 #print(event.button)
                 print(current_volume_music)
@@ -1732,24 +1744,28 @@ while running:#It starts active by default, since we set it to "True", which mak
                 #print(sound_efx)
             elif event.button == 0 and current_button == 1:
                 current_volume_music = volume_mute
+                pg.mixer.music.set_volume(current_volume_music)
                 sound_efx = menus_buttons_sounds
                 #print(current_volume_music)
                 #print(game_state)
                 #print(sound_efx)
             elif event.button == 0 and current_button == 2:
                 current_volume_music = volume_min
+                pg.mixer.music.set_volume(current_volume_music)
                 sound_efx = menus_buttons_sounds
                 #print(current_volume_music)
                 #print(game_state)
                 #print(sound_efx)
             elif event.button == 0 and current_button == 3:
                 current_volume_music = volume_med
+                pg.mixer.music.set_volume(current_volume_music)
                 sound_efx = menus_buttons_sounds
                 #print(current_volume_music)
                 #print(game_state)
                 #print(sound_efx)
             elif event.button == 0 and current_button == 4:
                 current_volume_music = volume_max
+                pg.mixer.music.set_volume(current_volume_music)
                 sound_efx = menus_buttons_sounds
                 #print(current_volume_music)
                 #print(game_state)
