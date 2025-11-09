@@ -1210,7 +1210,7 @@ while running:#It starts active by default, since we set it to "True", which mak
                 #print(menu_open)
             elif event.key == pg.K_ESCAPE and menu_open and game_state == game_menu:
                 game_state = game_start
-                sound_efx = menus_buttons_sounds
+                sound_efx = back_buttons_sounds
                 menu_open = False
                 pg.mixer.music.unpause()
                 #print(game_state)
@@ -1248,7 +1248,7 @@ while running:#It starts active by default, since we set it to "True", which mak
             #print(game_state)
             if back_button and back_button.collidepoint((x, y)):
                 game_state = main_menu
-                sound_efx = menus_buttons_sounds
+                sound_efx = back_buttons_sounds
                 #print(game_state)
                 #print(sound_efx)
                 #print(current_sound_path)
@@ -1306,7 +1306,7 @@ while running:#It starts active by default, since we set it to "True", which mak
             #print(game_state)
             if main_menu_configuration_back_button and main_menu_configuration_back_button.collidepoint((x, y)):
                 game_state = main_menu
-                sound_efx = menus_buttons_sounds
+                sound_efx = back_buttons_sounds
                 #print(game_state)
                 #print(sound_efx)
             elif main_menu_configuration_volume_button and main_menu_configuration_volume_button.collidepoint((x, y)):
@@ -1319,6 +1319,64 @@ while running:#It starts active by default, since we set it to "True", which mak
                 sound_efx = menus_buttons_sounds
                 #print(game_state)
                 #print(sound_efx)
+        elif event.type == pg.MOUSEBUTTONDOWN and game_state == main_menu_config_volume:
+            x, y = event.pos
+            #print(game_state)
+            if main_menu_volume_back_button and main_menu_volume_back_button.collidepoint((x, y)):
+                game_state = main_menu_config
+                sound_efx = back_buttons_sounds
+                #print(game_state)
+                #print(sound_efx)
+            elif main_menu_volume_music_mute_button and main_menu_volume_music_mute_button.collidepoint((x, y)):
+                current_volume_music = volume_mute
+                sound_efx = menus_buttons_sounds
+                #print(current_volume_music)
+                #print(game_state)
+                #print(sound_efx)
+            elif main_menu_volume_music_min_button and main_menu_volume_music_min_button.collidepoint((x, y)):
+                current_volume_music = volume_min
+                sound_efx = menus_buttons_sounds
+                #print(current_volume_music)
+                #print(game_state)
+                #print(sound_efx)
+            elif main_menu_volume_music_med_button and main_menu_volume_music_med_button.collidepoint((x, y)):
+                current_volume_music = volume_med
+                sound_efx = menus_buttons_sounds
+                #print(current_volume_music)
+                #print(game_state)
+                #print(sound_efx)
+            elif main_menu_volume_music_max_button and main_menu_volume_music_max_button.collidepoint((x, y)):
+                current_volume_music = volume_max
+                sound_efx = menus_buttons_sounds
+                #print(current_volume_music)
+                #print(game_state)
+                #print(sound_efx)
+        elif event.type == pg.MOUSEBUTTONDOWN and game_state == main_menu_config_fps:
+            x, y = event.pos
+            #print(game_state)
+            if main_menu_volume_back_button and main_menu_volume_back_button.collidepoint((x, y)):
+                game_state = main_menu_config
+                sound_efx = back_buttons_sounds
+                #print(game_state)
+                #print(sound_efx)
+            elif main_menu_fps_30_button and main_menu_fps_30_button.collidepoint((x, y)):
+                current_fps = fps30
+                sound_efx = menus_buttons_sounds
+                #print(current_fps)
+                #print(game_state)
+                #print(sound_efx)
+            elif main_menu_fps_60_button and main_menu_fps_60_button.collidepoint((x, y)):
+                current_fps = fps60
+                sound_efx = menus_buttons_sounds
+                #print(current_fps)
+                #print(game_state)
+                #print(sound_efx)
+            elif main_menu_fps_120_button and main_menu_fps_120_button.collidepoint((x, y)):
+                current_fps = fps120
+                sound_efx = menus_buttons_sounds
+                #print(current_fps)
+                #print(game_state)
+                #print(sound_efx)
         #Menu mouse
         elif event.type == pg.MOUSEBUTTONDOWN and menu_open and game_state == game_menu:
             x, y = event.pos
@@ -1327,7 +1385,7 @@ while running:#It starts active by default, since we set it to "True", which mak
             #Close Menu
             if close_button and close_button.collidepoint((x, y)) and game_state == game_menu:
                 game_state= game_start
-                sound_efx = menus_buttons_sounds
+                sound_efx = back_buttons_sounds
                 menu_open = False
                 #print(game_state)
                 #print(menu_open)
@@ -1342,7 +1400,7 @@ while running:#It starts active by default, since we set it to "True", which mak
             #back to main menu
             elif menu_back_button and menu_back_button.collidepoint((x, y)) and game_state == game_menu:
                 game_state = main_menu
-                sound_efx = menus_buttons_sounds
+                sound_efx = back_buttons_sounds
                 menu_open = False
                 pg.mixer.music.fadeout(1000)
                 #print(game_state)
@@ -1359,7 +1417,7 @@ while running:#It starts active by default, since we set it to "True", which mak
             #print(game_state)
             if menu_configuration_back_button and menu_configuration_back_button.collidepoint((x, y)):
                 game_state = game_menu
-                sound_efx = menus_buttons_sounds
+                sound_efx = back_buttons_sounds
                 menu_open = True
                 #print(game_state)
                 #print(sound)
@@ -1373,6 +1431,64 @@ while running:#It starts active by default, since we set it to "True", which mak
                 sound_efx = menus_buttons_sounds
                 #print(game_state)
                 #print(sound)
+        elif event.type == pg.MOUSEBUTTONDOWN and game_state == menu_config_volume:
+            x, y = event.pos
+            #print(game_state)
+            if menu_volume_back_button and menu_volume_back_button.collidepoint((x, y)):
+                game_state = menu_config
+                sound_efx = back_buttons_sounds
+                #print(game_state)
+                #print(sound_efx)
+            elif menu_volume_music_mute_button and menu_volume_music_mute_button.collidepoint((x, y)):
+                current_volume_music = volume_mute
+                sound_efx = menus_buttons_sounds
+                #print(current_volume_music)
+                #print(game_state)
+                #print(sound_efx)
+            elif menu_volume_music_min_button and menu_volume_music_min_button.collidepoint((x, y)):
+                current_volume_music = volume_min
+                sound_efx = menus_buttons_sounds
+                #print(current_volume_music)
+                #print(game_state)
+                #print(sound_efx)
+            elif menu_volume_music_med_button and menu_volume_music_med_button.collidepoint((x, y)):
+                current_volume_music = volume_med
+                sound_efx = menus_buttons_sounds
+                #print(current_volume_music)
+                #print(game_state)
+                #print(sound_efx)
+            elif menu_volume_music_max_button and menu_volume_music_max_button.collidepoint((x, y)):
+                current_volume_music = volume_max
+                sound_efx = menus_buttons_sounds
+                #print(current_volume_music)
+                #print(game_state)
+                #print(sound_efx)
+        elif event.type == pg.MOUSEBUTTONDOWN and game_state == menu_config_fps:
+            x, y = event.pos
+            #print(game_state)
+            if menu_volume_back_button and menu_volume_back_button.collidepoint((x, y)):
+                game_state = menu_config
+                sound_efx = back_buttons_sounds
+                #print(game_state)
+                #print(sound_efx)
+            elif menu_fps_30_button and menu_fps_30_button.collidepoint((x, y)):
+                current_fps = fps30
+                sound_efx = menus_buttons_sounds
+                #print(current_fps)
+                #print(game_state)
+                #print(sound_efx)
+            elif menu_fps_60_button and menu_fps_60_button.collidepoint((x, y)):
+                current_fps = fps60
+                sound_efx = menus_buttons_sounds
+                #print(current_fps)
+                #print(game_state)
+                #print(sound_efx)
+            elif menu_fps_120_button and menu_fps_120_button.collidepoint((x, y)):
+                current_fps = fps120
+                sound_efx = menus_buttons_sounds
+                #print(current_fps)
+                #print(game_state)
+                #print(sound_efx)
         #Odd and Even mouse
         elif event.type == pg.MOUSEBUTTONDOWN and not menu_open:
             x, y = event.pos
@@ -1402,7 +1518,7 @@ while running:#It starts active by default, since we set it to "True", which mak
             #close menu
             elif event.button == 7 and menu_open and game_state == game_menu:
                 game_state = game_start
-                sound_efx = menus_buttons_sounds
+                sound_efx = back_buttons_sounds
                 pg.mixer.music.unpause()
                 menu_open = False
         #Odd and Even controller
@@ -1417,7 +1533,7 @@ while running:#It starts active by default, since we set it to "True", which mak
                     DTactive = False
         elif event.type == pg.JOYBUTTONDOWN and game_state == main_menu:
             if event.button == 0 and current_button == 0:
-                sound_efx = menus_buttons_sounds
+                sound_efx = back_buttons_sounds
                 game_state = game_themes
                 #print(game_state)
                 #print(sound)
@@ -1434,7 +1550,7 @@ while running:#It starts active by default, since we set it to "True", which mak
                 #print(running)
         elif event.type == pg.JOYBUTTONDOWN and game_state == game_themes:
             if event.button == 0 and current_button == 0:
-                sound_efx = menus_buttons_sounds
+                sound_efx = back_buttons_sounds
                 game_state = main_menu
                 #print(game_state)
                 #print(sound_efx)
@@ -1478,7 +1594,7 @@ while running:#It starts active by default, since we set it to "True", which mak
         elif event.type == pg.JOYBUTTONDOWN and game_state == main_menu_config:
             if event.button == 0 and current_button == 0:
                 game_state = main_menu
-                sound_efx = menus_buttons_sounds
+                sound_efx = back_buttons_sounds
                 current_button = 0
                 #print(game_state)
                 #print(sound_efx)
@@ -1500,39 +1616,39 @@ while running:#It starts active by default, since we set it to "True", which mak
         elif event.type == pg.JOYBUTTONDOWN and game_state == main_menu_config_volume:
             if event.button == 0 and current_button == 0:
                 game_state = main_menu_config
-                sound_efx = menus_buttons_sounds
+                sound_efx = back_buttons_sounds
                 current_button = 0
                 #print(game_state)
                 #print(sound_efx)
                 #print(event.button)
             elif event.button == 0 and current_button == 1:
                 sound_efx = menus_buttons_sounds
-                volume_defined()
+                current_volume_music = volume_mute
                 #print(sound_efx)
                 #print(event.button)
                 print(current_volume_music)
             elif event.button == 0 and current_button == 2:
                 sound_efx = menus_buttons_sounds
-                volume_defined()
+                current_volume_music = volume_min
                 #print(sound_efx)
                 #print(event.button)
                 print(current_volume_music)
             elif event.button == 0 and current_button == 3:
                 sound_efx = menus_buttons_sounds
-                volume_defined()
+                current_volume_music = volume_med
                 #print(sound_efx)
                 #print(event.button)
                 print(current_volume_music)
             elif event.button == 0 and current_button == 4:
                 sound_efx = menus_buttons_sounds
-                volume_defined()
+                current_volume_music = volume_max
                 #print(sound_efx)
                 #print(event.button)
                 print(current_volume_music)
         elif event.type == pg.JOYBUTTONDOWN and game_state == main_menu_config_fps:
             if event.button == 0 and current_button == 0:
                 game_state = main_menu_config
-                sound_efx = menus_buttons_sounds
+                sound_efx = back_buttons_sounds
                 current_button = 0
                 #print(game_state)
                 #print(sound_efx)
@@ -1558,24 +1674,112 @@ while running:#It starts active by default, since we set it to "True", which mak
                 print(current_fps)
         #fechar o menu
         elif event.type == pg.JOYBUTTONDOWN and game_state == game_menu:
+            #close menu
             if event.button == 0 and current_button == 0:
                 game_state = game_start
-                sound_efx = menus_buttons_sounds
+                sound_efx = back_buttons_sounds
                 current_button = 0
                 pg.mixer.music.unpause()
                 menu_open = False
+            #fullscreen
             elif event.button == 0 and current_button == 1:
                 F = not F
                 if F:
                     pg.display.set_mode((0, 0), pg.FULLSCREEN)
                 else:
                     pg.display.set_mode((Init_Width, Init_Height), pg.RESIZABLE)
+            #go back to main menu
             elif event.button == 0 and current_button == 2:
                 game_state = main_menu
                 sound_efx = menus_buttons_sounds
                 current_button = 0
                 menu_open = False
                 pg.mixer.music.fadeout(1000)
+            elif event.button == 0 and current_button == 3:
+                game_state = menu_config
+                sound_efx = menus_buttons_sounds
+                current_button = 0
+                menu_open = False
+        #menu buttons
+        elif event.type == pg.JOYBUTTONDOWN and game_state == menu_config:
+            #print(game_state)
+            if event.button == 0 and current_button == 0:
+                game_state = game_menu
+                current_button = 0
+                sound_efx = back_buttons_sounds
+                menu_open = True
+                #print(game_state)
+                #print(sound)
+            elif event.button == 0 and current_button == 1:
+                game_state = menu_config_volume
+                current_button = 0
+                sound_efx = menus_buttons_sounds
+                #print(game_state)
+                #print(sound)
+            elif event.button == 0 and current_button == 2:
+                game_state = menu_config_fps
+                current_button = 0
+                sound_efx = menus_buttons_sounds
+                #print(game_state)
+                #print(sound)
+        elif event.type == pg.JOYBUTTONDOWN and game_state == menu_config_volume:
+            #print(game_state)
+            if event.button == 0 and current_button == 0:
+                game_state = menu_config
+                current_button = 0
+                sound_efx = back_buttons_sounds
+                #print(game_state)
+                #print(sound_efx)
+            elif event.button == 0 and current_button == 1:
+                current_volume_music = volume_mute
+                sound_efx = menus_buttons_sounds
+                #print(current_volume_music)
+                #print(game_state)
+                #print(sound_efx)
+            elif event.button == 0 and current_button == 2:
+                current_volume_music = volume_min
+                sound_efx = menus_buttons_sounds
+                #print(current_volume_music)
+                #print(game_state)
+                #print(sound_efx)
+            elif event.button == 0 and current_button == 3:
+                current_volume_music = volume_med
+                sound_efx = menus_buttons_sounds
+                #print(current_volume_music)
+                #print(game_state)
+                #print(sound_efx)
+            elif event.button == 0 and current_button == 4:
+                current_volume_music = volume_max
+                sound_efx = menus_buttons_sounds
+                #print(current_volume_music)
+                #print(game_state)
+                #print(sound_efx)
+        elif event.type == pg.JOYBUTTONDOWN and game_state == menu_config_fps:
+            #print(game_state)
+            if event.button == 0 and current_button == 0:
+                game_state = menu_config
+                current_button = 0
+                sound_efx = back_buttons_sounds
+                #print(game_state)
+                #print(sound_efx)
+            elif event.button == 0 and current_button == 1:
+                current_fps = fps30
+                sound_efx = menus_buttons_sounds
+                #print(current_fps)
+                #print(game_state)
+                #print(sound_efx)
+            elif event.button == 0 and current_button == 2:
+                current_fps = fps60
+                sound_efx = menus_buttons_sounds
+                #print(current_fps)
+                #print(game_state)
+                #print(sound_efx)
+            elif event.button == 0 and current_button == 3:
+                current_fps = fps120
+                sound_efx = menus_buttons_sounds
+                #print(current_fps)
+                #print(game_state)
+                #print(sound_efx)
         #Message and random number update
         elif event.type == pg.USEREVENT + 1:
             message = ""
