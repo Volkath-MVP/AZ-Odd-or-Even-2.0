@@ -12,8 +12,9 @@ pg.mixer.init()
 pg.mixer.music.set_volume(0.5)
 current_music_path = None
 current_sound_path = None
+current_announcer_path = None
 sound_end_event = pg.USEREVENT + 10
-music_end_event = pg.USEREVENT + 10
+music_end_event = pg.USEREVENT + 11
 #initialize display
 pg.display.init()
 #initialize joystick
@@ -38,6 +39,11 @@ font_large = pg.font.SysFont("Arial", 50)
 font_very_large = pg.font.SysFont("Arial", 70)
 #init FPS value
 init_fps = 60
+#fps variables
+current_fps = init_fps
+fps30 = 30
+fps60 = 60
+fps120 = 120
 #Menu variable
 menu_open = False
 F = False #Yeah, this is necessary. For fullscreen mode ...this is strange
@@ -90,7 +96,9 @@ menu_config = "menu_config"
 game_start = "game_start"
 game_menu = "game_menu"
 #game sounds EFX
-sound = ""
+sound_music_announcer = ""
+sound_efx = ""
+music_path = ""
 menus_buttons_sounds = "menus_buttons_sounds"
 back_buttons_sounds = "back_buttons_sounds"
 exed_sounds = "exed_sounds"
@@ -192,6 +200,7 @@ def draw_main_menu():
     root.blit(exit_label, (exit_button_position_X, exit_button_position_Y))
     return theme_button, configuration_button, exit_button
 #Sounds efects
+#Exed sound
 def sounds_exed_choice(sound_exed):
     if sound_exed == "":
         return None
@@ -203,68 +212,88 @@ def sounds_exed_choice(sound_exed):
         #sound
         exed_sound_path = os.path.join("Sonds_Efects", "max_exed.mp3")
         return exed_sound_path
-def sounds_choice(sound):
-    if sound == "":
+#buttons sounds
+def sounds_choice(sound_efx):
+    if sound_efx == "":
         return None
-    if sound == menus_buttons_sounds:
+    elif sound_efx == menus_buttons_sounds:
         #sound
         sound_path = os.path.join("Sonds_Efects", "menu_button_sound.mp3")
         return sound_path
-    if sound == back_buttons_sounds:
+    elif sound_efx == back_buttons_sounds:
         #sound
         sound_path = os.path.join("Sonds_Efects", "whoosh_efects.mp3")
         return sound_path
-    if sound == RankD_sounds:
-        #sound
-        sound_path = os.path.join("Sonds_Efects", "rank_sounds_D.mp3")
-        return sound_path
-    if sound == RankC_sounds:
-        #sound
-        sound_path = os.path.join("Sonds_Efects", "rank_sounds_C.mp3")
-        return sound_path
-    if sound == RankB_sounds:
-        #sound
-        sound_path = os.path.join("Sonds_Efects", "rank_sound_B.mp3")
-        return sound_path
-    if sound == RankA_sounds:
-        #sound
-        sound_path = os.path.join("Sonds_Efects", "rank_sounds_A.mp3")
-        return sound_path
-    if sound == RankS_sounds:
-        #sound
-        sound_path = os.path.join("Sonds_Efects", "rank_sound_S.mp3")
-        return sound_path
-    if sound == RankSS_sounds:
-        #sound
-        sound_path = os.path.join("Sonds_Efects", "rank_sound_SS.mp3")
-        return sound_path
-    if sound == RankSSS1_sounds:
-        #sound
-        sound_path = os.path.join("Sonds_Efects", "rank_sound_SSS1.mp3")
-        return sound_path
-    if sound == RankSSS2_sounds:
-        #sound
-        sound_path = os.path.join("Sonds_Efects", "rank_sound_SSS2.mp3")
-        return sound_path
-    if sound == RankAZ_sounds:
-        #sound
-        sound_path = os.path.join("Sonds_Efects", "sound_rank_AZ.mp3")
-        return sound_path
-def musics_play():
+def sound_play():
     global current_sound_path
-    sound_path = sounds_choice(sound)
+    sound_path = sounds_choice(sound_efx)
     #print(sound_path)
-    if sound_path and sound_path != current_sound_path and game_state == game_start:
+    if sound_path and sound_path != current_sound_path:
         try:
             s = pg.mixer.Sound(sound_path)
+            s.set_volume(current_volume_sound)
+            chan = pg.mixer.find_channel()
+            if chan:
+                chan.set_endevent(sound_end_event)
+                chan.play(s)
+                current_sound_path = sound_path
+        except Exception:
+            current_sound_path = None
+#musics sounds
+def musics_choice(sound_music_announcer):
+    if sound_music_announcer == "":
+        return None
+    elif sound_music_announcer == RankD_sounds:
+        #sound
+        sound_announcer_path = os.path.join("Sonds_Efects", "rank_sounds_D.mp3")
+        return sound_announcer_path
+    elif sound_music_announcer == RankC_sounds:
+        #sound
+        sound_announcer_path = os.path.join("Sonds_Efects", "rank_sounds_C.mp3")
+        return sound_announcer_path
+    elif sound_music_announcer == RankB_sounds:
+        #sound
+        sound_announcer_path = os.path.join("Sonds_Efects", "rank_sound_B.mp3")
+        return sound_announcer_path
+    elif sound_music_announcer == RankA_sounds:
+        #sound
+        sound_announcer_path = os.path.join("Sonds_Efects", "rank_sounds_A.mp3")
+        return sound_announcer_path
+    elif sound_music_announcer == RankS_sounds:
+        #sound
+        sound_announcer_path = os.path.join("Sonds_Efects", "rank_sound_S.mp3")
+        return sound_announcer_path
+    elif sound_music_announcer == RankSS_sounds:
+        #sound
+        sound_announcer_path = os.path.join("Sonds_Efects", "rank_sound_SS.mp3")
+        return sound_announcer_path
+    elif sound_music_announcer == RankSSS1_sounds:
+        #sound
+        sound_announcer_path = os.path.join("Sonds_Efects", "rank_sound_SSS1.mp3")
+        return sound_announcer_path
+    elif sound_music_announcer == RankSSS2_sounds:
+        #sound
+        sound_announcer_path = os.path.join("Sonds_Efects", "rank_sound_SSS2.mp3")
+        return sound_announcer_path
+    elif sound_music_announcer == RankAZ_sounds:
+        #sound
+        sound_announcer_path = os.path.join("Sonds_Efects", "sound_rank_AZ.mp3")
+        return sound_announcer_path
+def musics_play():
+    global current_announcer_path
+    sound_announcer_path = musics_choice(sound_music_announcer)
+    #print(sound_path)
+    if sound_announcer_path and sound_announcer_path != current_announcer_path and game_state == game_start:
+        try:
+            s = pg.mixer.Sound(sound_announcer_path)
             s.set_volume(current_volume_music)
             chan = pg.mixer.find_channel()
             if chan:
                 chan.set_endevent(music_end_event)
                 chan.play(s)
-                current_sound_path = sound_path
+                current_announcer_path = sound_announcer_path
         except Exception:
-            current_sound_path = None
+            current_announcer_path = None
 def sounds_exed_play():
     global exed_current_sound_path
     exed_sound_path = sounds_exed_choice(sound_exed)
@@ -613,8 +642,8 @@ def draw_main_menu_configuration_volume():
     #main menu volume music min button
     main_menu_volume_music_min_button_label = font_medium.render("Volume mínimo", True, WHITE)
     #main menu volume music min button position
-    main_menu_volume_music_min_button_assistant_position_X = WIDTH * 0.25
-    main_menu_volume_music_min_button_assistant_position_Y = HEIGHT * 0.2
+    main_menu_volume_music_min_button_assistant_position_X = WIDTH * 0.15
+    main_menu_volume_music_min_button_assistant_position_Y = HEIGHT * 0.3
     main_menu_volume_music_min_button_position_X = main_menu_volume_music_min_button_assistant_position_X
     main_menu_volume_music_min_button_position_Y = main_menu_volume_music_min_button_assistant_position_Y
     main_menu_volume_music_min_button = pg.Rect(main_menu_volume_music_min_button_position_X, main_menu_volume_music_min_button_position_Y, main_menu_volume_music_min_button_label.get_width(), main_menu_volume_music_min_button_label.get_height())
@@ -624,8 +653,8 @@ def draw_main_menu_configuration_volume():
     #main menu volume music med button
     main_menu_volume_music_med_button_label = font_medium.render("Volume médio", True, WHITE)
     #main menu volume music med button position
-    main_menu_volume_music_med_button_assistant_position_X = WIDTH * 0.35
-    main_menu_volume_music_med_button_assistant_position_Y = HEIGHT * 0.2
+    main_menu_volume_music_med_button_assistant_position_X = WIDTH * 0.15
+    main_menu_volume_music_med_button_assistant_position_Y = HEIGHT * 0.4
     main_menu_volume_music_med_button_position_X = main_menu_volume_music_med_button_assistant_position_X
     main_menu_volume_music_med_button_position_Y = main_menu_volume_music_med_button_assistant_position_Y
     main_menu_volume_music_med_button = pg.Rect(main_menu_volume_music_med_button_position_X, main_menu_volume_music_med_button_position_Y, main_menu_volume_music_med_button_label.get_width(), main_menu_volume_music_med_button_label.get_height())
@@ -635,8 +664,8 @@ def draw_main_menu_configuration_volume():
     #main menu volume music max button
     main_menu_volume_music_max_button_label = font_medium.render("Volume máximo", True, WHITE)
     #main menu volume music max button position
-    main_menu_volume_music_max_button_assistant_position_X = WIDTH * 0.45
-    main_menu_volume_music_max_button_assistant_position_Y = HEIGHT * 0.2
+    main_menu_volume_music_max_button_assistant_position_X = WIDTH * 0.15
+    main_menu_volume_music_max_button_assistant_position_Y = HEIGHT * 0.5
     main_menu_volume_music_max_button_position_X = main_menu_volume_music_max_button_assistant_position_X
     main_menu_volume_music_max_button_position_Y = main_menu_volume_music_max_button_assistant_position_Y
     main_menu_volume_music_max_button = pg.Rect(main_menu_volume_music_max_button_position_X, main_menu_volume_music_max_button_position_Y, main_menu_volume_music_max_button_label.get_width(), main_menu_volume_music_max_button_label.get_height())
@@ -671,8 +700,8 @@ def draw_main_menu_configuration_fps():
     #main menu fps music min button
     main_menu_fps_60_button_label = font_medium.render("60 fps", True, WHITE)
     #main menu fps music min button position
-    main_menu_fps_60_button_assistant_position_X = WIDTH * 0.25
-    main_menu_fps_60_button_assistant_position_Y = HEIGHT * 0.2
+    main_menu_fps_60_button_assistant_position_X = WIDTH * 0.15
+    main_menu_fps_60_button_assistant_position_Y = HEIGHT * 0.3
     main_menu_fps_60_button_position_X = main_menu_fps_60_button_assistant_position_X
     main_menu_fps_60_button_position_Y = main_menu_fps_60_button_assistant_position_Y
     main_menu_fps_60_button = pg.Rect(main_menu_fps_60_button_position_X, main_menu_fps_60_button_position_Y, main_menu_fps_60_button_label.get_width(), main_menu_fps_60_button_label.get_height())
@@ -682,8 +711,8 @@ def draw_main_menu_configuration_fps():
     #main menu fps music med button
     main_menu_fps_120_button_label = font_medium.render("120 fps", True, WHITE)
     #main menu fps music med button position
-    main_menu_fps_120_button_assistant_position_X = WIDTH * 0.35
-    main_menu_fps_120_button_assistant_position_Y = HEIGHT * 0.2
+    main_menu_fps_120_button_assistant_position_X = WIDTH * 0.15
+    main_menu_fps_120_button_assistant_position_Y = HEIGHT * 0.4
     main_menu_fps_120_button_position_X = main_menu_fps_120_button_assistant_position_X
     main_menu_fps_120_button_position_Y = main_menu_fps_120_button_assistant_position_Y
     main_menu_fps_120_button = pg.Rect(main_menu_fps_120_button_position_X, main_menu_fps_120_button_position_Y, main_menu_fps_120_button_label.get_width(), main_menu_fps_120_button_label.get_height())
@@ -718,8 +747,8 @@ def draw_menu_configuration_volume():
     #menu volume music min button
     menu_volume_music_min_button_label = font_medium.render("Volume mínimo", True, WHITE)
     #menu volume music min button position
-    menu_volume_music_min_button_assistant_position_X = WIDTH * 0.25
-    menu_volume_music_min_button_assistant_position_Y = HEIGHT * 0.2
+    menu_volume_music_min_button_assistant_position_X = WIDTH * 0.15
+    menu_volume_music_min_button_assistant_position_Y = HEIGHT * 0.3
     menu_volume_music_min_button_position_X = menu_volume_music_min_button_assistant_position_X
     menu_volume_music_min_button_position_Y = menu_volume_music_min_button_assistant_position_Y
     menu_volume_music_min_button = pg.Rect(menu_volume_music_min_button_position_X, menu_volume_music_min_button_position_Y, menu_volume_music_min_button_label.get_width(), menu_volume_music_min_button_label.get_height())
@@ -729,8 +758,8 @@ def draw_menu_configuration_volume():
     #menu volume music med button
     menu_volume_music_med_button_label = font_medium.render("Volume médio", True, WHITE)
     #menu volume music med button position
-    menu_volume_music_med_button_assistant_position_X = WIDTH * 0.35
-    menu_volume_music_med_button_assistant_position_Y = HEIGHT * 0.2
+    menu_volume_music_med_button_assistant_position_X = WIDTH * 0.15
+    menu_volume_music_med_button_assistant_position_Y = HEIGHT * 0.4
     menu_volume_music_med_button_position_X = menu_volume_music_med_button_assistant_position_X
     menu_volume_music_med_button_position_Y = menu_volume_music_med_button_assistant_position_Y
     menu_volume_music_med_button = pg.Rect(menu_volume_music_med_button_position_X, menu_volume_music_med_button_position_Y, menu_volume_music_med_button_label.get_width(), menu_volume_music_med_button_label.get_height())
@@ -740,8 +769,8 @@ def draw_menu_configuration_volume():
     #menu volume music max button
     menu_volume_music_max_button_label = font_medium.render("Volume máximo", True, WHITE)
     #menu volume music max button position
-    menu_volume_music_max_button_assistant_position_X = WIDTH * 0.45
-    menu_volume_music_max_button_assistant_position_Y = HEIGHT * 0.2
+    menu_volume_music_max_button_assistant_position_X = WIDTH * 0.15
+    menu_volume_music_max_button_assistant_position_Y = HEIGHT * 0.5
     menu_volume_music_max_button_position_X = menu_volume_music_max_button_assistant_position_X
     menu_volume_music_max_button_position_Y = menu_volume_music_max_button_assistant_position_Y
     menu_volume_music_max_button = pg.Rect(menu_volume_music_max_button_position_X, menu_volume_music_max_button_position_Y, menu_volume_music_max_button_label.get_width(), menu_volume_music_max_button_label.get_height())
@@ -776,8 +805,8 @@ def draw_menu_configuration_fps():
     #menu fps music min button
     menu_fps_60_button_label = font_medium.render("60 fps", True, WHITE)
     #menu fps music min button position
-    menu_fps_60_button_assistant_position_X = WIDTH * 0.25
-    menu_fps_60_button_assistant_position_Y = HEIGHT * 0.2
+    menu_fps_60_button_assistant_position_X = WIDTH * 0.15
+    menu_fps_60_button_assistant_position_Y = HEIGHT * 0.3
     menu_fps_60_button_position_X = menu_fps_60_button_assistant_position_X
     menu_fps_60_button_position_Y = menu_fps_60_button_assistant_position_Y
     menu_fps_60_button = pg.Rect(menu_fps_60_button_position_X, menu_fps_60_button_position_Y, menu_fps_60_button_label.get_width(), menu_fps_60_button_label.get_height())
@@ -787,8 +816,8 @@ def draw_menu_configuration_fps():
     #menu fps music med button
     menu_fps_120_button_label = font_medium.render("120 fps", True, WHITE)
     #menu fps music med button position
-    menu_fps_120_button_assistant_position_X = WIDTH * 0.35
-    menu_fps_120_button_assistant_position_Y = HEIGHT * 0.2
+    menu_fps_120_button_assistant_position_X = WIDTH * 0.15
+    menu_fps_120_button_assistant_position_Y = HEIGHT * 0.4
     menu_fps_120_button_position_X = menu_fps_120_button_assistant_position_X
     menu_fps_120_button_position_Y = menu_fps_120_button_assistant_position_Y
     menu_fps_120_button = pg.Rect(menu_fps_120_button_position_X, menu_fps_120_button_position_Y, menu_fps_120_button_label.get_width(), menu_fps_120_button_label.get_height())
@@ -869,26 +898,26 @@ def update_number():
     global number
     number=rd.randint(1, 100)
 def rank_announcer(response):
-    global sound
+    global sound_music_announcer
     if response and RankAZ <= score <= RankAZ + 700 or response and score == RankAZ:
-        sound = RankAZ_sounds
+        sound_music_announcer = RankAZ_sounds
     elif response and RankSSS <= score <= RankSSS + 700 or response and score == RankSSS:
-        sound = rd.choice([RankSSS1_sounds, RankSSS2_sounds])
+        sound_music_announcer = rd.choice([RankSSS1_sounds, RankSSS2_sounds])
     elif response and RankSS <= score <= RankSS + 500 or response and score == RankSS:
-        sound = RankSS_sounds
+        sound_music_announcer = RankSS_sounds
     elif response and RankS <= score <= RankS + 300 or response and score == RankS:
-        sound = RankS_sounds
+        sound_music_announcer = RankS_sounds
     elif response and RankA <= score <= RankA + 300 or response and score == RankA:
-        sound = RankA_sounds
+        sound_music_announcer = RankA_sounds
     elif response and RankB <= score <= RankB + 300 or response and score == RankB:
-        sound = RankB_sounds
+        sound_music_announcer = RankB_sounds
     elif response and RankC <= score <= RankC + 300 or response and score == RankC:
-        sound = RankC_sounds
+        sound_music_announcer = RankC_sounds
     elif response and RankD <= score <= RankD + 300 or response and score == RankD:
-        sound = RankD_sounds
+        sound_music_announcer = RankD_sounds
 #Odd or Even function
 def check(AZ):
-    global number, message, sound
+    global number, message, sound_music_announcer
     if game_state != game_start:
         return
     response = (number % 2 == 0 and AZ == "Even") or (number % 2 != 0 and AZ == "Odd")
@@ -1069,14 +1098,31 @@ def draw_focus(button_selected):
         return
     if isinstance(button_selected, pg.Rect) and is_selected:
         pg.draw.rect(root, WHITE, button_selected, 3)
+def volume_defined():
+    global current_volume_music
+    if current_button == 1:
+        current_volume_music = volume_mute
+        return current_volume_music
+    elif current_button == 2:
+        current_volume_music = volume_min
+        return current_volume_music
+    elif current_button == 2:
+        current_volume_music = volume_med
+        return current_volume_music
+    elif current_button == 2:
+        current_volume_music = volume_max
+        return current_volume_music
 #loop
 while running:#It starts active by default, since we set it to "True", which makes it run without being explicitly called. Ideal for things that should run continuously. "while" = as long as "running" is True
     WIDTH, HEIGHT = root.get_size()
     update_rank()
-    sounds_choice(sound)
+    sounds_choice(sound_efx)
+    musics_choice(sound_music_announcer)
     sounds_exed_choice(sound_exed)
     musics_play()
+    sound_play()
     sounds_exed_play()
+    volume_defined()
     #game_drawings()
     #print(game_state)
     #print(menu_open)
@@ -1136,9 +1182,11 @@ while running:#It starts active by default, since we set it to "True", which mak
     for event in pg.event.get():#"for event in pg.event.get()""for" = makes it so that for each thing inside "event", which are the events that happen"in" inside "pg.event", Pygame events".get()"
      #to read or search inside pg.event. Pygame stores all user interactions in a list, and pg.event.get() searches for one of those already listed events—in this case, "event"
         if event.type == sound_end_event or event.type == music_end_event:
-            sound = ""
+            sound_music_announcer = ""
             sound_exed = ""
+            sound_efx = ""
             current_sound_path = None
+            current_announcer_path = None
             exed_current_sound_path = None
         if event.type == pg.JOYDEVICEADDED:
             joystick = pg.joystick.Joystick(event.device_index)
@@ -1154,15 +1202,15 @@ while running:#It starts active by default, since we set it to "True", which mak
             #Esc opens the menu
             if event.key == pg.K_ESCAPE and not menu_open and game_state == game_start:#From this point on, it’s all syntax, so it’s more about researching and positioning these things
                 game_state = game_menu
-                sound = menus_buttons_sounds
+                sound_efx = menus_buttons_sounds
                 menu_open = True
                 pg.mixer.music.pause()
-                #print(sound)
+                #print(sound_efx)
                 #print(game_state)
                 #print(menu_open)
             elif event.key == pg.K_ESCAPE and menu_open and game_state == game_menu:
                 game_state = game_start
-                sound = menus_buttons_sounds
+                sound_efx = menus_buttons_sounds
                 menu_open = False
                 pg.mixer.music.unpause()
                 #print(game_state)
@@ -1186,12 +1234,12 @@ while running:#It starts active by default, since we set it to "True", which mak
             x, y = event.pos
             #print(game_state)
             if theme_button and theme_button.collidepoint((x, y)):
-                sound = menus_buttons_sounds
+                sound_efx = menus_buttons_sounds
                 game_state = game_themes
                 #print(game_state)
-                #print(sound)
+                #print(sound_efx)
             elif configuration_button and configuration_button.collidepoint((x, y)):
-                sound = menus_buttons_sounds
+                sound_efx = menus_buttons_sounds
                 game_state = main_menu_config
             elif exit_button and exit_button.collidepoint((x, y)):
                 running = False
@@ -1200,86 +1248,86 @@ while running:#It starts active by default, since we set it to "True", which mak
             #print(game_state)
             if back_button and back_button.collidepoint((x, y)):
                 game_state = main_menu
-                sound = menus_buttons_sounds
+                sound_efx = menus_buttons_sounds
                 #print(game_state)
-                #print(sound)
+                #print(sound_efx)
                 #print(current_sound_path)
             elif dante_button and dante_button.collidepoint((x, y)):
                 selected_theme = Theme.get("Theme0")
                 game_state = game_start
-                sound = menus_buttons_sounds
+                sound_efx = menus_buttons_sounds
                 #print(game_state)
-                #print(sound)
+                #print(sound_efx)
                 #print(current_sound_path)
             elif DMC_dante_button and DMC_dante_button.collidepoint((x, y)):
                 selected_theme = Theme.get("Theme1")
                 game_state = game_start
-                sound = menus_buttons_sounds
+                sound_efx = menus_buttons_sounds
                 #print(game_state)
-                #print(sound)
+                #print(sound_efx)
                 #print(current_sound_path)
             elif vergil_button and vergil_button.collidepoint((x, y)):
                 selected_theme = Theme.get("Theme2")
                 game_state = game_start
-                sound = menus_buttons_sounds
+                sound_efx = menus_buttons_sounds
                 #print(game_state)
-                #print(sound)
+                #print(sound_efx)
                 #print(current_sound_path)
             elif DMC3_vergil_button and DMC3_vergil_button.collidepoint((x, y)):
                 selected_theme = Theme.get("Theme3")
                 game_state = game_start
-                sound = menus_buttons_sounds
+                sound_efx = menus_buttons_sounds
                 #print(game_state)
-                #print(sound)
+                #print(sound_efx)
                 #print(current_sound_path)
             elif DMC3_dante_button and DMC3_dante_button.collidepoint((x, y)):
                 selected_theme = Theme.get("Theme4")
                 game_state = game_start
-                sound = menus_buttons_sounds
+                sound_efx = menus_buttons_sounds
                 #print(game_state)
-                #print(sound)
+                #print(sound_efx)
                 #print(current_sound_path)
             elif v_button and v_button.collidepoint((x, y)):
                 selected_theme = Theme.get("Theme5")
                 game_state = game_start
-                sound = menus_buttons_sounds
+                sound_efx = menus_buttons_sounds
                 #print(game_state)
-                #print(sound)
+                #print(sound_efx)
                 #print(current_sound_path)
             elif vergilDMC4_button and vergilDMC4_button.collidepoint((x, y)):
                 selected_theme = Theme.get("Theme6")
                 game_state = game_start
-                sound = menus_buttons_sounds
+                sound_efx = menus_buttons_sounds
                 #print(game_state)
-                #print(sound)
+                #print(sound_efx)
                 #print(current_sound_path)
         elif event.type == pg.MOUSEBUTTONDOWN and game_state == main_menu_config:
             x, y = event.pos
             #print(game_state)
             if main_menu_configuration_back_button and main_menu_configuration_back_button.collidepoint((x, y)):
                 game_state = main_menu
-                sound = menus_buttons_sounds
+                sound_efx = menus_buttons_sounds
                 #print(game_state)
-                #print(sound)
+                #print(sound_efx)
             elif main_menu_configuration_volume_button and main_menu_configuration_volume_button.collidepoint((x, y)):
                 game_state = main_menu_config_volume
-                sound = menus_buttons_sounds
+                sound_efx = menus_buttons_sounds
                 #print(game_state)
-                #print(sound)
+                #print(sound_efx)
             elif main_menu_configuration_fps_button and main_menu_configuration_fps_button.collidepoint((x, y)):
                 game_state = main_menu_config_fps
-                sound = menus_buttons_sounds
+                sound_efx = menus_buttons_sounds
                 #print(game_state)
-                #print(sound)
+                #print(sound_efx)
         #Menu mouse
         elif event.type == pg.MOUSEBUTTONDOWN and menu_open and game_state == game_menu:
             x, y = event.pos
-            sound = menus_buttons_sounds
+            sound_efx = menus_buttons_sounds
             #print(game_state)
             #Close Menu
             if close_button and close_button.collidepoint((x, y)) and game_state == game_menu:
                 game_state= game_start
-                sound = menus_buttons_sounds
+                sound_efx = menus_buttons_sounds
                 menu_open = False
                 #print(game_state)
                 #print(menu_open)
@@ -1294,14 +1342,14 @@ while running:#It starts active by default, since we set it to "True", which mak
             #back to main menu
             elif menu_back_button and menu_back_button.collidepoint((x, y)) and game_state == game_menu:
                 game_state = main_menu
-                sound = menus_buttons_sounds
+                sound_efx = menus_buttons_sounds
                 menu_open = False
                 pg.mixer.music.fadeout(1000)
                 #print(game_state)
                 #print(menu_open)
             #configurations
             elif menu_configuration_button and menu_configuration_button.collidepoint((x, y)) and game_state == game_menu:
-                sound = menus_buttons_sounds
+                sound_efx = menus_buttons_sounds
                 game_state = menu_config
                 menu_open = False
                 #print(game_state)
@@ -1311,28 +1359,28 @@ while running:#It starts active by default, since we set it to "True", which mak
             #print(game_state)
             if menu_configuration_back_button and menu_configuration_back_button.collidepoint((x, y)):
                 game_state = game_menu
-                sound = menus_buttons_sounds
+                sound_efx = menus_buttons_sounds
                 menu_open = True
                 #print(game_state)
                 #print(sound)
             elif menu_configuration_volume_button and menu_configuration_volume_button.collidepoint((x, y)):
                 game_state = menu_config_volume
-                sound = menus_buttons_sounds
+                sound_efx = menus_buttons_sounds
                 #print(game_state)
                 #print(sound)
             elif menu_configuration_fps_button and menu_configuration_fps_button.collidepoint((x, y)):
                 game_state = menu_config_fps
-                sound = menus_buttons_sounds
+                sound_efx = menus_buttons_sounds
                 #print(game_state)
                 #print(sound)
         #Odd and Even mouse
         elif event.type == pg.MOUSEBUTTONDOWN and not menu_open:
             x, y = event.pos
-            sound = menus_buttons_sounds
+            sound_efx = menus_buttons_sounds
             #Menu botton
             if menu_button and menu_button.collidepoint((x, y)) and game_state == game_start:
                 game_state = game_menu
-                sound = menus_buttons_sounds
+                sound_efx = menus_buttons_sounds
                 menu_open = True
                 #print(game_state)
                 #print(menu_open)
@@ -1348,13 +1396,13 @@ while running:#It starts active by default, since we set it to "True", which mak
         if event.type == pg.JOYBUTTONDOWN:
             if event.button == 7 and not menu_open and game_state == game_start:
                 game_state = game_menu
-                sound = menus_buttons_sounds
+                sound_efx = menus_buttons_sounds
                 pg.mixer.music.pause()
                 menu_open = True
             #close menu
             elif event.button == 7 and menu_open and game_state == game_menu:
                 game_state = game_start
-                sound = menus_buttons_sounds
+                sound_efx = menus_buttons_sounds
                 pg.mixer.music.unpause()
                 menu_open = False
         #Odd and Even controller
@@ -1369,67 +1417,150 @@ while running:#It starts active by default, since we set it to "True", which mak
                     DTactive = False
         elif event.type == pg.JOYBUTTONDOWN and game_state == main_menu:
             if event.button == 0 and current_button == 0:
-                sound = menus_buttons_sounds
+                sound_efx = menus_buttons_sounds
                 game_state = game_themes
                 #print(game_state)
                 #print(sound)
                 #print(event.button)
             elif event.button == 0 and current_button == 1:
-                sound = menus_buttons_sounds
+                sound_efx = menus_buttons_sounds
                 game_state = main_menu_config
+                current_button = 0
                 #print(game_state)
-                #print(sound)
+                #print(sound_efx)
                 #print(event.button)
             elif event.button == 0 and current_button == 2:
                 running = False
                 #print(running)
         elif event.type == pg.JOYBUTTONDOWN and game_state == game_themes:
             if event.button == 0 and current_button == 0:
-                sound = menus_buttons_sounds
+                sound_efx = menus_buttons_sounds
                 game_state = main_menu
                 #print(game_state)
-                #print(sound)
+                #print(sound_efx)
                 #print(event.button)
             elif event.button == 0 and current_button == 1:
                 selected_theme = Theme.get("Theme0")
                 game_state = game_start
                 current_button = 0
-                sound = menus_buttons_sounds
+                sound_efx = menus_buttons_sounds
             elif event.button == 0 and current_button == 2:
                 selected_theme = Theme.get("Theme1")
                 game_state = game_start
-                sound = menus_buttons_sounds
+                sound_efx = menus_buttons_sounds
                 current_button = 0
             elif event.button == 0 and current_button == 3:
                 selected_theme = Theme.get("Theme2")
                 game_state = game_start
-                sound = menus_buttons_sounds
+                sound_efx = menus_buttons_sounds
                 current_button = 0
             elif event.button == 0 and current_button == 4:
                 selected_theme = Theme.get("Theme3")
                 game_state = game_start
-                sound = menus_buttons_sounds
+                sound_efx = menus_buttons_sounds
                 current_button = 0
             elif event.button == 0 and current_button == 5:
                 selected_theme = Theme.get("Theme4")
                 game_state = game_start
-                sound = menus_buttons_sounds
+                sound_efx = menus_buttons_sounds
                 current_button = 0
             elif event.button == 0 and current_button == 6:
                 selected_theme = Theme.get("Theme5")
                 game_state = game_start
-                sound = menus_buttons_sounds
+                sound_efx = menus_buttons_sounds
                 current_button = 0
             elif event.button == 0 and current_button == 7:
                 selected_theme = Theme.get("Theme6")
                 game_state = game_start
-                sound = menus_buttons_sounds
+                sound_efx = menus_buttons_sounds
                 current_button = 0
+        #Configuration main menu
+        elif event.type == pg.JOYBUTTONDOWN and game_state == main_menu_config:
+            if event.button == 0 and current_button == 0:
+                game_state = main_menu
+                sound_efx = menus_buttons_sounds
+                current_button = 0
+                #print(game_state)
+                #print(sound_efx)
+                #print(event.button)
+            if event.button == 0 and current_button == 1:
+                game_state = main_menu_config_volume
+                sound_efx = menus_buttons_sounds
+                current_button = 0
+                #print(game_state)
+                #print(sound_efx)
+                #print(event.button)
+            if event.button == 0 and current_button == 2:
+                game_state = main_menu_config_fps
+                sound_efx = menus_buttons_sounds
+                current_button = 0
+                #print(game_state)
+                #print(sound_efx)
+                #print(event.button)
+        elif event.type == pg.JOYBUTTONDOWN and game_state == main_menu_config_volume:
+            if event.button == 0 and current_button == 0:
+                game_state = main_menu_config
+                sound_efx = menus_buttons_sounds
+                current_button = 0
+                #print(game_state)
+                #print(sound_efx)
+                #print(event.button)
+            elif event.button == 0 and current_button == 1:
+                sound_efx = menus_buttons_sounds
+                volume_defined()
+                #print(sound_efx)
+                #print(event.button)
+                print(current_volume_music)
+            elif event.button == 0 and current_button == 2:
+                sound_efx = menus_buttons_sounds
+                volume_defined()
+                #print(sound_efx)
+                #print(event.button)
+                print(current_volume_music)
+            elif event.button == 0 and current_button == 3:
+                sound_efx = menus_buttons_sounds
+                volume_defined()
+                #print(sound_efx)
+                #print(event.button)
+                print(current_volume_music)
+            elif event.button == 0 and current_button == 4:
+                sound_efx = menus_buttons_sounds
+                volume_defined()
+                #print(sound_efx)
+                #print(event.button)
+                print(current_volume_music)
+        elif event.type == pg.JOYBUTTONDOWN and game_state == main_menu_config_fps:
+            if event.button == 0 and current_button == 0:
+                game_state = main_menu_config
+                sound_efx = menus_buttons_sounds
+                current_button = 0
+                #print(game_state)
+                #print(sound_efx)
+                #print(event.button)
+                print(current_fps)
+            elif event.button == 0 and current_button == 1:
+                sound_efx = menus_buttons_sounds
+                current_fps = fps30
+                #print(sound_efx)
+                #print(event.button)
+                print(current_fps)
+            elif event.button == 0 and current_button == 2:
+                sound_efx = menus_buttons_sounds
+                current_fps = fps60
+                #print(sound_efx)
+                #print(event.button)
+                print(current_fps)
+            elif event.button == 0 and current_button == 3:
+                sound_efx = menus_buttons_sounds
+                current_fps = fps120
+                #print(sound_efx)
+                #print(event.button)
+                print(current_fps)
         #fechar o menu
         elif event.type == pg.JOYBUTTONDOWN and game_state == game_menu:
             if event.button == 0 and current_button == 0:
                 game_state = game_start
-                sound = menus_buttons_sounds
+                sound_efx = menus_buttons_sounds
                 current_button = 0
                 pg.mixer.music.unpause()
                 menu_open = False
@@ -1441,7 +1572,7 @@ while running:#It starts active by default, since we set it to "True", which mak
                     pg.display.set_mode((Init_Width, Init_Height), pg.RESIZABLE)
             elif event.button == 0 and current_button == 2:
                 game_state = main_menu
-                sound = menus_buttons_sounds
+                sound_efx = menus_buttons_sounds
                 current_button = 0
                 menu_open = False
                 pg.mixer.music.fadeout(1000)
@@ -1458,5 +1589,5 @@ while running:#It starts active by default, since we set it to "True", which mak
     pg.display.flip()#When we draw text, buttons, shapes… everything gets placed onto an “invisible screen” (buffer). The flip() flips that screen and displays it to the player—in other words, it renders everything.
     #That’s why we use pg.display.flip() at the end, to show the entire game to the player. 
     #This is part of Pygame—it’s how the library is structured, and it varies a lot depending on which one you’re using. Tkinter, for example, has a completely different structure.
-    clock.tick(60)#Makes the game run at 60fps. We can place a variable inside the parentheses and use something to change it, creating a configuration.
+    clock.tick(current_fps)#Makes the game run at 60fps. We can place a variable inside the parentheses and use something to change it, creating a configuration.
 pg.quit()#End of the code that only runs when "running" is set to False
